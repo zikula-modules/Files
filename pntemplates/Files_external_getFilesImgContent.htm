@@ -1,0 +1,19 @@
+<!--[* $Id: Files_external_getFilesImgContent.htm 140 2009-12-30 11:51:19Z aperezm $ *]-->
+<span id="image_<!--[$file.name]-->" name="image_<!--[$file.name]-->">
+    <div class="imageBoxContent">
+        <div>
+            <img src="file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->" width="<!--[$file.viewWidth]-->" height="<!--[$file.viewHeight]-->"/>
+        </div>
+        <div>&nbsp;</div>
+        <div>
+            <!--[$file.width]--> x <!--[$file.height]--> (<!--[$file.factor]-->)
+            <a href="javascript:modifySize('<!--[$folderName]-->','<!--[$file.name]-->','<!--[$file.factor]-->','reduce');">
+                <!--[pnimg modname='Files' src='reduce.gif' set='pnimages' __alt="Reduce size" __title="Reduce size"]-->
+            </a>
+            <a href="javascript:modifySize('<!--[$folderName]-->','<!--[$file.name]-->','<!--[$file.factor]-->','increase');">
+                <!--[pnimg modname='Files' src='increase.gif' set='pnimages' __alt="Increase size" __title="Increase size"]-->
+            </a>
+            <a href="<!--[pnmodurl modname="Files" external="1" func="action" do="delete" fileName=$file.name folder=$folderName thumb=1]-->"><!--[pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete thumbnail" __title="Delete thumbnail"]--></a>
+        </div>
+    </div>
+</span>
