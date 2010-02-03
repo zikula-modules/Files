@@ -1602,7 +1602,7 @@ function Files_user_getInitFolderPath()
         }
     }
     // get user init folder
-    $initFolderPath = (SecurityUtil::checkPermission('Files::', "::", ACCESS_ADMIN)) ? $rootFolderPath : $userFolder;
+    $initFolderPath = (SecurityUtil::checkPermission('Files::', "::", ACCESS_ADMIN)) ? $rootFolderPath : $rootFolderPath . '/' . $userFolder;
     if (!file_exists($initFolderPath) || !is_writable($initFolderPath)) {
         $pnRender = pnRender::getInstance('Files', false);
         $errorMsg = __f('The "%s" directory does not exist or is not writable.', $initFolderPath, $dom);
