@@ -1,8 +1,17 @@
+
 function FilesFindItemXinha(editor, maURL)
 {
-  var pWidth = screen.width * 0.75;
-  var pHeight = screen.height * 0.66;
-  window.open(maURL, "", "width="+pWidth+",height="+pHeight+",scrollbars,resizable");
+    var pWidth = screen.width * 0.75;
+    var pHeight = screen.height * 0.66;
+    var pTop = (screen.height - pHeight) / 2;
+    var pLeft = (screen.width - pWidth) / 2;
+    
+    editor._popupDialog(maURL , function(value){editor.insertHTML('<img src="'+ value + '" alt="' + getFileName(value) + '" title="' + getFileName(value) + '"/>')})
+}
+
+function getFileName (value) {
+    var filename = value.substr(value.lastIndexOf('/')+1,value.length);
+    return filename;
 }
 
 function modifySize(folder,image,factor,action)
