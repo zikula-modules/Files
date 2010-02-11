@@ -41,3 +41,9 @@ function modifySize_failure()
 {
     
 }
+
+function Loadwindow(){
+	
+	url = document.location.pnbaseURL + document.location.entrypoint + "?module=Files&type=external&func=getFiles";
+	window.open(url,"Files","width=600,height=300,scrollbars=YES");
+}

@@ -42,6 +42,10 @@ function Files_init()
     pnModSetVar('Files', 'maxWidth', '250');
     pnModSetVar('Files', 'maxHeight', '250');
     pnModSetVar('Files', 'editableExtensions', 'php,htm,html,htaccess,css,js,tpl');
+    
+    
+    // Set up module hook
+    pnModRegisterHook('item', 'display', 'GUI', 'Files', 'user', 'Files');
     return true;
 }
 
