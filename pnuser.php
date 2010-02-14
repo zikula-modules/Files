@@ -796,15 +796,17 @@ function Files_user_getListDirRecursive($args)
         $pnRender->assign('errorMsg', $errorMsg);
         return $pnRender->fetch('Files_user_errorMsg.htm');
     }
+// if (substr($file, strrpos($file, '/') + 0, 1) != '.' || pnModGetVar('Files', 'showHideFiles') == 1 || (pnModGetVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN))) {
+
     $array_items = array();
     if ($handle = opendir($dir)) {
         while (false !== ($file = readdir($handle))) {
             if ($file != "." && $file != "..") {
-                if (is_dir($dir . "/" . $file)) {
-                    $array_items[] = str_replace($initFolderPath . "/", "", $dir . "/" . $file);
-                    $file = $dir . "/" . $file;
-                    $array_items = array_merge($array_items, pnModFunc('Files', 'user', 'getListDirRecursive', array(
-                        'dir' => $file)));
+                if (is_dir($dir . "/" . $file) && (substr($file, strrpos($file, '/') + 0, 1) != '.' || pnModGetVar('Files', 'showHideFiles') == 1 || (pnModGetVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)))) {
+                        $array_items[] = str_replace($initFolderPath . "/", "", $dir . "/" . $file);
+                        $file = $dir . "/" . $file;
+                        $array_items = array_merge($array_items, pnModFunc('Files', 'user', 'getListDirRecursive',
+                                                                            array('dir' => $file)));
                 }
             }
         }
