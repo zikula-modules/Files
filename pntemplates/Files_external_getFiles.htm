@@ -58,14 +58,14 @@
                     <!--[if $folderName neq ""]-->
                     <tr class="<!--[cycle values="z-odd,z-even"]-->">
                         <td>&nbsp;</td>
-                        <td><a class="fi_image fi_folder" href="<!--[pnmodurl modname="Files" type="external" func="getFiles" folder=""]-->">.</a></td>
+                        <td><a class="fi_image fi_folder" href="<!--[pnmodurl modname="Files" type="external" func="getFiles" hook=$hook folder=""]-->">.</a></td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                     </tr>
                     <tr class="<!--[cycle values="z-odd,z-even"]-->">
                         <td>&nbsp;</td>
-                        <td><a class="fi_image fi_folder" href="<!--[pnmodurl modname="Files" type="external" func="getFiles" folder=$folderPrev]-->">..</a></td>
+                        <td><a class="fi_image fi_folder" href="<!--[pnmodurl modname="Files" type="external" func="getFiles" hook=$hook folder=$folderPrev]-->">..</a></td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
@@ -80,9 +80,9 @@
                         </td>
                         <td align="left">
                             <!--[if $folderName eq '']-->
-                            <a class="fi_image fi_folder" href="<!--[pnmodurl modname="Files" func="getFiles" type="external" folder=$file.name]-->"><!--[$file.name]--></a>
+                            <a class="fi_image fi_folder" href="<!--[pnmodurl modname="Files" func="getFiles" type="external" hook=$hook folder=$file.name]-->"><!--[$file.name]--></a>
                             <!--[else]-->
-                            <a class="fi_image fi_folder" href="<!--[pnmodurl modname="Files" func="getFiles" type="external" folder=$folderName|cat:'/'|cat:$file.name]-->"><!--[$file.name]--></a>
+                            <a class="fi_image fi_folder" href="<!--[pnmodurl modname="Files" func="getFiles" type="external" hook=$hook folder=$folderName|cat:'/'|cat:$file.name]-->"><!--[$file.name]--></a>
                             <!--[/if]-->
                         </td>
                         <td>&nbsp;</td>

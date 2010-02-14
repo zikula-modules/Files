@@ -7,6 +7,7 @@
  */
 function Files_external_getFiles($args)
 {
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : 0, 'GET');
 	PageUtil::AddVar('javascript', 'modules/Files/pnjavascript/getFiles.js');
     $dom = ZLanguage::getModuleDomain('Files');
     // get arguments
@@ -15,9 +16,9 @@ function Files_external_getFiles($args)
     if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD) || !pnUserLogin()) {
         $pnRender = pnRender::getInstance('Files', false);
         $errorMsg = __('Sorry! You have not been granted access to this page.', $dom);
-        $pnRender -> assign('errorMsg', $errorMsg);
-        $pnRender -> assign('external', 1);
-        $pnRender -> display('Files_user_errorMsg.htm');
+        $pnRender->assign('errorMsg', $errorMsg);
+        $pnRender->assign('external', 1);
+        $pnRender->display('Files_user_errorMsg.htm');
         exit;
     }
     $oFolder = $folder;
@@ -27,18 +28,18 @@ function Files_external_getFiles($args)
     if(!file_exists($initFolderPath)){
         $pnRender = pnRender::getInstance('Files', false);
         $errorMsg = __('The server directory does not exist. Contact with the website administrator to solve this problem.', $dom);
-        $pnRender -> assign('errorMsg',  $errorMsg);
-        $pnRender -> assign('external', 1);
-        $pnRender -> display('Files_user_errorMsg.htm');
+        $pnRender->assign('errorMsg',  $errorMsg);
+        $pnRender->assign('external', 1);
+        $pnRender->display('Files_user_errorMsg.htm');
         exit;
     }
     // protection. User can not navigate out their root folder
     if($folder == ".." || $folder == "."){
         $pnRender = pnRender::getInstance('Files', false);
         $errorMsg = __('Invalid folder', $dom) . ': ' . $folder;
-        $pnRender -> assign('errorMsg', $errorMsg);
-        $pnRender -> assign('external', 1);
-        $pnRender -> display('Files_user_errorMsg.htm');
+        $pnRender->assign('errorMsg', $errorMsg);
+        $pnRender->assign('external', 1);
+        $pnRender->display('Files_user_errorMsg.htm');
         exit;
     }
     // get folder name
@@ -54,9 +55,9 @@ function Files_external_getFiles($args)
     if(!file_exists($folder)){
         $pnRender = pnRender::getInstance('Files', false);
         $errorMsg = __('Invalid folder', $dom).': '.$folderName;
-        $pnRender -> assign('errorMsg',  $errorMsg);
-        $pnRender -> assign('external', 1);
-        $pnRender -> display('Files_user_errorMsg.htm');
+        $pnRender->assign('errorMsg',  $errorMsg);
+        $pnRender->assign('external', 1);
+        $pnRender->display('Files_user_errorMsg.htm');
         exit;
     }
     // get user's disk use
@@ -67,28 +68,30 @@ function Files_external_getFiles($args)
     $maxDiskSpace = round($userAllowedSpace * 1024 * 1024);
     $percentage = round($usedSpace * 100 / $maxDiskSpace);
     $widthUsage = ($percentage > 100) ? 100 : $percentage;
-    $usedSpaceArray = array(
-        'maxDiskSpace' => pnModFunc('Files', 'user', 'diskUseFormat', array('value' => $maxDiskSpace)),
-        'percentage' => $percentage,
-        'usedDiskSpace' => pnModFunc('Files', 'user', 'diskUseFormat', array('value' => $usedSpace)),
-        'widthUsage' => $widthUsage);
+    $usedSpaceArray = array('maxDiskSpace' => pnModFunc('Files', 'user', 'diskUseFormat',
+                                                        array('value' => $maxDiskSpace)),
+                            'percentage' => $percentage,
+                            'usedDiskSpace' => pnModFunc('Files', 'user', 'diskUseFormat',
+                                                         array('value' => $usedSpace)),
+                            'widthUsage' => $widthUsage);
     // create output object
     $pnRender = pnRender::getInstance('Files', false);
     // get folder files and subfolders
-    $fileList = pnModFunc('Files', 'user', 'dir_list', array('folder' => $folder,
-                                                             'external' => 1));
+    $fileList = pnModFunc('Files', 'user', 'dir_list',
+                            array('folder' => $folder,
+                                  'external' => 1));
     sort($fileList[dir]);
     sort($fileList[file]);
     if(!is_writable($folder)){
-        $pnRender -> assign('notwriteable', true);
+        $pnRender->assign('notwriteable', true);
     }
     // check if it is a public directori
     if(!file_exists($folder.'/.locked')){
         // it is a public directori
         $is_public = true;
     }
-    $pnRender -> assign('publicFolder',  $is_public);
-    $pnRender -> assign('folderPrev', substr($folderName, 0 ,  strrpos($folderName, '/')));
+    $pnRender->assign('publicFolder',  $is_public);
+    $pnRender->assign('folderPrev', substr($folderName, 0 ,  strrpos($folderName, '/')));
     $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : pnModGetVar('Files', 'usersFolder') . '/' . strtolower(substr(pnUserGetVar('uname'), 0 , 1)) . '/' . pnUserGetVar('uname') . '/' .$folderName;
     $imagesArray = array();
     // get folder files and subfolders
@@ -111,12 +114,13 @@ function Files_external_getFiles($args)
             }
         }
     }
-    $pnRender -> assign('folderPath', DataUtil::formatForDisplay($folderPath));
-    $pnRender -> assign('folderName', DataUtil::formatForDisplay($folderName));
+    $pnRender->assign('folderPath', DataUtil::formatForDisplay($folderPath));
+    $pnRender->assign('folderName', DataUtil::formatForDisplay($folderName));
     $pnRender->assign('fileList', $fileList);
+    $pnRender->assign('hook', $hook);
     $pnRender->assign('imagesArray', DataUtil::formatForDisplay($imagesArray));
-    $pnRender -> assign('usedSpace',  $usedSpaceArray);
-    $pnRender -> display('Files_external_getFiles.htm');
+    $pnRender->assign('usedSpace',  $usedSpaceArray);
+    $pnRender->display('Files_external_getFiles.htm');
     return true;
 }
 

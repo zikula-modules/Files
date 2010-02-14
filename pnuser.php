@@ -701,7 +701,10 @@ function Files_user_deleteListFile($args)
     }
     if ($fileName == pnModGetVar('Files', 'usersFolder')) {
         LogUtil::registerError(__('You can not delete the users folder!', $dom));
-        return pnRedirect(pnModURL('Files', 'user', 'main', array('folder' => $folder)));
+        $returnType = ($external == 1) ? 'external' : 'user';
+        $returnFunc = ($external == 1) ? 'getFiles' : 'main';
+        return pnRedirect(pnModURL('Files', $returnType, $returnFunc,
+                                    array('folder' => $folder)));
     }
     $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
     // protection. User can not navigate out their root folder
@@ -796,8 +799,6 @@ function Files_user_getListDirRecursive($args)
         $pnRender->assign('errorMsg', $errorMsg);
         return $pnRender->fetch('Files_user_errorMsg.htm');
     }
-// if (substr($file, strrpos($file, '/') + 0, 1) != '.' || pnModGetVar('Files', 'showHideFiles') == 1 || (pnModGetVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN))) {
-
     $array_items = array();
     if ($handle = opendir($dir)) {
         while (false !== ($file = readdir($handle))) {
