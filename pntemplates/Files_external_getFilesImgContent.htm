@@ -20,7 +20,7 @@
             <!--[if $hook neq 1]-->
                 <button type="button" onclick="__dlg_close('file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->','tt');"><!--[gt text="Insert"]--></button> 
             <!--[else]-->
-                <button type="button" onclick="opener.window.filevalue('file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->');"><!--[gt text="Insert"]--></button>
+                <button type="button" onclick="opener.window.document.getElementById('hook_form_file').setAttribute('value','file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->');"><!--[gt text="Insert"]--></button>
             <!--[/if]-->
         </div>
     </div>
