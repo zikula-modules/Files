@@ -29,7 +29,7 @@ $modversion['help'] = 'pndocs/help.txt';
 $modversion['changelog'] = 'pndocs/changelog.txt';
 $modversion['license'] = 'pndocs/license.txt';
 $modversion['official'] = 0;
-$modversion['author'] = 'Albert Perez Monfort & Robert Barrera';
+$modversion['author'] = 'Albert Perez Monfort , Robert Barrera i Fèlix Casanellas';
 $modversion['contact'] = 'aperezm@xtec.cat';
 $modversion['admin'] = 1;
 $modversion['securityschema'] = array('Files::' => '::');
