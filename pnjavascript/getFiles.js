@@ -1,4 +1,4 @@
-
+	
 function FilesFindItemXinha(editor, maURL)
 {
     var pWidth = screen.width * 0.75;
@@ -45,5 +45,32 @@ function modifySize_failure()
 function Loadwindow(){
 	
 	url = document.location.pnbaseURL + document.location.entrypoint + "?module=Files&type=external&func=getFiles&hook=1";
-	window.open(url,"Files","width=600,height=300,scrollbars=YES");
+	popup=window.open(url,"Files","width=600,height=300,scrollbars=YES");
+	popup.window.document.getElementsByTagName('body')[0].setAttribute('onblur','self.focus()');
+	
+
+	/*window.captureEvents(Event.KEYPRESS);
+	window.onkeypress=nothing;
+	window.releaseEvents(Event.KEYPRESS);*/
+	
+	/*document.onmousedown=nothing;
+	document.onkeydown=nothing;
+	document.onkeypress=nothing;
+	document.onclick=nothing;
+	document.onmouseup=nothing;
+	document.onSubmit=nothing;
+	if (document.layers) window.captureEvents(Event.MOUSEDOWN);
+	if (document.layers) window.captureEvents(Event.KEYPRESS);
+	if (document.layers) window.captureEvents(Event.KEYDOWN);
+	if (document.layers) window.captureEvents(Event.CLICK);
+	if (document.layers) window.captureEvents(Event.MOUSEUP);
+	if (document.layers) window.captureEvents(Event.SUBMIT);
+	window.onmousedown=nothing;
+	window.onkeydown=nothing;
+	window.onkeypress=nothing;
+	window.onclick=nothing;
+	window.onmouseup=nothing;
+	window.onsubmit=nothing;*/
 }
+
+function nothing(e){return false;}
