@@ -151,7 +151,7 @@ function Files_ajax_externalModifyImg($args){
 	}
     $folderName = FormUtil::getPassedValue('folder', -1, 'GET');
 	if ($folderName == -1) {
-		AjaxUtil::error(__('no folder defined', $dom));
+		AjaxUtil::error(__('No folder defined.', $dom));
 	}
     $action = FormUtil::getPassedValue('action', -1, 'GET');
 

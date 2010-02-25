@@ -263,11 +263,6 @@ msgstr ""
 msgid "Successfully unzipped"
 msgstr ""
 
-#: pnuser.php:1563
-#, php-format
-msgid "The \"%s\" folder does not exist."
-msgstr ""
-
 #: pnuser.php:1574
 msgid "Directory creation error. Please contact with the administrator"
 msgstr ""
@@ -315,7 +310,7 @@ msgstr ""
 msgid "files"
 msgstr ""
 
-#: pnajax.php:29 pnajax.php:51
+#: pnajax.php:29 pnajax.php:51 pnajax.php:154
 msgid "No folder defined."
 msgstr ""
 
@@ -333,10 +328,6 @@ msgstr ""
 
 #: pnajax.php:150
 msgid "no size factor defined"
-msgstr ""
-
-#: pnajax.php:154
-msgid "no folder defined"
 msgstr ""
 
 #: pnexternal/getFiles.php:17
@@ -602,10 +593,6 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: pntemplates/Files_user_uploadFile.htm:13
-msgid "Allowed extensions:"
-msgstr ""
-
 #: pntemplates/Files_external_header.htm:5
 msgid "User's files"
 msgstr ""
@@ -690,6 +677,7 @@ msgid "Show to everyone"
 msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:51
+#: pntemplates/Files_user_uploadFile.htm:13
 msgid "Allowed extensions (comma separated list)"
 msgstr ""
 
@@ -769,13 +757,9 @@ msgid "Checking if the files folders exist and they are writable"
 msgstr ""
 
 #: pntemplates/Files_init.htm:46
+#: pnuser.php:1563
 #, php-format
 msgid "The folder <strong>%s</strong> has not been found."
-msgstr ""
-
-#: pntemplates/Files_init.htm:51
-#, php-format
-msgid "The folder <strong>%s</strong> is in the correct place."
 msgstr ""
 
 #: pntemplates/Files_init.htm:56 pntemplates/Files_init.htm:86
@@ -799,6 +783,7 @@ msgid "The folder <strong>%s/%s</strong> is located in the correct place."
 msgstr ""
 
 #: pntemplates/Files_init.htm:77
+#: pntemplates/Files_init.htm:51
 #, php-format
 msgid "The folder <strong>%s</strong> is located in the correct place."
 msgstr ""

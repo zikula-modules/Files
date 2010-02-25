@@ -1563,7 +1563,7 @@ function Files_user_getInitFolderPath()
     // checks if $rootFolderPath exists. If not user is send to error page
     if (!file_exists($rootFolderPath)) {
         $pnRender = pnRender::getInstance('Files', false);
-        $errorMsg = __f('The "%s" folder does not exist.', $rootFolderPath, $dom);
+        $errorMsg = __f('The folder <strong>%s</strong> has not been found.', $rootFolderPath, $dom);
         $pnRender->assign('errorMsg', $errorMsg);
         return $pnRender->fetch('Files_user_errorMsg.htm');
     }

@@ -303,11 +303,6 @@ msgstr "La descompresió ha fallat"
 msgid "Successfully unzipped"
 msgstr "Descompressió amb èxit"
 
-#: pnuser.php:1563
-#, php-format
-msgid "The \"%s\" folder does not exist."
-msgstr "El directori \"%s\" no existeix."
-
 #: pnuser.php:1574
 msgid "Directory creation error. Please contact with the administrator"
 msgstr "Error en la creació del directori. Si us plau contecteu amb l'administrador"
@@ -360,6 +355,7 @@ msgstr "fitxers"
 
 #: pnajax.php:29
 #: pnajax.php:51
+#: pnajax.php:150
 msgid "No folder defined."
 msgstr "No s'ha especificat el directori"
 
@@ -379,10 +375,6 @@ msgstr "no s'ha trobat la imatge"
 #: pnajax.php:150
 msgid "no size factor defined"
 msgstr "no s'ha especificat el factor de redimensionament"
-
-#: pnajax.php:154
-msgid "no folder defined"
-msgstr "no s'ha especificat la carpeta"
 
 #: pnexternal/getFiles.php:17
 msgid "Sorry! You have not been granted access to this page."
@@ -639,10 +631,6 @@ msgstr "Fitxers"
 msgid "File name"
 msgstr "Nom del fitxer"
 
-#: pntemplates/Files_user_uploadFile.htm:13
-msgid "Allowed extensions:"
-msgstr "Extensions permeses;"
-
 #: pntemplates/Files_external_header.htm:5
 msgid "User's files"
 msgstr "Fitxers de l'usuari"
@@ -726,6 +714,7 @@ msgid "Show to everyone"
 msgstr "Mostra a tothom"
 
 #: pntemplates/Files_admin_conf.htm:51
+#: pntemplates/Files_user_uploadFile.htm:13
 msgid "Allowed extensions (comma separated list)"
 msgstr "Extensions permeses (separades per comes)"
 
@@ -799,14 +788,10 @@ msgid "Checking if the files folders exist and they are writable"
 msgstr "Comprovant si els directoris per a fitxers existeixen i tenen permissos d'escriptura"
 
 #: pntemplates/Files_init.htm:46
+#: pnuser.php:1563
 #, php-format
 msgid "The folder <strong>%s</strong> has not been found."
 msgstr "No s'ha trobat el directori <strong>%s</strong>"
-
-#: pntemplates/Files_init.htm:51
-#, php-format
-msgid "The folder <strong>%s</strong> is in the correct place."
-msgstr "La localització del directori <strong>%s</strong> no es correcte"
 
 #: pntemplates/Files_init.htm:56
 #: pntemplates/Files_init.htm:86
@@ -831,6 +816,7 @@ msgid "The folder <strong>%s/%s</strong> is located in the correct place."
 msgstr "La localització del directori <strong>%s/%s</strong> es correcte"
 
 #: pntemplates/Files_init.htm:77
+#: pntemplates/Files_init.htm:51
 #, php-format
 msgid "The folder <strong>%s</strong> is located in the correct place."
 msgstr "La localització del directori <strong>%s</strong> es correcte"
