@@ -176,11 +176,6 @@ msgstr ""
 msgid "Directory created"
 msgstr ""
 
-#: pnuser.php:1062
-#, php-format
-msgid "The directory \"%s\" does not exist."
-msgstr ""
-
 #: pnuser.php:1070
 #, php-format
 msgid ""
@@ -285,6 +280,7 @@ msgid "File Manager"
 msgstr ""
 
 #: pnadmin.php:109
+#: pnuser.php:1062
 #, php-format
 msgid "The directory <strong>%s</strong> does not exist"
 msgstr ""

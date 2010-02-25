@@ -1062,7 +1062,7 @@ function Files_user_uploadFile($args)
         $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
         // check if folder exists. If not returns error.
         if (!file_exists($initFolderPath . '/' . $folder)) {
-            LogUtil::registerError(__f('The directory "%s" does not exist.', DataUtil::formatForDisplay($folder), $dom));
+            LogUtil::registerError(__f('The directory <strong>%s</strong> does not exist', DataUtil::formatForDisplay($folder), $dom));
             return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
         }
         // get file extension

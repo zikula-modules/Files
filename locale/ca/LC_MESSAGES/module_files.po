@@ -221,11 +221,6 @@ msgstr "Error en la creació del directori"
 msgid "Directory created"
 msgstr "S'ha creat el directori"
 
-#: pnuser.php:1062
-#, php-format
-msgid "The directory \"%s\" does not exist."
-msgstr "El directori \"%s\" no existeix"
-
 #: pnuser.php:1070
 #, php-format
 msgid "The extension <strong>%s</strong> is not allowed. The allowed extensions are: <strong>%s</strong>."
@@ -328,6 +323,7 @@ msgid "File Manager"
 msgstr "Gestor de fitxers"
 
 #: pnadmin.php:109
+#: pnuser.php:1062
 #, php-format
 msgid "The directory <strong>%s</strong> does not exist"
 msgstr "El directori <strong>%s</strong> no existeix"
