@@ -281,7 +281,7 @@ function Files_user_dir_list($args)
                                                     'folder' => $folderName,
                                                     'external' => $external)),
                                    'image' => '14_layer_deletelayer.gif',
-                                   'title' => __('Delete file'));
+                                   'title' => __('Delete File'));
                 $file_object = array(
                     'name' => DataUtil::formatForDisplay($object),
                     'size' => filesize($filename),

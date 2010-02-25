@@ -80,10 +80,6 @@ msgstr ""
 msgid "Rename file"
 msgstr ""
 
-#: pnuser.php:284
-msgid "Delete file"
-msgstr ""
-
 #: pnuser.php:318 pnuser.php:372 pnuser.php:445 pnuser.php:599 pnuser.php:696
 #: pnuser.php:789 pnuser.php:828 pnuser.php:872 pnuser.php:963 pnuser.php:1005
 #: pnuser.php:1040 pnuser.php:1132 pnuser.php:1168 pnuser.php:1233
@@ -619,6 +615,7 @@ msgstr ""
 
 #: pntemplates/Files_user_deleteListFile.htm:9
 #: pntemplates/Files_user_filesList.htm:90
+#: pnuser.php:284
 msgid "Delete File"
 msgstr ""
 

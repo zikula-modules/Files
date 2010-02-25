@@ -102,10 +102,6 @@ msgstr "Crea una nova miniatura"
 msgid "Rename file"
 msgstr "Canvia el nom"
 
-#: pnuser.php:284
-msgid "Delete file"
-msgstr "Elimina el fitxer"
-
 #: pnuser.php:318
 #: pnuser.php:372
 #: pnuser.php:445
@@ -657,8 +653,9 @@ msgstr "Nom d'arxiu"
 
 #: pntemplates/Files_user_deleteListFile.htm:9
 #: pntemplates/Files_user_filesList.htm:90
+#: pnuser.php:284
 msgid "Delete File"
-msgstr "Esborra fitxer"
+msgstr "Elimina el Fitxer"
 
 #: pntemplates/Files_user_deleteListFile.htm:13
 msgid "Confirm deletion of:"
