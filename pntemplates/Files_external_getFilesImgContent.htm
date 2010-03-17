@@ -17,10 +17,13 @@
                 <!--[pnimg modname='Files' src='increase.gif' set='pnimages' __alt="Increase size" __title="Increase size"]-->
             </a>
             <a href="<!--[pnmodurl modname="Files" external="1" func="action" do="delete" fileName=$file.name folder=$folderName thumb=1]-->"><!--[pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete thumbnail" __title="Delete thumbnail"]--></a>
+			
             <!--[if $hook neq 1]-->
-                <button type="button" onclick="__dlg_close('file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->','tt');"><!--[gt text="Insert"]--></button> 
+                <a href="" onclick="__dlg_close('file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->','tt');" title="Insert" >
+                <!--[pnimg modname='core' set='icons/extrasmall' src='inbox.gif' __title="Insert" __alt="Insert"]-->
+				</a> 
             <!--[else]-->
-                <button type="button" onclick="opener.window.document.getElementById('hook_form_file').setAttribute('value','file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->');window.close();"><!--[gt text="Insert"]--></button>
+				<button type="button" onclick="opener.window.document.getElementById('hook_form_file').setAttribute('value','file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->');"><!--[gt text="Insert"]--></button>
             <!--[/if]-->
         </div>
     </div>
