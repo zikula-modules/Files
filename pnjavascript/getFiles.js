@@ -45,13 +45,19 @@ function modifySize_failure()
 function Loadwindow(){
 	
 	url = document.location.pnbaseURL + document.location.entrypoint + "?module=Files&type=external&func=getFiles&hook=1";
-	popup=window.open(url,"Files","width=600,height=300,scrollbars=YES");
+	popup=window.open(url,"Files",toolbar=yes);
+	popup.window.document.getElementsByTagName('body')[0].setAttribute('class','external_window');
 	popup.window.document.getElementsByTagName('body')[0].setAttribute('onblur','self.focus()');
+	//self.onfocus=alert("hola");
+	//popup.window.document.getElementsByTagName('body')[0].setAttribute('onload','alert("hola")');
+	//onUnload.popup = popup.alert("adeu");
 	
-
-	/*window.captureEvents(Event.KEYPRESS);
+	
+	
+	window.captureEvents(Event.KEYPRESS);
 	window.onkeypress=nothing;
-	window.releaseEvents(Event.KEYPRESS);*/
+	//window.onkeypress=restore;
+	
 	
 	/*document.onmousedown=nothing;
 	document.onkeydown=nothing;
@@ -74,3 +80,7 @@ function Loadwindow(){
 }
 
 function nothing(e){return false;}
+
+function restore(e){return true;}
+
+function restore_events(){alert("adeu");}
