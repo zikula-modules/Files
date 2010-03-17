@@ -114,6 +114,9 @@
                             <!--[foreach item=option from=$file.options]-->
                                 <a href="<!--[$option.url|pnvarprepfordisplay]-->"><!--[pnimg modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title]--></a>
                             <!--[/foreach]-->
+								<a href="" onclick="__dlg_close('file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->','tt');" title="Insert" >
+                				<!--[pnimg modname='core' set='icons/extrasmall' src='inbox.gif' __title="Insert" __alt="Insert"]-->
+								</a> 
                         </td>
                     </tr>
                     <!--[/if]-->
