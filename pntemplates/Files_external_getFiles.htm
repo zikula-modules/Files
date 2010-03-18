@@ -1,5 +1,9 @@
 <!--[* $Id: Files_external_getFiles.htm 144 2010-02-02 06:21:34Z aperezm $ *]-->
 <!--[include file="Files_external_header.htm"]-->
+
+<script src="modules/scribite/pnincludes/xinha/popups/popup.js" type="text/javascript"></script>
+<script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
+
 <div class="files_container">
     <div class="z-clearfix">
         <div class="userpageicon"><!--[pnimg modname='core' src='lists.gif' set='icons/large' alt=$templatetitle]--></div>
@@ -103,7 +107,11 @@
                         </td>
                         <td align="left">
                             <!--[if $publicFolder]-->
-                            <a class="fi_image" style="background: url(<!--[pngetbaseurl]-->modules/Files/pnimages/fileIcons/<!--[$file.fileIcon]-->) no-repeat 0 50%;" href="file.php?file=<!--[$folderName]-->/<!--[$file.name]-->" /><!--[$file.name]--></a>
+								<!--[if $hook eq 1]-->
+                            		<a class="fi_image" style="background: url(<!--[pngetbaseurl]-->modules/Files/pnimages/fileIcons/<!--[$file.fileIcon]-->) no-repeat 0 50%;" href="<!--[pnmodurl modname="Files" func="downloadFile" folder=$folderName fileName=$file.name]-->" /><!--[$file.name]--></a>
+								<!--[else]-->
+									<a class="fi_image" style="background: url(<!--[pngetbaseurl]-->modules/Files/pnimages/fileIcons/<!--[$file.fileIcon]-->) no-repeat 0 50%;" /><!--[$file.name]--></a>
+								<!--[/if]-->
                             <!--[else]-->
                             <!--[$file.name]-->
                             <!--[/if]-->
@@ -114,9 +122,6 @@
                             <!--[foreach item=option from=$file.options]-->
                                 <a href="<!--[$option.url|pnvarprepfordisplay]-->"><!--[pnimg modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title]--></a>
                             <!--[/foreach]-->
-								<a href="" onclick="__dlg_close('file.php?file=<!--[$folderPath]--><!--[if $folderPath|substr:-1 neq '/']-->/<!--[/if]-->.tbn/<!--[$file.name]-->','tt');" title="Insert" >
-                				<!--[pnimg modname='core' set='icons/extrasmall' src='inbox.gif' __title="Insert" __alt="Insert"]-->
-								</a> 
                         </td>
                     </tr>
                     <!--[/if]-->

@@ -42,24 +42,22 @@ function modifySize_failure()
     
 }
 
+function insertAndClose(file){
+	opener.window.document.getElementById('hook_form_file').setAttribute('value', file);
+	window.close();
+}
+
 function Loadwindow(){
-	
 	url = document.location.pnbaseURL + document.location.entrypoint + "?module=Files&type=external&func=getFiles&hook=1";
-	popup=window.open(url,"Files",toolbar=yes);
-	popup.window.document.getElementsByTagName('body')[0].setAttribute('class','external_window');
+	popup=window.open(url,"Files","location=1,status=1,scrollbars=1,width=600,height=700");
 	popup.window.document.getElementsByTagName('body')[0].setAttribute('onblur','self.focus()');
-	//self.onfocus=alert("hola");
-	//popup.window.document.getElementsByTagName('body')[0].setAttribute('onload','alert("hola")');
-	//onUnload.popup = popup.alert("adeu");
 	
-	
-	
+	/* FOR TEST ONLY
 	window.captureEvents(Event.KEYPRESS);
 	window.onkeypress=nothing;
-	//window.onkeypress=restore;
+	window.onkeypress=restore;
 	
-	
-	/*document.onmousedown=nothing;
+	document.onmousedown=nothing;
 	document.onkeydown=nothing;
 	document.onkeypress=nothing;
 	document.onclick=nothing;
@@ -79,8 +77,9 @@ function Loadwindow(){
 	window.onsubmit=nothing;*/
 }
 
+/* FOR TEST ONLY
 function nothing(e){return false;}
 
 function restore(e){return true;}
 
-function restore_events(){alert("adeu");}
+function restore_events(){alert("adeu");}*/
