@@ -910,6 +910,12 @@ function Files_user_renameFile($args)
     if (!SecurityUtil::confirmAuthKey()) {
         return LogUtil::registerAuthidError(pnModURL('Files', $returnType, $returnFunc));
     }
+    // check if exists a file with the same name in the folder -> Inactive
+    /*if (($fileName != $newName)&&(file_exists($initFolderPath . "/" . $folder . "/" . $newName))){
+        LogUtil::registerError(__f('Failed to rename, there\'s a file with the same name in this folder.<br>Please, choose another name' , $dom));
+            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+    }*/ 
+    
     // check if the extension is allowed
     // get file extension
     $file_extension = FileUtil::getExtension($newName);
@@ -1454,11 +1460,20 @@ function Files_user_moveListFile($args)
     $url_old = ($folder != "") ? $initFolderPath . "/" . $folder . "/" : $initFolderPath . "/";
     $url_new = ($confirm != "root_inital_value") ? $initFolderPath . '/' . $confirm . '/' : $initFolderPath . '/';
     // move action
-    foreach ($listFileName as $file) {
+    foreach ($listFileName as $file) { 
         if (!rename($url_old . $file, $url_new . $file)) {
             LogUtil::registerError(__('Error moving') . ': ' . $file);
             return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
         }
+        //check if the file is an image and move its thumbnail
+        if((FileUtil::getExtension($file)==('jpg'||'gif'||'png'))&&file_exists($url_old . '.tbn/' . $file)){
+            if(!file_exists($url_new . '.tbn')) mkdir($url_new . '.tbn'); 
+            if (!rename($url_old . '.tbn/' . $file, $url_new . '.tbn/' . $file)) {
+                LogUtil::registerError(__('Error moving') . ': ' . $file);
+                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+            }
+        }
+        
     }
     // protect the folders with the .htaccess and .locked files
     pnModFunc('Files', 'user', 'createProtectFiles', array('folder' => str_replace($initFolderPath . '/', '', $url_new)));
