@@ -387,7 +387,7 @@ function Files_user_action($args)
                 'fileName' => $fileName,
                 'thumb' => $thumb,
                 'hook' => $hook));
-            break;
+                break;
         case 'rename':
             return pnModFunc('Files', 'user', 'renameFile', array(
                 'folder' => $folder,
@@ -406,7 +406,7 @@ function Files_user_action($args)
                 'fileName' => $fileName,
                 'hook' => $hook));
             break;
-        case 'upload':
+        /*case 'upload':
             return pnModFunc('Files', 'user', 'uploadFile', array(
                 'folder' => $folder));
             break;
@@ -417,7 +417,7 @@ function Files_user_action($args)
         case 'createaccessfile':
             return pnModFunc('Files', 'user', 'createaccessfile', array(
                 'folder' => $folder));
-            break;
+            break;*/
         case 'edit':
             return pnModFunc('Files', 'user', 'editFile', array(
                 'folder' => $folder,
