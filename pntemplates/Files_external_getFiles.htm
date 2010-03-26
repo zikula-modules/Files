@@ -17,12 +17,12 @@
     <!--[/if]-->
 
     <div class="actionIcons z-menuitem-title">
-        <a class="fi_image fi_createdir" href="javascript: createDir('<!--[$folderName]-->',1)"><!--[gt text="Create directory"]--></a>
-        <a class="fi_image fi_uploadfile" href="javascript: uploadFile('<!--[$folderName]-->',1)"><!--[gt text="Upload file"]--></a>
+        <a class="fi_image fi_createdir" href="javascript: createDir('<!--[$folderName]-->',1,<!--[$hook]-->)"><!--[gt text="Create directory"]--></a>
+        <a class="fi_image fi_uploadfile" href="javascript: uploadFile('<!--[$folderName]-->',1,<!--[$hook]-->)"><!--[gt text="Upload file"]--></a>
         <!--[if $publicFolder]-->
-        <a class="fi_image fi_public" href="<!--[pnmodurl modname="Files" func="setAsPublic" external="1" folder=$folderName not=1]-->"><!--[gt text="Set as not public folder"]--></a>
+        <a class="fi_image fi_public" href='<!--[pnmodurl modname="Files" func="setAsPublic" external="1" folder=$folderName hook=$hook not=1]-->'><!--[gt text="Set as not public folder"]--></a>
         <!--[elseif $folderName neq '']-->
-        <a class="fi_image fi_notpublic" href="<!--[pnmodurl modname="Files" func="setAsPublic" external="1" folder=$folderName]-->"><!--[gt text="Set as a public folder"]--></a>
+        <a class="fi_image fi_notpublic" href='<!--[pnmodurl modname="Files" func="setAsPublic" external="1" folder=$folderName hook=$hook]-->'><!--[gt text="Set as a public folder"]--></a>
         <!--[/if]-->
     </div>
 
@@ -45,7 +45,7 @@
     </p>
     <!--[/if]-->
 
-    <form class="z-form" method="post" action="<!--[pnmodurl modname="Files" func="actionSelect" folder=$folderName]-->"  id="form1">
+    <form class="z-form" method="post" action="<!--[pnmodurl modname="Files" func="actionSelect" folder=$folderName hook=$hook]-->"  id="form1">
         <div>
             <input type="hidden" name="external" value="1" />
             <table class="z-datatable" summary="table files">
@@ -92,8 +92,8 @@
                         <td>&nbsp;</td>
                         <td align="right"><!--[$file.time|pndate_format:'datetimebrief']--></td>
                         <td align="right">
-                            <a href="<!--[pnmodurl modname="Files" external="1" func="action" do="rename" fileName=$file.name folder=$folderName]-->"><!--[pnimg modname='core' src='edit.gif' set='icons/extrasmall' __alt="Rename file" __title="Rename folder"]--></a>
-                            <a href="<!--[pnmodurl modname="Files" external="1" func="action" do="delete" fileName=$file.name folder=$folderName]-->"><!--[pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete folder" __title="Delete folder"]--></a>
+                            <a href='<!--[pnmodurl modname="Files" external="1" func="action" do="rename" fileName=$file.name folder=$folderName hook=$hook]-->'><!--[pnimg modname='core' src='edit.gif' set='icons/extrasmall' __alt="Rename file" __title="Rename folder"]--></a>
+                            <a href='<!--[pnmodurl modname="Files" external="1" func="action" do="delete" fileName=$file.name folder=$folderName hook=$hook]-->'><!--[pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete folder" __title="Delete folder"]--></a>
                         </td>
                     </tr>
                     <!--[/if]-->
@@ -108,7 +108,7 @@
                         <td align="left">
                             <!--[if $publicFolder]-->
 								<!--[if $hook eq 1]-->
-                            		<a class="fi_image" style="background: url(<!--[pngetbaseurl]-->modules/Files/pnimages/fileIcons/<!--[$file.fileIcon]-->) no-repeat 0 50%;" href="<!--[pnmodurl modname="Files" func="downloadFile" folder=$folderName fileName=$file.name]-->" /><!--[$file.name]--></a>
+                            		<a class="fi_image" style="background: url(<!--[pngetbaseurl]-->modules/Files/pnimages/fileIcons/<!--[$file.fileIcon]-->) no-repeat 0 50%;" href='<!--[pnmodurl modname="Files" func="downloadFile" folder=$folderName fileName=$file.name hook=$hook]-->' /><!--[$file.name]--></a>
 								<!--[else]-->
 									<a class="fi_image" style="background: url(<!--[pngetbaseurl]-->modules/Files/pnimages/fileIcons/<!--[$file.fileIcon]-->) no-repeat 0 50%;" /><!--[$file.name]--></a>
 								<!--[/if]-->
@@ -120,7 +120,7 @@
                         <td align="right"><!--[$file.time|pndate_format:'datetimebrief']--></td>
                         <td align="right">
                             <!--[foreach item=option from=$file.options]-->
-                                <a href="<!--[$option.url|pnvarprepfordisplay]-->"><!--[pnimg modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title]--></a>
+                                <a href="<!--[$option.url|pnvarprepfordisplay]-->&hook=<!--[$hook]-->"><!--[pnimg modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title]--></a>
                             <!--[/foreach]-->
                         </td>
                     </tr>

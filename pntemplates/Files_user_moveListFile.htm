@@ -14,6 +14,7 @@
             <input type="hidden" name="authid" value="<!--[insert name="generateauthkey" module="Files"]-->" />
             <input type="hidden" name="folder" value="<!--[$folder|pnvarprepfordisplay]-->" />
             <input type="hidden" name="external" value="<!--[$external|pnvarprepfordisplay]-->" />
+			<input type="hidden" name="hook" value="<!--[$hook]-->" />
             <!--[foreach item=fileName from=$listFileName]-->
             <input type="hidden" name="listFileName[]" value="<!--[$fileName|pnvarprepfordisplay]-->" />
             <!--[/foreach]-->
@@ -31,8 +32,9 @@
                 <!--[/foreach]-->
             </fieldset>
             <div class="z-formbuttons">
-                <!--[pnbutton src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"]-->                <!--[if $external eq 1]-->
-                <a href="<!--[pnmodurl modname="Files" type="external" func="getFiles" folder=$folder]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"]--></a>
+                <!--[pnbutton src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"]-->                
+				<!--[if $external eq 1]-->
+                <a href="<!--[pnmodurl modname="Files" type="external" func="getFiles" folder=$folder hook=$hook]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"]--></a>
                 <!--[else]-->
                 <a href="<!--[pnmodurl modname="Files" func="main" folder=$folder]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' __alt="Cancel" __title="Cancel"]--></a>
                 <!--[/if]-->

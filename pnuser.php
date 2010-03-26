@@ -313,6 +313,7 @@ function Files_user_downloadFile($args)
     // file name with the path
     $fileName = FormUtil::getPassedValue('fileName', isset($args['fileName']) ? $args['fileName'] : 0, 'GET');
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : 0, 'GET');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : 0, 'GET');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -329,7 +330,7 @@ function Files_user_downloadFile($args)
     // check if file exists. If not returns error.
     if (!file_exists($initFolderPath . '/' . $file)) {
         LogUtil::registerError(__('File not found', $dom));
-        return pnRedirect(pnModURL('Files', 'user', 'main', array('folder' => $folder)));
+        return pnRedirect(pnModURL('Files', 'user', 'main', array('folder' => $folder, 'hook' => $hook)));
     }
     // get file size
     $fileSize = filesize($initFolderPath . '/' . $file);
@@ -367,6 +368,7 @@ function Files_user_action($args)
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'GET');
     $fileName = FormUtil::getPassedValue('fileName', isset($args['fileName']) ? $args['fileName'] : null, 'GET');
     $thumb = FormUtil::getPassedValue('thumb', isset($args['thumb']) ? $args['thumb'] : 0, 'GET');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -383,22 +385,26 @@ function Files_user_action($args)
             return pnModFunc('Files', 'user', 'deleteListFile', array(
                 'folder' => $folder,
                 'fileName' => $fileName,
-                'thumb' => $thumb));
+                'thumb' => $thumb,
+                'hook' => $hook));
             break;
         case 'rename':
             return pnModFunc('Files', 'user', 'renameFile', array(
                 'folder' => $folder,
-                'fileName' => $fileName));
+                'fileName' => $fileName,
+                'hook' => $hook));
             break;
         case 'unzip':
             return pnModFunc('Files', 'user', 'unzipFile', array(
                 'folder' => $folder,
-                'fileName' => $fileName));
+                'fileName' => $fileName,
+                'hook' => $hook));
             break;
         case 'listcontentzip':
             return pnModFunc('Files', 'user', 'listContentZip', array(
                 'folder' => $folder,
-                'fileName' => $fileName));
+                'fileName' => $fileName,
+                'hook' => $hook));
             break;
         case 'upload':
             return pnModFunc('Files', 'user', 'uploadFile', array(
@@ -420,7 +426,8 @@ function Files_user_action($args)
         case 'thumbnail':
             return pnModFunc('Files', 'user', 'thumbnail', array(
                 'folder' => $folder,
-                'fileName' => $fileName));
+                'fileName' => $fileName,
+                'hook' => $hook));
             break;
     }
     return pnRedirect(pnModURL('Files', 'user', 'main'));
@@ -439,6 +446,7 @@ function Files_user_thumbnail($args)
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'POST');
     $newWidth = FormUtil::getPassedValue('newWidth', isset($args['newWidth']) ? $args['newWidth'] : null, 'POST');
     $fromAjax = FormUtil::getPassedValue('fromAjax', isset($args['fromAjax']) ? $args['fromAjax'] : null, 'POST');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'POST');
 
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
@@ -459,7 +467,7 @@ function Files_user_thumbnail($args)
     $thumbnailExtensions = array('gif','jpg','png');
     if (!in_array($fileExtension,$thumbnailExtensions)) {
         LogUtil::registerError(__('It is not possible to create a thumbnail from this file.', $dom));
-        return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+        return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     }
     // checks if the thumbnail folder exists and if it not exists create it
     if (!file_exists($initFolderPath . '/' . $folder . '/.tbn')) {
@@ -471,7 +479,7 @@ function Files_user_thumbnail($args)
     // check if file exists
     if (!file_exists($imgSource)) {
         LogUtil::registerError(__('Error! It has been possible to read the file.', $dom));
-        return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));        
+        return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));        
     }
     $format = '';
 	if (strtolower($fileExtension) == 'jpg') {
@@ -499,7 +507,7 @@ function Files_user_thumbnail($args)
 
 	if (!$destimg = imagecreatetruecolor($newWidth, $newHeight)) {
         LogUtil::registerError(__('Error! Saving the image in memory.', $dom));
-        return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder))); 
+        return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook))); 
 	}
     // set alphablending to on
     imagesavealpha($destimg, true);
@@ -509,7 +517,7 @@ function Files_user_thumbnail($args)
 		case 'image/gif':
 			if (!$srcimg = imagecreatefromgif($imgSource)) {
                 LogUtil::registerError(__('Error! Creating the thumbnail of the image.', $dom));
-                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 			}
             // preserve the transparency
             $transIndex = imagecolortransparent($srcimg);
@@ -525,31 +533,31 @@ function Files_user_thumbnail($args)
             }
 			if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,imagesx($srcimg),imagesy($srcimg))) {
                 LogUtil::registerError(__('Error! Creating the thumbnail of the image.', $dom));
-                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 			}
 		    if (!imagegif($destimg,$imgDest)) {
                 LogUtil::registerError(__('Error! Creating the thumbnail of the image.', $dom));
-                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 		    }
 			break;
 		case 'image/jpeg':
 			if (!$srcimg = imagecreatefromjpeg($imgSource)) {
                 LogUtil::registerError(__('Error! Creating the thumbnail of the image.', $dom));
-                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 			}
 			if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,ImageSX($srcimg),ImageSY($srcimg))) {
                 LogUtil::registerError(__('Error! Creating the thumbnail of the image.', $dom));
-                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 			}
 		    if (!imagejpeg($destimg,$imgDest)) {
                 LogUtil::registerError(__('Error! Creating the thumbnail of the image.', $dom));
-                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 		    }
 			break;
 		case 'image/png':
 			if (!$srcimg = imagecreatefrompng($imgSource)) {
                 LogUtil::registerError(__('Error! Creating the thumbnail of the image.', $dom));
-                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 			}
             // preserve the transparency
             // turns off transparency blending
@@ -562,11 +570,11 @@ function Files_user_thumbnail($args)
             imagesavealpha($destimg, true);
 			if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,ImageSX($srcimg),ImageSY($srcimg))) {
                 LogUtil::registerError(__('Error! Creating the thumbnail of the image.', $dom));
-                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 			}
 		  	if (!imagepng($destimg,$imgDest)) {
                 LogUtil::registerError(__('Error! Creating the thumbnail of the image.', $dom));
-                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 		  	}
 			break;
 	}
@@ -576,7 +584,7 @@ function Files_user_thumbnail($args)
     if ($fromAjax == null) {
         LogUtil::registerStatus(__('Thumbnail created.', $dom));
     }
-    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder)));
+    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
 }
 
 /**
@@ -691,6 +699,7 @@ function Files_user_deleteListFile($args)
     $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'GETPOST');
     $thumb = FormUtil::getPassedValue('thumb', isset($args['thumb']) ? $args['thumb'] : null, 'GETPOST');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -704,7 +713,7 @@ function Files_user_deleteListFile($args)
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
         return pnRedirect(pnModURL('Files', $returnType, $returnFunc,
-                                    array('folder' => $folder)));
+                                    array('folder' => $folder, 'hook' => $hook)));
     }
     $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
     // protection. User can not navigate out their root folder
@@ -733,6 +742,7 @@ function Files_user_deleteListFile($args)
         $pnRender->assign('list_show', DataUtil::formatForDisplay($array_show));
         $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
         $pnRender->assign('thumb', $thumb);
+        $pnRender->assign('hook', $hook);
         if ($external == 1) {
             $pnRender->assign('external', 1);
             $content = $pnRender->fetch('Files_user_deleteListFile.htm');
@@ -758,7 +768,7 @@ function Files_user_deleteListFile($args)
             if (!pnModFunc('Files', 'user', 'fullDeleteDir', array(
                 'file' => $file))) {
                 LogUtil::registerError(__('Failed to deleted', $dom));
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
             }
         } else {
             if (!unlink($file)) {
@@ -774,7 +784,7 @@ function Files_user_deleteListFile($args)
     // update the number of bytes used by user
     pnModAPIFunc('Files', 'user', 'updateUsedSpace');
     LogUtil::registerStatus(__('Files successfully removed', $dom));
-    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
 }
 
 /**
@@ -870,6 +880,7 @@ function Files_user_renameFile($args)
     $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
     $newName = FormUtil::getPassedValue('newname', isset($args['newname']) ? $args['newname'] : null, 'POST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'GETPOST');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -897,6 +908,7 @@ function Files_user_renameFile($args)
         $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
         if ($external == 1) {
             $pnRender->assign('external', 1);
+            $pnRender->assign('hook', $hook);
             $content = $pnRender->fetch('Files_user_renameFile.htm');
             echo $content;
             exit();
@@ -926,13 +938,13 @@ function Files_user_renameFile($args)
             LogUtil::registerError(__f('The extension <strong>%s</strong> is not allowed.  The allowed extensions are: <strong>%s</strong>.', array(
                 $file_extension,
                 str_replace(',', ', ', $allowedExtensions)), $dom));
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook'=> $hook)));
         }
     }
     $newNameFile = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $newName : $initFolderPath . "/" . $newName;
     if (!rename($file, $newNameFile)) {
         LogUtil::registerError(__('Failed to rename', $dom));
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc));
+        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('hook'=> $hook)));
     } else {
         $file = ($folder != "") ? $initFolderPath . "/" . $folder . "/.tbn/" . $fileName : $initFolderPath . "/.tbn/" . $fileName;
         if (file_exists($file)) {
@@ -949,7 +961,7 @@ function Files_user_renameFile($args)
         }
     }
     LogUtil::registerStatus(__('Changed filename successfully', $dom));
-    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook'=> $hook)));
 }
 
 /**
@@ -967,6 +979,7 @@ function Files_user_createDir($args)
     $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
     $newFolder = FormUtil::getPassedValue('newFolder', isset($args['newFolder']) ? $args['newFolder'] : 0, 'POST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'POST');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'POST');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -983,19 +996,20 @@ function Files_user_createDir($args)
         $pnRender = pnRender::getInstance('Files', false);
         $errorMsg = __('Invalid folder', $dom) . ': ' . $folder;
         $pnRender->assign('errorMsg', $errorMsg);
+        $pnRender->assign('hook', $hook);
         return $pnRender->fetch('Files_user_errorMsg.htm');
     }
     $folderNew = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $newFolder : $initFolderPath . "/" . $newFolder;
     if (!FileUtil::mkdirs($folderNew, 0777, true)) {
         LogUtil::registerError(__('Directory Create Error') . ': ' . $folder . "/" . $newFolder);
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     LogUtil::registerStatus(__('Directory created', $dom));
     $inFolder = ($folder == '') ? $newFolder : $folder . "/" . $newFolder;
     pnModFunc('Files', 'user', 'createaccessfile', array('folderNew' => $inFolder));
     // update the number of bytes used by user
     pnModAPIFunc('Files', 'user', 'updateUsedSpace');
-    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
 }
 
 /**
@@ -1009,6 +1023,7 @@ function Files_user_createDirForm($args)
     $dom = ZLanguage::getModuleDomain('Files');
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : 0, 'REQUEST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'GET');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
     // Security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -1028,6 +1043,7 @@ function Files_user_createDirForm($args)
     $pnRender->assign('type', $type);
     $pnRender->assign('func', $func);
     $pnRender->assign('external', $external);
+    $pnRender->assign('hook', $hook);
     return $pnRender->fetch('Files_user_createDir.htm');
 }
 
@@ -1044,6 +1060,7 @@ function Files_user_uploadFile($args)
     $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
     $newFile = FormUtil::getPassedValue('newFile', isset($args['newFile']) ? $args['newFile'] : 0, 'REQUEST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'POST');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'POST');
     // Security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -1069,7 +1086,7 @@ function Files_user_uploadFile($args)
         // check if folder exists. If not returns error.
         if (!file_exists($initFolderPath . '/' . $folder)) {
             LogUtil::registerError(__f('The directory <strong>%s</strong> does not exist', DataUtil::formatForDisplay($folder), $dom));
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         // get file extension
         $file_extension = FileUtil::getExtension($fileName);
@@ -1079,7 +1096,7 @@ function Files_user_uploadFile($args)
             LogUtil::registerError(__f('The extension <strong>%s</strong> is not allowed. The allowed extensions are: <strong>%s</strong>.', array(
                 $file_extension,
                 str_replace(',', ', ', $allowedExtensions)), $dom));
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         // gets the file size
         $fileSize = $_FILES['newFile']['size'];
@@ -1087,7 +1104,8 @@ function Files_user_uploadFile($args)
         if ($fileSize > pnModGetVar('Files', 'filesMaxSize')) {
             LogUtil::registerError(__f('The file is to big. The maximum size allowed is "%s" bytes.', pnModGetVar('Files', 'filesMaxSize'), $dom));
             return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
-                'folder' => $folder)));
+                'folder' => $folder, 
+                'hook' => $hook)));
         }
         // get user used space in folder
         $userDiskUse = pnModAPIFunc('Files', 'user', 'get');
@@ -1098,7 +1116,8 @@ function Files_user_uploadFile($args)
         if ($fileSize + $usedSpace > $userAllowedSpace && $userAllowedSpace != -1048576) {
             LogUtil::registerError(__f('You have not enough disk space to upload the file.', $fileSize + $usedSpace - $userAllowedSpace, $dom));
             return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
-                'folder' => $folder)));
+                'folder' => $folder, 
+                'hook' => $hook)));
         }
         // prepare file name
         if (!isset($fileNameNew) || $fileNameNew == '') {
@@ -1116,13 +1135,14 @@ function Files_user_uploadFile($args)
         if (!FileUtil::uploadFile('newFile', $initFolderPath . '/' . $folder, $fileNameNew, true)) {
             LogUtil::registerError(__('Failed to upload', $dom));
             return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
-                'folder' => $folder)));
+                'folder' => $folder, 
+                'hook' => $hook)));
         }
         LogUtil::registerStatus(__('Uploaded file success', $dom));
         // update the number of bytes used by user
         pnModAPIFunc('Files', 'user', 'updateUsedSpace');
     }
-    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
 }
 
 /**
@@ -1136,6 +1156,7 @@ function Files_user_uploadFileForm($args)
     $dom = ZLanguage::getModuleDomain('Files');
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : 0, 'REQUEST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'GET');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -1155,6 +1176,7 @@ function Files_user_uploadFileForm($args)
     $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
     $pnRender->assign('extensions', DataUtil::formatForDisplay(str_replace(',', ', ', pnModGetVar('Files', 'allowedExtensions'))));
     $pnRender->assign('external', $external);
+    $pnRender->assign('hook', $hook);
     $pnRender->assign('type', $type);
     $pnRender->assign('func', $func);
     return $pnRender->fetch('Files_user_uploadFile.htm');
@@ -1172,6 +1194,7 @@ function Files_user_actionSelect($args)
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'GET');
     $menuaction = FormUtil::getPassedValue('menuaction', isset($args['menuaction']) ? $args['menuaction'] : null, 'POST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'POST');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -1197,31 +1220,36 @@ function Files_user_actionSelect($args)
     if ($menuaction == null) {
         LogUtil::registerError(__('No selected action', $dom));
         return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
-            'folder' => $folder)));
+            'folder' => $folder,
+            'hook' => $hook)));
     }
     if (count($keyArray) == 0) {
         LogUtil::registerError(__('No selected file or directory', $dom));
         return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
-            'folder' => $folder)));
+            'folder' => $folder,
+            'hook' => $hook)));
     }
     switch ($menuaction) {
         case move:
             return pnModFunc('Files', 'user', 'moveListFile', array(
                 'listFileName' => $keyArray,
                 'external' => $external,
-                'folder' => $folder));
+                'folder' => $folder,
+            	'hook' => $hook));
             break;
         case delete:
             return pnModFunc('Files', 'user', 'deleteListFile', array(
                 'listFileName' => $keyArray,
                 'external' => $external,
-                'folder' => $folder));
+                'folder' => $folder,
+            	'hook' => $hook));
             break;
         case zip:
             return pnModFunc('Files', 'user', 'createZipListFile', array(
                 'listFileName' => $keyArray,
                 'external' => $external,
-                'folder' => $folder));
+                'folder' => $folder,
+            	'hook' => $hook));
             break;
     }
     return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
@@ -1285,6 +1313,7 @@ function Files_user_createZipListFile($args)
     $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
     $name = FormUtil::getPassedValue('name', isset($args['name']) ? $args['name'] : null, 'POST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'POST');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'POST');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -1317,6 +1346,7 @@ function Files_user_createZipListFile($args)
         $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
         if ($external == 1) {
             $pnRender->assign('external', 1);
+            $pnRender->assign('hook', $hook);
             $content = $pnRender->fetch('Files_user_createZipListFile.htm');
             echo $content;
             exit();
@@ -1332,7 +1362,7 @@ function Files_user_createZipListFile($args)
     }
     if (name == null) {
         LogUtil::registerError(__('No file name given', $dom));
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     require_once ('includes/pclzip.lib.php');
     $zipFileName = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $name . ".zip" : $initFolderPath . "/" . $name . ".zip";
@@ -1344,12 +1374,12 @@ function Files_user_createZipListFile($args)
     $archive = new PclZip($zipFileName);
     if (!$archive->create(implode(',', $listZipFile), PCLZIP_OPT_REMOVE_PATH, ($initFolderPath . "/" . $folder))) {
         LogUtil::registerError(__('Error creating ZIP file') . ': ' . $file);
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     LogUtil::registerStatus(__('Successfully zipped', $dom));
     // update the number of bytes used by user
     pnModAPIFunc('Files', 'user', 'updateUsedSpace');
-    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
 }
 
 /**
@@ -1364,6 +1394,7 @@ function Files_user_listContentZip($args)
     $fileName = FormUtil::getPassedValue('fileName', isset($args['fileName']) ? $args['fileName'] : null, 'GET');
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'GET');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'GET');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -1383,7 +1414,7 @@ function Files_user_listContentZip($args)
     $archive = new PclZip($file);
     if (($list = $archive->listContent()) == 0) {
         LogUtil::registerError(__('Failed to list content zip file.', $dom) . ': ' . $fileName);
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     // create output object
     $pnRender = pnRender::getInstance('Files', false);
@@ -1391,6 +1422,7 @@ function Files_user_listContentZip($args)
     $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
     if ($external == 1) {
         $pnRender->assign('external', 1);
+        $pnRender->assign('hook', $hook);
         $content = $pnRender->fetch('Files_user_listContentZip.htm');
         echo $content;
         exit();
@@ -1412,6 +1444,7 @@ function Files_user_moveListFile($args)
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
     $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'POST');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'POST');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -1443,6 +1476,7 @@ function Files_user_moveListFile($args)
         $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
         if ($external == 1) {
             $pnRender->assign('external', 1);
+            $pnRender->assign('hook', $hook);
             $content = $pnRender->fetch('Files_user_moveListFile.htm');
             echo $content;
             exit();
@@ -1455,7 +1489,8 @@ function Files_user_moveListFile($args)
     // confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
         return LogUtil::registerAuthidError(pnModURL('Files', $returnType, $returnFunc, array(
-            'folder' => $folder)));
+            'folder' => $folder,
+            'hook' => $hook)));
     }
     $url_old = ($folder != "") ? $initFolderPath . "/" . $folder . "/" : $initFolderPath . "/";
     $url_new = ($confirm != "root_inital_value") ? $initFolderPath . '/' . $confirm . '/' : $initFolderPath . '/';
@@ -1463,14 +1498,14 @@ function Files_user_moveListFile($args)
     foreach ($listFileName as $file) { 
         if (!rename($url_old . $file, $url_new . $file)) {
             LogUtil::registerError(__('Error moving') . ': ' . $file);
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder,'hook' => $hook)));
         }
         //check if the file is an image and move its thumbnail
         if((FileUtil::getExtension($file)==('jpg'||'gif'||'png'))&&file_exists($url_old . '.tbn/' . $file)){
             if(!file_exists($url_new . '.tbn')) mkdir($url_new . '.tbn'); 
             if (!rename($url_old . '.tbn/' . $file, $url_new . '.tbn/' . $file)) {
                 LogUtil::registerError(__('Error moving') . ': ' . $file);
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder,'hook' => $hook)));
             }
         }
         
@@ -1478,7 +1513,7 @@ function Files_user_moveListFile($args)
     // protect the folders with the .htaccess and .locked files
     pnModFunc('Files', 'user', 'createProtectFiles', array('folder' => str_replace($initFolderPath . '/', '', $url_new)));
     LogUtil::registerStatus(__('Successfully moved', $dom));
-    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder,'hook' => $hook)));
 }
 
 /**
@@ -1493,6 +1528,7 @@ function Files_user_unzipFile($args)
     $fileName = FormUtil::getPassedValue('fileName', isset($args['fileName']) ? $args['fileName'] : null, 'REQUEST');
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'GET');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -1512,7 +1548,7 @@ function Files_user_unzipFile($args)
     $archive = new PclZip($file);
     if (($list = $archive->listContent()) == 0) {
         LogUtil::registerError(__('Failed to list content zip file.', $dom) . ': ' . $fileName);
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     $filesSize = 0;
     $allowedExtensions = pnModGetVar('Files', 'allowedExtensions');
@@ -1528,7 +1564,7 @@ function Files_user_unzipFile($args)
                 LogUtil::registerError(__f('The zip file contains at least one file with the extension <strong>%s</strong> which is not allowed. The allowed extensions are: <strong>%s</strong>.', array(
                     $file_extension,
                     str_replace(',', ', ', $allowedExtensions)), $dom));
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
             }
         }
     }
@@ -1541,18 +1577,18 @@ function Files_user_unzipFile($args)
     // check if user have enough space to unzip the file
     if ($filesSize + $usedSpace > $userAllowedSpace && $userAllowedSpace != -1048576) {
         LogUtil::registerError(__f('You have not enough disk space to unzip the file. You need %s extra bytes.', $filesSize + $usedSpace - $userAllowedSpace, $dom));
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     if ($archive->extract(PCLZIP_OPT_PATH, ($initFolderPath . "/" . $folder)) == 0) {
         LogUtil::registerError(__('Failed to unzip', $dom));
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     // update the number of bytes used by user
     pnModAPIFunc('Files', 'user', 'updateUsedSpace');
     // protect the folders with the .htaccess and .locked files
     pnModFunc('Files', 'user', 'createProtectFiles', array('folder' => $folder));
     LogUtil::registerStatus(__('Successfully unzipped', $dom));
-    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
 }
 
 /**
@@ -1683,6 +1719,7 @@ function Files_user_setAsPublic($args)
     $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'GET');
     $not = FormUtil::getPassedValue('not', isset($args['not']) ? $args['not'] : null, 'GET');
     $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'GET');
+    $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
     // security check
     if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
         return LogUtil::registerError(__('Error! You are not authorized to access this module.', $dom), 403);
@@ -1724,7 +1761,7 @@ function Files_user_setAsPublic($args)
                         array('folder' => $folder .'/.tbn'));
         }
     }
-    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
 }
 
 /**

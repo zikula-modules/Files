@@ -5,8 +5,8 @@
  *          external => 1 if user is in a external plug-in and 0 otherwise
  * @return: form with the needed fields  
  */
-function createDir(folder,external){
-	var pars = "module=Files&func=createDir&folder=" + folder + "&external=" + external;
+function createDir(folder,external,hook){
+	var pars = "module=Files&func=createDir&folder=" + folder + "&external=" + external + "&hook=" + hook;
     Element.update('actionForm', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
 	var myAjax = new Ajax.Request("ajax.php", 
 	{
@@ -37,8 +37,8 @@ function createDir_failure(){
  *          external => 1 if user is in a external plug-in and 0 otherwise
  * @return: form with the needed fields  
  */
-function uploadFile(folder,external){
-	var pars = "module=Files&func=uploadFile&folder=" + folder + "&external=" + external;;
+function uploadFile(folder,external,hook){
+	var pars = "module=Files&func=uploadFile&folder=" + folder + "&external=" + external + "&hook=" + hook;;
     Element.update('actionForm', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
 	var myAjax = new Ajax.Request("ajax.php", 
 	{

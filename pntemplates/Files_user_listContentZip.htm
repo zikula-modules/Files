@@ -15,7 +15,7 @@
     </div>
     <div class="z-formbuttons">
         <!--[if $external eq 1]-->
-        <a href="<!--[pnmodurl modname="Files" type="external" func="getFiles" folder=$folder]-->"><!--[pnimg modname='core' src='button_ok.gif' set='icons/small' __alt="Accept" __title="Accept"]--></a>
+        <a href="<!--[pnmodurl modname="Files" type="external" func="getFiles" folder=$folder hook=$hook]-->"><!--[pnimg modname='core' src='button_ok.gif' set='icons/small' __alt="Accept" __title="Accept"]--></a>
         <!--[else]-->
         <a href="<!--[pnmodurl modname="Files" func="main" folder=$folder]-->"><!--[pnimg modname='core' src='button_ok.gif' set='icons/small' __alt="Accept" __title="Accept"]--></a>
         <!--[/if]-->

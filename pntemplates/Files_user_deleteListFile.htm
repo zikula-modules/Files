@@ -16,7 +16,7 @@
         <!--[/foreach]-->
     </dl>
 
-    <form class="z-form" action="<!--[pnmodurl modname="Files" func="deleteListFile"]-->" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="<!--[pnmodurl modname="Files" func="deleteListFile" hook=$hook]-->" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="<!--[insert name="generateauthkey" module="Files"]-->" />
             <input type="hidden" name="folder" value="<!--[$folder]-->" />
@@ -31,9 +31,9 @@
                 <div class="z-formbuttons">
                     <!--[pnbutton src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"]-->
                     <!--[if $external eq 1]-->
-                    <a href="<!--[pnmodurl modname="Files" type="external" func="getFiles" folder=$folder]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"]--></a>
+                    <a href="<!--[pnmodurl modname="Files" type="external" func="getFiles" folder=$folder hook=$hook]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"]--></a>
                     <!--[else]-->
-                    <a href="<!--[pnmodurl modname="Files" func="main" folder=$folder]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"]--></a>
+                    <a href="<!--[pnmodurl modname="Files" func="main" folder=$folder hook=$hook]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"]--></a>
                     <!--[/if]-->
                 </div>
             </fieldset>
