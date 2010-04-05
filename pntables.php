@@ -26,9 +26,9 @@ function Files_pntables()
     $pntable['Files_column'] = array('fileId' => 'fileId',
                                         'userId' => 'userId',
                                         'diskUse' => 'diskUse');
-    $pntable['Files_column_def'] = array('fileId' => "INT(11) NOTNULL AUTOINCREMENT KEY",
-                                            'userId' => "INT(11) NOTNULL DEFAULT 0",
-                                            'diskUse' => "INT(11) NOTNULL DEFAULT '0'");
+    $pntable['Files_column_def'] = array('fileId' => "I NOTNULL AUTO PRIMARY",
+                                            'userId' => "I NOTNULL DEFAULT 0",
+                                            'diskUse' => "I NOTNULL DEFAULT '0'");
     ObjectUtil::addStandardFieldsToTableDefinition ($pntable['Files_column']);
     ObjectUtil::addStandardFieldsToTableDataDefinition($pntable['Files_column_def']);
     // Return the table information
