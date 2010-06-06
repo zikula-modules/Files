@@ -1,0 +1,97 @@
+<?php
+/**
+ * Zikula Application Framework
+ *
+ * @copyright  (c) Zikula Development Team
+ * @link       http://www.zikula.org
+ * @version    $Id: pnajax.php 202 2009-12-09 20:28:11Z aperezm $
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @author     Albert Pérez Monfort <aperezm@xtec.cat>
+ * @category   Zikula_Extension
+ * @package    Utilities
+ * @subpackage Files
+ */
+class Files_Ajax extends AbstractControler
+{ 
+    /**
+     * shows the form to define a new group quota
+     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
+     * @return:		new quota form
+    */
+    public function newGroupQuota()
+    {
+    	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
+    		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
+    	}
+        $content = pnModFunc('Files', 'admin', 'newGroupQuotaForm');
+        AjaxUtil::output(array('content' => $content));
+    }
+    
+    /**
+     * create a new quota assignment for a group
+     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
+     * @param:      group identity
+     * @param:      disk quota value
+     * @return:		quotas table content
+    */
+    public function createGroupQuota($args)
+    {
+        $dom = ZLanguage::getModuleDomain('Files');
+    	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
+    		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
+    	}
+        $gid = FormUtil::getPassedValue('gid', -1, 'GET');
+    	if ($gid == -1) {
+    		AjaxUtil::error($this->__('no group found', $dom));
+    	}
+        $quota = FormUtil::getPassedValue('quota', -10, 'GET');
+    	if ($quota == -10) {
+    		AjaxUtil::error($this->__('no quota defined', $dom));
+    	}
+        if(is_numeric($gid) && is_numeric($quota)){
+            //create a new assignament for a disk quote
+            $data = array('gid' => $gid, 'quota' => $quota);
+            $assignments = unserialize(pnModGetVar('Files', 'groupsQuota'));
+            if($assignments == ''){
+                $assignments = array();
+            }        
+            array_push($assignments, $data);
+            $data = serialize($assignments);
+            pnModSetVar('Files', 'groupsQuota', $data);
+        }
+        $content = pnModFunc('Files', 'admin', 'getQuotasTable');
+        AjaxUtil::output(array('content' => $content));
+    }
+    
+    /**
+     * delete a quota assigned to a group
+     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
+     * @param:      group identity
+     * @return:		quotas table content
+    */
+    public function deleteGroupQuota($args)
+    {
+        $dom = ZLanguage::getModuleDomain('Files');
+    	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
+    		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
+    	}
+        $gid = FormUtil::getPassedValue('gid', -1, 'GET');
+    	if ($gid == -1) {
+    		AjaxUtil::error($this->__('no group found', $dom));
+    	}
+        if(is_numeric($gid)){
+            $assignaments = unserialize(pnModGetVar('Files', 'groupsQuota'));
+            $assignamentsArray = array();
+            foreach($assignaments as $assign){
+                if($assign['gid'] != $gid){
+                    $assignamentsArray[] = array('gid' => $assign['gid'],
+                                                   'quota' => $assign['quota']);
+                }
+            }
+            $data = serialize($assignamentsArray);
+            pnModSetVar('Files', 'groupsQuota', $data);
+        }
+        $content = pnModFunc('Files', 'admin', 'getQuotasTable');
+        AjaxUtil::output(array('content' => $content));
+    }
+}
