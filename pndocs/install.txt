@@ -1,3 +1,0 @@
-The module includes a guided installation. During the installation you will find the needed instructions.
-The module needs a folder where storage the users' files. Preferentially this folder must be located out of the public HTML.
-The module needs also a file named file.php which must be located in the root of the Zikula installation. This file is needed to get the files from the public directories of the users. You can find this file in the folder modules, so you have to move it. 
