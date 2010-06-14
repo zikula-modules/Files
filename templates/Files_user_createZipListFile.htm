@@ -5,10 +5,10 @@
 
 <div class="files_container">
     <div class="z-clearfix">
-        <div class="userpageicon">{pnimg modname='core' src='editdelete.gif' set='icons/large'}</div>
+        <div class="userpageicon">{img modname='core' src='editdelete.gif' set='icons/large'}</div>
         <h2>{gt text="Create zip file"}</h2>
     </div>
-    <form class="z-form" action="{pnmodurl modname="Files" func="createZipListFile"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname="Files" func="createZipListFile"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Files"}" />
             <input type="hidden" name="folder" value="{$folder}" />
@@ -19,8 +19,8 @@
                 <legend>{gt text="Generates a zip with this content"}</legend>
                 {foreach item=fileName from=$listFileName}
                 <div class="z-formnote">
-                    {$fileName|pnvarprepfordisplay}
-                    <input type="hidden" name="listFileName[]" value="{$fileName|pnvarprepfordisplay}" />
+                    {$fileName|varprepfordisplay}
+                    <input type="hidden" name="listFileName[]" value="{$fileName|varprepfordisplay}" />
                 </div>
                 {/foreach}
                 <div class="z-formrow">
@@ -30,11 +30,11 @@
             </fieldset>
 
             <div class="z-formbuttons">
-                {pnbutton src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}
+                {button src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}
                 {if $external eq 1}
-                <a href="{pnmodurl modname="Files" type="external" func="getFiles" folder=$folder hook=$hook}">{pnimg modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
+                <a href="{modurl modname="Files" type="external" func="getFiles" folder=$folder hook=$hook}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
                 {else}
-                <a href="{pnmodurl modname="Files" func="main" folder=$folder}">{pnimg modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
+                <a href="{modurl modname="Files" func="main" folder=$folder}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
                 {/if}
             </div>
         </div>

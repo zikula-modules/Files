@@ -26,13 +26,13 @@ if($GLOBALS['ZConfig']['Multizk']['multi'] == 1){
     // it is necessary to load zikula engine to get the folderPath
     // you can avoid it writting the fisical path here instead of get it from zikula database
     // in this case you should delete the include of the file pnAPI.php and the call to the function pnInit
-    // if you decide to do it you have to delete the call to pnShutDown(); too below in this code
+    // if you decide to do it you have to delete the call to System::shutdown(); too below in this code
     // init zikula engine
     include 'lib/ZLoader.php';
     ZLoader::register();    
     // start Zikula
     System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_AJAX);
-    $folderPath = pnModGetVar('Files', 'folderPath') . '/';
+    $folderPath = ModUtil::getVar('Files', 'folderPath') . '/';
 }
 $fileName = $folderPath . $fileNameGet;
 $filePath = substr($fileNameGet, 0, $pos);
@@ -68,7 +68,7 @@ while (!feof($handle)) {
 }
 $status = fclose($handle);
 if($GLOBALS['ZConfig']['Multizk']['multi'] != 1){
-    pnShutDown();
+    System::shutdown();
 }
 
 /**

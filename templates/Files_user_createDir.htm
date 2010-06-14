@@ -1,5 +1,5 @@
 {* $Id: Files_user_createDir.htm 139 2009-12-29 22:47:43Z aperezm $ *}
-<form class="z-form" id="createDir" action="{pnmodurl modname="Files" func="createDir"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" id="createDir" action="{modurl modname="Files" func="createDir"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Files"}"/>
         <input type="hidden" name="folder" value="{$folder}" />
@@ -12,8 +12,8 @@
                 <input type="text" name="newFolder" id="newFolder" />
             </div>
             <div class="z-formbuttons">
-                <a href="javascript:submitCreateDir();">{pnimg modname='core' src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}</a>
-                <a href="{pnmodurl modname="Files" type=$type func=$func folder=$folder hook=$hook}">{pnimg modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
+                <a href="javascript:submitCreateDir();">{img modname='core' src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}</a>
+                <a href="{modurl modname="Files" type=$type func=$func folder=$folder hook=$hook}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
             </div>
         </fieldset>
     </div>

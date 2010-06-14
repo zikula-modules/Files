@@ -26,7 +26,7 @@ class Files_Api_Account extends AbstractApi
             return false;
         }
         // create an array of links to return
-        $items = array(array('url'     => pnModURL('Files', 'user','main'),
+        $items = array(array('url'     => ModUtil::url('Files', 'user','main'),
                              'title'   => $this->__('File Manager', $dom),
                              'icon'    => 'user.gif'));
         // Return the items

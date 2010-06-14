@@ -33,16 +33,16 @@ class Files_Admin extends AbstractController
             $siteDNS = FormUtil::getPassedValue('siteDNS', '', 'GET');
        	    $folderPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
         }else{
-            $folderPath = pnModGetVar('Files', 'folderPath');
+            $folderPath = ModUtil::getVar('Files', 'folderPath');
         }
-       $moduleVars = array('usersFolder' => pnModGetVar('Files', 'usersFolder'),
-                           'allowedExtensions' => pnModGetVar('Files', 'allowedExtensions'),
-                           'defaultQuota' => pnModGetVar('Files', 'defaultQuota'),
-                           'filesMaxSize' => pnModGetVar('Files', 'filesMaxSize'),
-                           'maxWidth' => pnModGetVar('Files', 'maxWidth'),
-                           'maxHeight' => pnModGetVar('Files', 'maxHeight'),
-                           'showHideFiles' => pnModGetVar('Files', 'showHideFiles'),
-                           'editableExtensions' => pnModGetVar('Files', 'editableExtensions'));
+       $moduleVars = array('usersFolder' => ModUtil::getVar('Files', 'usersFolder'),
+                           'allowedExtensions' => ModUtil::getVar('Files', 'allowedExtensions'),
+                           'defaultQuota' => ModUtil::getVar('Files', 'defaultQuota'),
+                           'filesMaxSize' => ModUtil::getVar('Files', 'filesMaxSize'),
+                           'maxWidth' => ModUtil::getVar('Files', 'maxWidth'),
+                           'maxHeight' => ModUtil::getVar('Files', 'maxHeight'),
+                           'showHideFiles' => ModUtil::getVar('Files', 'showHideFiles'),
+                           'editableExtensions' => ModUtil::getVar('Files', 'editableExtensions'));
         $fileFileInModule = false;
         $fileFileNotInRoot = false;
         // check if file file.php exists in folder modules/Files
@@ -54,22 +54,22 @@ class Files_Admin extends AbstractController
             $fileFileNotInRoot = true;
         }
         // Create output object
-        $pnRender = pnRender::getInstance('Files',false);
+        $renderer = Renderer::getInstance('Files',false);
         if(!is_writable($folderPath) || !file_exists($folderPath)){
-            $pnRender -> assign('folderPathProblem', true);
+            $renderer -> assign('folderPathProblem', true);
         }
         if(!is_writable($folderPath . '/' . $moduleVars['usersFolder']) || !file_exists($folderPath . '/' . $moduleVars['usersFolder']) || $moduleVars['usersFolder'] == ''){
-            $pnRender -> assign('usersFolderProblem', true);
+            $renderer -> assign('usersFolderProblem', true);
         }
-        $quotasTable = pnModFunc('Files', 'admin', 'getQuotasTable');
-        $pnRender->assign('folderPath', $folderPath);
-        $pnRender->assign('multisites', $multisites);
-        $pnRender->assign('quotasTable', $quotasTable);
-        $pnRender->assign('moduleVars', $moduleVars);
-        $pnRender->assign('fileFileInModule', $fileFileInModule);
-        $pnRender->assign('fileFileNotInRoot', $fileFileNotInRoot);
+        $quotasTable = ModUtil::func('Files', 'admin', 'getQuotasTable');
+        $renderer->assign('folderPath', $folderPath);
+        $renderer->assign('multisites', $multisites);
+        $renderer->assign('quotasTable', $quotasTable);
+        $renderer->assign('moduleVars', $moduleVars);
+        $renderer->assign('fileFileInModule', $fileFileInModule);
+        $renderer->assign('fileFileNotInRoot', $fileFileNotInRoot);
     
-        return $pnRender -> fetch('Files_admin_conf.htm');
+        return $renderer -> fetch('Files_admin_conf.htm');
     }
     
     /**
@@ -96,7 +96,7 @@ class Files_Admin extends AbstractController
         }
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError (pnModURL('Files', 'admin', 'main'));
+            return LogUtil::registerAuthidError (ModUtil::url('Files', 'admin', 'main'));
         }
         $moduleVars = array('showHideFiles' => $showHideFiles,
                             'allowedExtensions' => $allowedExtensions,
@@ -107,26 +107,26 @@ class Files_Admin extends AbstractController
                             'editableExtensions' => $editableExtensions);
         if($GLOBALS['PNConfig']['Multisites']['multi'] != 1){
             if(!file_exists($folderPath)){
-                pnModSetVars('Files', $moduleVars);
+                ModUtil::setVars('Files', $moduleVars);
                 LogUtil::registerError (__f('The directory <strong>%s</strong> does not exist', $folderPath, $dom));
-                return pnRedirect(pnModURL('Files', 'admin', 'main'));
+                return System::redirect(ModUtil::url('Files', 'admin', 'main'));
             }
             $folderPath = (substr($folderPath, -1) == '/') ? substr($folderPath, 0, strlen($folderPath) - 1) : $folderPath;
             $moduleVars['folderPath'] = $folderPath;
         }
         if(!file_exists($folderPath . '/' . $usersFolder) || $usersFolder == '' || $usersFolder == null){
-            pnModSetVars('Files', $moduleVars);
+            ModUtil::setVars('Files', $moduleVars);
             LogUtil::registerError (__f('The directory <strong>%s</strong> for users does not exist', $usersFolder, $dom));
-            return pnRedirect(pnModURL('Files', 'admin', 'main'));
+            return System::redirect(ModUtil::url('Files', 'admin', 'main'));
         }
         $usersFolder = (substr($usersFolder, -1) == '/') ? substr($usersFolder, 0, strlen($usersFolder) - 1) : $usersFolder;
         $usersFolder = (substr($usersFolder, 0, 1) == '/') ? substr($usersFolder, 1, strlen($usersFolder)) : $usersFolder;
         $moduleVars['usersFolder'] = $usersFolder;
-        pnModSetVars('Files', $moduleVars);
+        ModUtil::setVars('Files', $moduleVars);
         LogUtil::registerStatus ($this->__('The configuration has been updated', $dom));    
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return pnRedirect(pnModURL('Files', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Files', 'admin', 'main'));
     }
     
     /**
@@ -141,8 +141,8 @@ class Files_Admin extends AbstractController
             return LogUtil::registerPermissionError();
         }
         // get all the available groups
-        $groups = pnModAPIFunc('Groups', 'user', 'getall');
-        $groupsQuotas = pnModGetVar('Files', 'groupsQuota');
+        $groups = ModUtil::apiFunc('Groups', 'user', 'getall');
+        $groupsQuotas = ModUtil::getVar('Files', 'groupsQuota');
         $groupsQuotas = unserialize($groupsQuotas);
         foreach($groupsQuotas as $quota){
             $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'],
@@ -155,9 +155,9 @@ class Files_Admin extends AbstractController
             }
         }
         // create output object
-        $pnRender = pnRender::getInstance('Files',false);
-        $pnRender -> assign('groups', $groupsArray);
-        return $pnRender -> fetch('Files_admin_newQuotaForm.htm');
+        $renderer = Renderer::getInstance('Files',false);
+        $renderer -> assign('groups', $groupsArray);
+        return $renderer -> fetch('Files_admin_newQuotaForm.htm');
     }
     
     /**
@@ -171,13 +171,13 @@ class Files_Admin extends AbstractController
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-        $groupsQuotas = pnModGetVar('Files', 'groupsQuota');
+        $groupsQuotas = ModUtil::getVar('Files', 'groupsQuota');
         $groupsQuotas = unserialize($groupsQuotas);
         $i = 0;
         foreach($groupsQuotas as $group){
             if($group['gid'] > 0){
                 // get group name
-                $grupValues = pnModAPIFunc('Groups', 'user', 'get', array('gid' => $group['gid']));
+                $grupValues = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $group['gid']));
                 $groupsQuotas[$i]['name'] = $grupValues['name'];
                 $i++;
             }
@@ -188,11 +188,11 @@ class Files_Admin extends AbstractController
         }
         array_multisort($name, SORT_ASC,$groupsQuotas);
         // Create output object
-        $pnRender = pnRender::getInstance('Files',false);
-        if(count(pnModAPIFunc('Groups', 'user', 'getall')) == $i){
-            $pnRender -> assign('noMoreGroups', true);
+        $renderer = Renderer::getInstance('Files',false);
+        if(count(ModUtil::apiFunc('Groups', 'user', 'getall')) == $i){
+            $renderer -> assign('noMoreGroups', true);
         }
-        $pnRender -> assign('groupsQuotas', $groupsQuotas);
-        return $pnRender -> fetch('Files_admin_quotasTable.htm'); 
+        $renderer -> assign('groupsQuotas', $groupsQuotas);
+        return $renderer -> fetch('Files_admin_quotasTable.htm'); 
     }
 }

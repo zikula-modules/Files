@@ -22,7 +22,7 @@ class Files_Api_User extends AbstractApi
     public function get($args)
     {
         $dom = ZLanguage::getModuleDomain('Files');
-        $userId = (isset($args['userId'])) ? $args['userId'] : pnUserGetVar('uid');
+        $userId = (isset($args['userId'])) ? $args['userId'] : UserUtil::getVar('uid');
         // security check
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
@@ -47,11 +47,11 @@ class Files_Api_User extends AbstractApi
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
-        $uid = pnUserGetVar('uid');
+        $uid = UserUtil::getVar('uid');
         // check if user exists. If not create it
-        if(!pnModAPIFunc('Files', 'user', 'get', array('userId' => $uid))){
+        if(!ModUtil::apiFunc('Files', 'user', 'get', array('userId' => $uid))){
             // get user disk quota
-            $diskQuota = pnModFunc('Files', 'user', 'getUserQuota', array('userId' => $uid));
+            $diskQuota = ModUtil::func('Files', 'user', 'getUserQuota', array('userId' => $uid));
             // create record for the user
             $item = array('userId' => DataUtil::formatForStore($uid),
                             'quota' => DataUtil::formatForStore($diskQuota));
@@ -75,18 +75,18 @@ class Files_Api_User extends AbstractApi
             return LogUtil::registerPermissionError();
         }
         // get user used space
-        $usedSpace = pnModAPIFunc('Files', 'user', 'get');
+        $usedSpace = ModUtil::apiFunc('Files', 'user', 'get');
         if(!$usedSpace){
             // user row doesn't exists and it is created
-            pnModAPIFunc('Files', 'user', 'createUserFilesInfo');        
+            ModUtil::apiFunc('Files', 'user', 'createUserFilesInfo');        
         }
         
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
-        $spaceUsed = pnModAPIFunc('Files', 'user', 'calcUsedSpace', array('folderToCalc' => $initFolderPath));
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
+        $spaceUsed = ModUtil::apiFunc('Files', 'user', 'calcUsedSpace', array('folderToCalc' => $initFolderPath));
         $item = array('diskUse' => DataUtil::formatForStore($spaceUsed));
-    	$pntable =& pnDBGetTables();
+    	$pntable =& System::dbGetTables();
     	$c = $pntable['Files_column'];
-    	$where = "$c[userId]=" . pnUserGetVar('uid');
+    	$where = "$c[userId]=" . UserUtil::getVar('uid');
     	if (!DBUtil::updateObject($item, 'Files', $where, 'fileId')) {
     		return LogUtil::registerError (__('Error! Could not update the used disk.'), $dom);
     	}
@@ -112,7 +112,7 @@ class Files_Api_User extends AbstractApi
     				if ($dir. "/" . $file) {
     					$array_items +=  filesize($folderToCalc . "/" . $file);	
     					$file = $folderToCalc . "/" . $file;
-    					$array_items = $array_items + pnModAPIFunc('Files', 'user', 'calcUsedSpace', array('folderToCalc' => $file));
+    					$array_items = $array_items + ModUtil::apiFunc('Files', 'user', 'calcUsedSpace', array('folderToCalc' => $file));
     				}
     			}
                 if($array_items > 209715200) {

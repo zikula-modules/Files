@@ -19,10 +19,10 @@ function smarty_function_filesmenulinks()
     $filesmenulinks = "<span class=\"" . $params['class'] . "\">" . $params['start'] . " ";
 
     if (SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
-        $filesmenulinks .= " <a href=\"" . DataUtil::formatForDisplayHTML(pnModURL('Files', 'user', 'main')) . "\">" . __('Manage Files', $dom) . "</a> " . $params['seperator'];
+        $filesmenulinks .= " <a href=\"" . DataUtil::formatForDisplayHTML(ModUtil::url('Files', 'user', 'main')) . "\">" . __('Manage Files', $dom) . "</a> " . $params['seperator'];
     }
     if (SecurityUtil::checkPermission('Files::', "::", ACCESS_ADMIN)) {
-        $filesmenulinks .= " <a href=\"" . DataUtil::formatForDisplayHTML(pnModURL('Files', 'admin', 'main')) . "\">" . __('Module configuration', $dom) . "</a> ";
+        $filesmenulinks .= " <a href=\"" . DataUtil::formatForDisplayHTML(ModUtil::url('Files', 'admin', 'main')) . "\">" . __('Module configuration', $dom) . "</a> ";
     }
 
     $filesmenulinks .= $params['end'] . "</span>\n";

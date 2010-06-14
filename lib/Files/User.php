@@ -30,25 +30,25 @@ class Files_User extends AbstractController
         // get arguments
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
         // security check
-        if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD) || !pnUserLogin()) {
+        if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD) || !UserUtil::login()) {
             return LogUtil::registerPermissionError();
         }
         $oFolder = $folder;
         // gets root folder for the user
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // check if the root folder exists
         if (!file_exists($initFolderPath)) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('The server directory does not exist.', $dom);
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         // get folder name
         $folderName = str_replace($initFolderPath . '/', '', $folder);
@@ -56,53 +56,53 @@ class Files_User extends AbstractController
         // users can not browser the thumbnails folders
         if (strpos($folder, '.tbn') !== false) {
             LogUtil::registerError($this->__('It is not possible to browse this folder', $dom));
-            return pnRedirect(pnModURL('Files', 'user', 'main', array('folder' => substr($folderName, 0, strrpos($folderName, '/')))));
+            return System::redirect(ModUtil::url('Files', 'user', 'main', array('folder' => substr($folderName, 0, strrpos($folderName, '/')))));
         }
         // needed arguments
         // check if the folder exists
         if (!file_exists($folder)) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folderName;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         // get user's disk use
-        $userDiskUse = pnModAPIFunc('Files', 'user', 'get');
+        $userDiskUse = ModUtil::apiFunc('Files', 'user', 'get');
         $usedSpace = $userDiskUse['diskUse'];
         // get user's allowed space
-        $userAllowedSpace = pnModFunc('Files', 'user', 'getUserQuota');
+        $userAllowedSpace = ModUtil::func('Files', 'user', 'getUserQuota');
         $maxDiskSpace = round($userAllowedSpace * 1024 * 1024);
         $percentage = ($maxDiskSpace == 0) ? 100 : round($usedSpace * 100 / $maxDiskSpace);
         $widthUsage = ($percentage > 100) ? 100 : $percentage;
-        $usedSpaceArray = array('maxDiskSpace' => pnModFunc('Files', 'user', 'diskUseFormat', array('value' => $maxDiskSpace)),
+        $usedSpaceArray = array('maxDiskSpace' => ModUtil::func('Files', 'user', 'diskUseFormat', array('value' => $maxDiskSpace)),
                                     'percentage' => $percentage,
-                                    'usedDiskSpace' => pnModFunc('Files', 'user', 'diskUseFormat', array('value' => $usedSpace)),
+                                    'usedDiskSpace' => ModUtil::func('Files', 'user', 'diskUseFormat', array('value' => $usedSpace)),
                                     'widthUsage' => $widthUsage);
         // create output object
-        $pnRender = pnRender::getInstance('Files', false);
+        $renderer = Renderer::getInstance('Files', false);
         // get folder files and subfolders
         $fileList = $this->dir_list(array('folder' => $folder));                            
         sort($fileList[dir]);
         sort($fileList[file]);
         if (!is_writable($folder)) {
-            $pnRender->assign('notwriteable', true);
+            $renderer->assign('notwriteable', true);
         }
         // check if it is a public directori
         if (!file_exists($folder . '/.locked')) {
             // it is a public directori
             $is_public = true;
         }
-        $pnRender->assign('publicFolder', $is_public);
-        $pnRender->assign('folderPrev', DataUtil::formatForDisplay(substr($folderName, 0, strrpos($folderName, '/'))));
+        $renderer->assign('publicFolder', $is_public);
+        $renderer->assign('folderPrev', DataUtil::formatForDisplay(substr($folderName, 0, strrpos($folderName, '/'))));
         if (SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
-            $pnRender->assign('folderPath', DataUtil::formatForDisplay($folderName));
+            $renderer->assign('folderPath', DataUtil::formatForDisplay($folderName));
         } else {
-            $pnRender->assign('folderPath', DataUtil::formatForDisplay(pnModGetVar('Files', 'usersFolder') . '/' . strtolower(substr(pnUserGetVar('uname'), 0, 1)) . '/' . pnUserGetVar('uname') . '/' . $folderName));
+            $renderer->assign('folderPath', DataUtil::formatForDisplay(ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0, 1)) . '/' . UserUtil::getVar('uname') . '/' . $folderName));
         }
-        $pnRender->assign('folderName', DataUtil::formatForDisplay($folderName));
-        $pnRender->assign('fileList', $fileList);
-        $pnRender->assign('usedSpace', $usedSpaceArray);
-        return $pnRender->fetch('Files_user_filesList.htm');
+        $renderer->assign('folderName', DataUtil::formatForDisplay($folderName));
+        $renderer->assign('fileList', $fileList);
+        $renderer->assign('usedSpace', $usedSpaceArray);
+        return $renderer->fetch('Files_user_filesList.htm');
     }
     
     /**
@@ -148,13 +148,13 @@ class Files_User extends AbstractController
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $file = $initFolderPath . '/' . $folder . '/.htaccess';
         if (!file_exists($file)) {
@@ -184,13 +184,13 @@ class Files_User extends AbstractController
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         // needed arguments
         // check if the directory of document root files exists
@@ -211,7 +211,7 @@ class Files_User extends AbstractController
         }
     
         // set editable and thumbnailable extensions
-        $editableExtensions = pnModGetVar('Files','editableExtensions');
+        $editableExtensions = ModUtil::getVar('Files','editableExtensions');
         $thumbnailExtensions = array('gif','jpg','png');
         $dir_handle = opendir($folder);
         $dir_objects = array();
@@ -221,22 +221,22 @@ class Files_User extends AbstractController
                 // get file extension
                 $fileExtension = FileUtil::getExtension($filename);
                 // get file icon
-                $ctypeArray = pnModFunc('Files', 'user', 'getMimetype',
+                $ctypeArray = ModUtil::func('Files', 'user', 'getMimetype',
                                         array('extension' => $fileExtension));                                      
                 $editable = (strpos($editableExtensions, strtolower($fileExtension)) !== false) ? 1 : 0;
                 $thumbnailable = (in_array(strtolower($fileExtension), $thumbnailExtensions)) ? 1 : 0;
                 $fileIcon = $ctypeArray['icon'];
                 $options = array();
-                if (substr($filename, strrpos($filename, '/') + 1, 1) != '.' || pnModGetVar('Files', 'showHideFiles') == 1 || (pnModGetVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN))) {
+                if (substr($filename, strrpos($filename, '/') + 1, 1) != '.' || ModUtil::getVar('Files', 'showHideFiles') == 1 || (ModUtil::getVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN))) {
                     if (strtolower($fileExtension) == 'zip') {
-                        $options[] = array('url' => pnModURL('Files', 'user', 'action',
+                        $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
                                                             array('do' => 'unzip',
                                                             'fileName' => $object,
                                                             'folder' => $folderName,
                                                             'external' => $external)),
                                            'image' => 'folder_tar.gif',
                                            'title' => $this->__('Unzip file'));
-                        $options[] = array('url' => pnModURL('Files', 'user', 'action',
+                        $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
                                                             array('do' => 'listcontentzip',
                                                             'fileName' => $object,
                                                             'folder' => $folderName,
@@ -244,13 +244,13 @@ class Files_User extends AbstractController
                                            'image' => 'list.gif',
                                            'title' => $this->__('List of the file content'));
                     }
-                    $options[] = array('url' => pnModURL('Files', 'user', 'downloadFile',
+                    $options[] = array('url' => ModUtil::url('Files', 'user', 'downloadFile',
                                                         array('fileName' => $object,
                                                         'folder' => $folderName)),
                                        'image' => 'agt_update_misc.gif',
                                        'title' => $this->__('Download file'));
                     if ($editable) {
-                        $options[] = array('url' => pnModURL('Files', 'user', 'action',
+                        $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
                                                             array('do' => 'edit',
                                                             'fileName' => $object,
                                                             'folder' => $folderName,
@@ -259,7 +259,7 @@ class Files_User extends AbstractController
                                            'title' => $this->__('Edit file'));
                     }
                     if ($thumbnailable && $external == 1 && !file_exists($folder . '.tbn/' . $object)) {
-                        $options[] = array('url' => pnModURL('Files', 'user', 'action',
+                        $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
                                                             array('do' => 'thumbnail',
                                                             'fileName' => $object,
                                                             'folder' => $folderName,
@@ -267,14 +267,14 @@ class Files_User extends AbstractController
                                            'image' => 'inline_image.gif',
                                            'title' => $this->__('Create Thumbnail'));                    
                     }
-                    $options[] = array('url' => pnModURL('Files', 'user', 'action',
+                    $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
                                                         array('do' => 'rename',
                                                         'fileName' => $object,
                                                         'folder' => $folderName,
                                                         'external' => $external)),
                                        'image' => 'edit.gif',
                                        'title' => $this->__('Rename file'));
-                    $options[] = array('url' => pnModURL('Files', 'user', 'action',
+                    $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
                                                         array('do' => 'delete',
                                                         'fileName' => $object,
                                                         'folder' => $folderName,
@@ -318,24 +318,24 @@ class Files_User extends AbstractController
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
         $file = ($folder != "") ? $folder . "/" . $fileName : $fileName;
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         // check if file exists. If not returns error.
         if (!file_exists($initFolderPath . '/' . $file)) {
             LogUtil::registerError($this->__('File not found', $dom));
-            return pnRedirect(pnModURL('Files', 'user', 'main', array('folder' => $folder, 'hook' => $hook)));
+            return System::redirect(ModUtil::url('Files', 'user', 'main', array('folder' => $folder, 'hook' => $hook)));
         }
         // get file size
         $fileSize = filesize($initFolderPath . '/' . $file);
         // get file extension
         $fileExtension = FileUtil::getExtension($fileName);
-        $ctypeArray = pnModFunc('Files', 'user', 'getMimetype',
+        $ctypeArray = ModUtil::func('Files', 'user', 'getMimetype',
                                  array('extension' => $fileExtension));
         $ctype = $ctypeArray['type'];
         // begin writing headers
@@ -375,62 +375,62 @@ class Files_User extends AbstractController
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         switch ($do) {
             case 'delete':
-                return pnModFunc('Files', 'user', 'deleteListFile', array(
+                return ModUtil::func('Files', 'user', 'deleteListFile', array(
                     'folder' => $folder,
                     'fileName' => $fileName,
                     'thumb' => $thumb,
                     'hook' => $hook));
                     break;
             case 'rename':
-                return pnModFunc('Files', 'user', 'renameFile', array(
+                return ModUtil::func('Files', 'user', 'renameFile', array(
                     'folder' => $folder,
                     'fileName' => $fileName,
                     'hook' => $hook));
                 break;
             case 'unzip':
-                return pnModFunc('Files', 'user', 'unzipFile', array(
+                return ModUtil::func('Files', 'user', 'unzipFile', array(
                     'folder' => $folder,
                     'fileName' => $fileName,
                     'hook' => $hook));
                 break;
             case 'listcontentzip':
-                return pnModFunc('Files', 'user', 'listContentZip', array(
+                return ModUtil::func('Files', 'user', 'listContentZip', array(
                     'folder' => $folder,
                     'fileName' => $fileName,
                     'hook' => $hook));
                 break;
             /*case 'upload':
-                return pnModFunc('Files', 'user', 'uploadFile', array(
+                return ModUtil::func('Files', 'user', 'uploadFile', array(
                     'folder' => $folder));
                 break;
             case 'createDir':
-                return pnModFunc('Files', 'user', 'createDir', array(
+                return ModUtil::func('Files', 'user', 'createDir', array(
                     'folder' => $folder));
                 break;
             case 'createaccessfile':
-                return pnModFunc('Files', 'user', 'createaccessfile', array(
+                return ModUtil::func('Files', 'user', 'createaccessfile', array(
                     'folder' => $folder));
                 break;*/
             case 'edit':
-                return pnModFunc('Files', 'user', 'editFile', array(
+                return ModUtil::func('Files', 'user', 'editFile', array(
                     'folder' => $folder,
                     'fileName' => $fileName));
                 break;
             case 'thumbnail':
-                return pnModFunc('Files', 'user', 'thumbnail', array(
+                return ModUtil::func('Files', 'user', 'thumbnail', array(
                     'folder' => $folder,
                     'fileName' => $fileName,
                     'hook' => $hook));
                 break;
         }
-        return pnRedirect(pnModURL('Files', 'user', 'main'));
+        return System::redirect(ModUtil::url('Files', 'user', 'main'));
     }
     
     /**
@@ -453,13 +453,13 @@ class Files_User extends AbstractController
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
     
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
     
         // create thumbnail image
@@ -467,7 +467,7 @@ class Files_User extends AbstractController
         $thumbnailExtensions = array('gif','jpg','png');
         if (!in_array($fileExtension,$thumbnailExtensions)) {
             LogUtil::registerError($this->__('It is not possible to create a thumbnail from this file.', $dom));
-            return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+            return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
         }
         // checks if the thumbnail folder exists and if it not exists create it
         if (!file_exists($initFolderPath . '/' . $folder . '/.tbn')) {
@@ -479,7 +479,7 @@ class Files_User extends AbstractController
         // check if file exists
         if (!file_exists($imgSource)) {
             LogUtil::registerError($this->__('Error! It has been possible to read the file.', $dom));
-            return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));        
+            return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));        
         }
         $format = '';
     	if (strtolower($fileExtension) == 'jpg') {
@@ -495,10 +495,10 @@ class Files_User extends AbstractController
     	list($width, $height) = getimagesize($imgSource);
     	// fix the width to the value set in the module configuration (or lower if the image is smaller) and calc the height
         if ($newWidth == null) {
-            $newWidth = ($width <= pnModGetvar('Files', 'maxWidth')) ? $width : pnModGetvar('Files', 'maxWidth');
+            $newWidth = ($width <= ModUtil::getVar('Files', 'maxWidth')) ? $width : ModUtil::getVar('Files', 'maxWidth');
         	$newHeight = $height * $newWidth / $width;
-            if ($newHeight > pnModGetvar('Files', 'maxHeight')) {
-                $newHeight = pnModGetvar('Files', 'maxHeight');
+            if ($newHeight > ModUtil::getVar('Files', 'maxHeight')) {
+                $newHeight = ModUtil::getVar('Files', 'maxHeight');
                 $newWidth = $width * $newHeight / $height;
             }
         } else {
@@ -507,7 +507,7 @@ class Files_User extends AbstractController
     
     	if (!$destimg = imagecreatetruecolor($newWidth, $newHeight)) {
             LogUtil::registerError($this->__('Error! Saving the image in memory.', $dom));
-            return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook))); 
+            return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook))); 
     	}
         // set alphablending to on
         imagesavealpha($destimg, true);
@@ -517,7 +517,7 @@ class Files_User extends AbstractController
     		case 'image/gif':
     			if (!$srcimg = imagecreatefromgif($imgSource)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.', $dom));
-                    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     			}
                 // preserve the transparency
                 $transIndex = imagecolortransparent($srcimg);
@@ -533,31 +533,31 @@ class Files_User extends AbstractController
                 }
     			if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,imagesx($srcimg),imagesy($srcimg))) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.', $dom));
-                    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     			}
     		    if (!imagegif($destimg,$imgDest)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.', $dom));
-                    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     		    }
     			break;
     		case 'image/jpeg':
     			if (!$srcimg = imagecreatefromjpeg($imgSource)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.', $dom));
-                    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     			}
     			if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,ImageSX($srcimg),ImageSY($srcimg))) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.', $dom));
-                    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     			}
     		    if (!imagejpeg($destimg,$imgDest)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.', $dom));
-                    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     		    }
     			break;
     		case 'image/png':
     			if (!$srcimg = imagecreatefrompng($imgSource)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.', $dom));
-                    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     			}
                 // preserve the transparency
                 // turns off transparency blending
@@ -570,11 +570,11 @@ class Files_User extends AbstractController
                 imagesavealpha($destimg, true);
     			if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,ImageSX($srcimg),ImageSY($srcimg))) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.', $dom));
-                    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     			}
     		  	if (!imagepng($destimg,$imgDest)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.', $dom));
-                    return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     		  	}
     			break;
     	}
@@ -584,7 +584,7 @@ class Files_User extends AbstractController
         if ($fromAjax == null) {
             LogUtil::registerStatus($this->__('Thumbnail created.', $dom));
         }
-        return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
+        return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => $folder, 'hook' => $hook)));
     }
     
     /**
@@ -607,34 +607,34 @@ class Files_User extends AbstractController
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
     
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
     
         //checks if it is an editable file
         // set editable extensions
-        $editableExtensions = pnModGetVar('Files', 'editableExtensions');
+        $editableExtensions = ModUtil::getVar('Files', 'editableExtensions');
         // get file extension
         $fileExtension = FileUtil::getExtension($fileName);
         if (strpos($editableExtensions, strtolower($fileExtension)) === false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = __f('Sorry! The file %s is not editable.', $fileName, $dom);
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
     
         // checks if file exists
         $file = $initFolderPath . '/' . $folder . '/' . $fileName;
         if (!file_exists($file)) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = __f('Sorry! The file %s has not been found.', $fileName, $dom);
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
     
         if (!$confirm) {
@@ -642,23 +642,23 @@ class Files_User extends AbstractController
             // get file content
             if (!$fileContent = FileUtil::readFile($file, true)) {
                 // error reading the file
-                $pnRender = pnRender::getInstance('Files', false);
+                $renderer = Renderer::getInstance('Files', false);
                 $errorMsg = __f('Error! It has not been possible to read the content of the file %s.', $fileName, $dom);
-                $pnRender->assign('errorMsg', $errorMsg);
-                return $pnRender->fetch('Files_user_errorMsg.htm');
+                $renderer->assign('errorMsg', $errorMsg);
+                return $renderer->fetch('Files_user_errorMsg.htm');
             }
             // create output object
-            $pnRender = pnRender::getInstance('Files', false);
-            $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
-            $pnRender->assign('fileName', DataUtil::formatForDisplay($fileName));
-            $pnRender->assign('fileContent', DataUtil::formatForDisplay($fileContent));
+            $renderer = Renderer::getInstance('Files', false);
+            $renderer->assign('folder', DataUtil::formatForDisplay($folder));
+            $renderer->assign('fileName', DataUtil::formatForDisplay($fileName));
+            $renderer->assign('fileContent', DataUtil::formatForDisplay($fileContent));
             if ($external == 1) {
-                $pnRender->assign('external', 1);
-                $content = $pnRender->fetch('Files_user_editFile.htm');
+                $renderer->assign('external', 1);
+                $content = $renderer->fetch('Files_user_editFile.htm');
                 echo $content;
                 exit();
             } else {
-                return $pnRender->fetch('Files_user_editFile.htm');
+                return $renderer->fetch('Files_user_editFile.htm');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
@@ -666,22 +666,22 @@ class Files_User extends AbstractController
     
         // confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('Files', $returnType, $returnFunc));
+            return LogUtil::registerAuthidError(ModUtil::url('Files', $returnType, $returnFunc));
         }
     
         // the file has been edited. Update its content
     	if (!FileUtil::writeFile($file, $fileContent, true)) {
             // error writing the file
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = __f('Error! It has not been possible to write the content to the file %s.', $fileName, $dom);
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');	    
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');	    
     	}
     
         // update the number of bytes used by user
-        pnModAPIFunc('Files', 'user', 'updateUsedSpace');
+        ModUtil::apiFunc('Files', 'user', 'updateUsedSpace');
         LogUtil::registerStatus($this->__('File successfully edited', $dom));
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder)));
     }
     
     /**
@@ -708,20 +708,20 @@ class Files_User extends AbstractController
         if (isset($fileName)) {
             $listFileName[] = $fileName;
         }
-        if ($fileName == pnModGetVar('Files', 'usersFolder')) {
+        if ($fileName == ModUtil::getVar('Files', 'usersFolder')) {
             LogUtil::registerError($this->__('You can not delete the users folder!', $dom));
             $returnType = ($external == 1) ? 'external' : 'user';
             $returnFunc = ($external == 1) ? 'getFiles' : 'main';
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc,
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc,
                                         array('folder' => $folder, 'hook' => $hook)));
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         if (!$confirm) {
             $array_items = array();
@@ -729,7 +729,7 @@ class Files_User extends AbstractController
                 $filePath = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $file : $initFolderPath . "/" . $file;
                 $array_items[] = $filePath;
                 if (is_dir($filePath)) {
-                    $array_items = array_merge($array_items, pnModFunc('Files', 'user', 'getListRecursive', array('dir' => $filePath)));
+                    $array_items = array_merge($array_items, ModUtil::func('Files', 'user', 'getListRecursive', array('dir' => $filePath)));
                 }
             }
             $array_show = array();
@@ -737,26 +737,26 @@ class Files_User extends AbstractController
                 $array_show[] = str_replace($initFolderPath . "/", "", $item);
             }
             // create output object
-            $pnRender = pnRender::getInstance('Files', false);
-            $pnRender->assign('listFileName', DataUtil::formatForDisplay($listFileName));
-            $pnRender->assign('list_show', DataUtil::formatForDisplay($array_show));
-            $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
-            $pnRender->assign('thumb', $thumb);
-            $pnRender->assign('hook', $hook);
+            $renderer = Renderer::getInstance('Files', false);
+            $renderer->assign('listFileName', DataUtil::formatForDisplay($listFileName));
+            $renderer->assign('list_show', DataUtil::formatForDisplay($array_show));
+            $renderer->assign('folder', DataUtil::formatForDisplay($folder));
+            $renderer->assign('thumb', $thumb);
+            $renderer->assign('hook', $hook);
             if ($external == 1) {
-                $pnRender->assign('external', 1);
-                $content = $pnRender->fetch('Files_user_deleteListFile.htm');
+                $renderer->assign('external', 1);
+                $content = $renderer->fetch('Files_user_deleteListFile.htm');
                 echo $content;
                 exit();
             } else {
-                return $pnRender->fetch('Files_user_deleteListFile.htm');
+                return $renderer->fetch('Files_user_deleteListFile.htm');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
         // confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('Files', $returnType, $returnFunc));
+            return LogUtil::registerAuthidError(ModUtil::url('Files', $returnType, $returnFunc));
         }
         foreach ($listFileName as $fileName) {
             if ($thumb == 1) {
@@ -765,10 +765,10 @@ class Files_User extends AbstractController
                 $file = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $fileName : $initFolderPath . "/" . $fileName;
             }
             if (is_dir($file)) {
-                if (!pnModFunc('Files', 'user', 'fullDeleteDir', array(
+                if (!ModUtil::func('Files', 'user', 'fullDeleteDir', array(
                     'file' => $file))) {
                     LogUtil::registerError($this->__('Failed to deleted', $dom));
-                    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
                 }
             } else {
                 if (!unlink($file)) {
@@ -782,9 +782,9 @@ class Files_User extends AbstractController
             }
         }
         // update the number of bytes used by user
-        pnModAPIFunc('Files', 'user', 'updateUsedSpace');
+        ModUtil::apiFunc('Files', 'user', 'updateUsedSpace');
         LogUtil::registerStatus($this->__('Files successfully removed', $dom));
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     
     /**
@@ -801,22 +801,22 @@ class Files_User extends AbstractController
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($dir == ".." || $dir == "." || strpos($dir, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $array_items = array();
         if ($handle = opendir($dir)) {
             while (false !== ($file = readdir($handle))) {
                 if ($file != "." && $file != "..") {
-                    if (is_dir($dir . "/" . $file) && (substr($file, strrpos($file, '/') + 0, 1) != '.' || pnModGetVar('Files', 'showHideFiles') == 1 || (pnModGetVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)))) {
+                    if (is_dir($dir . "/" . $file) && (substr($file, strrpos($file, '/') + 0, 1) != '.' || ModUtil::getVar('Files', 'showHideFiles') == 1 || (ModUtil::getVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)))) {
                             $array_items[] = str_replace($initFolderPath . "/", "", $dir . "/" . $file);
                             $file = $dir . "/" . $file;
-                            $array_items = array_merge($array_items, pnModFunc('Files', 'user', 'getListDirRecursive',
+                            $array_items = array_merge($array_items, ModUtil::func('Files', 'user', 'getListDirRecursive',
                                                                                 array('dir' => $file)));
                     }
                 }
@@ -840,23 +840,23 @@ class Files_User extends AbstractController
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($dir == ".." || $dir == "." || strpos($dir, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $array_items = array();
         if ($handle = opendir($dir)) {
             while (false !== ($file = readdir($handle))) {
                 if ($file != "." && $file != ".." ) {
-                    if (substr($file, strrpos($file, '/') + 0, 1) != '.' || pnModGetVar('Files', 'showHideFiles') == 1 || (pnModGetVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN))) {
+                    if (substr($file, strrpos($file, '/') + 0, 1) != '.' || ModUtil::getVar('Files', 'showHideFiles') == 1 || (ModUtil::getVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN))) {
                         $array_items[] = str_replace($initFolderPath . "/", "", $dir . "/" . $file);
                         if (is_dir($dir . "/" . $file)) {
                             $file = $dir . "/" . $file;
-                            $array_items = array_merge($array_items, pnModFunc('Files', 'user', 'getListRecursive', array('dir' => $file)));
+                            $array_items = array_merge($array_items, ModUtil::func('Files', 'user', 'getListRecursive', array('dir' => $file)));
                         }
                     }
                 }
@@ -885,66 +885,66 @@ class Files_User extends AbstractController
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $file = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $fileName : $initFolderPath . "/" . $fileName;
         // needed arguments
         // check if the directory of document root files exists
         if (!file_exists($file)) {
             LogUtil::registerError($this->__('File not found') . ": " . $fileName);
-            return pnRedirect(pnModURL('Files', 'user', 'main'));
+            return System::redirect(ModUtil::url('Files', 'user', 'main'));
         }
         if (!$confirm) {
             // show an error page
             // create output object
-            $pnRender = pnRender::getInstance('Files', false);
-            $pnRender->assign('fileName', DataUtil::formatForDisplay($fileName));
-            $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
+            $renderer = Renderer::getInstance('Files', false);
+            $renderer->assign('fileName', DataUtil::formatForDisplay($fileName));
+            $renderer->assign('folder', DataUtil::formatForDisplay($folder));
             if ($external == 1) {
-                $pnRender->assign('external', 1);
-                $pnRender->assign('hook', $hook);
-                $content = $pnRender->fetch('Files_user_renameFile.htm');
+                $renderer->assign('external', 1);
+                $renderer->assign('hook', $hook);
+                $content = $renderer->fetch('Files_user_renameFile.htm');
                 echo $content;
                 exit();
             } else {
-                return $pnRender->fetch('Files_user_renameFile.htm');
+                return $renderer->fetch('Files_user_renameFile.htm');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
         // confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('Files', $returnType, $returnFunc));
+            return LogUtil::registerAuthidError(ModUtil::url('Files', $returnType, $returnFunc));
         }
         // check if exists a file with the same name in the folder -> Inactive
         /*if (($fileName != $newName)&&(file_exists($initFolderPath . "/" . $folder . "/" . $newName))){
             LogUtil::registerError(__f('Failed to rename, there\'s a file with the same name in this folder.<br>Please, choose another name' , $dom));
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+                return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder)));
         }*/ 
         
         // check if the extension is allowed
         // get file extension
         $file_extension = FileUtil::getExtension($newName);
         if ($file_extension != '') {
-            $allowedExtensions = pnModGetVar('Files', 'allowedExtensions');
+            $allowedExtensions = ModUtil::getVar('Files', 'allowedExtensions');
             $allowedExtensionsArray = explode(',', $allowedExtensions);
             if (!in_array(strtolower($file_extension), $allowedExtensionsArray) && !in_array(strtoupper(($file_extension)), $allowedExtensionsArray)) {
                 LogUtil::registerError(__f('The extension <strong>%s</strong> is not allowed.  The allowed extensions are: <strong>%s</strong>.', array(
                     $file_extension,
                     str_replace(',', ', ', $allowedExtensions)), $dom));
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook'=> $hook)));
+                return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook'=> $hook)));
             }
         }
         $newNameFile = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $newName : $initFolderPath . "/" . $newName;
         if (!rename($file, $newNameFile)) {
             LogUtil::registerError($this->__('Failed to rename', $dom));
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('hook'=> $hook)));
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('hook'=> $hook)));
         } else {
             $file = ($folder != "") ? $initFolderPath . "/" . $folder . "/.tbn/" . $fileName : $initFolderPath . "/.tbn/" . $fileName;
             if (file_exists($file)) {
@@ -961,7 +961,7 @@ class Files_User extends AbstractController
             }
         }
         LogUtil::registerStatus($this->__('Changed filename successfully', $dom));
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook'=> $hook)));
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook'=> $hook)));
     }
     
     /**
@@ -986,31 +986,31 @@ class Files_User extends AbstractController
         }
         // confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('Files', 'user', 'main'));
+            return LogUtil::registerAuthidError(ModUtil::url('Files', 'user', 'main'));
         }
         
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            $pnRender->assign('hook', $hook);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            $renderer->assign('hook', $hook);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $folderNew = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $newFolder : $initFolderPath . "/" . $newFolder;
         if (!FileUtil::mkdirs($folderNew, 0777, true)) {
             LogUtil::registerError($this->__('Directory Create Error') . ': ' . $folder . "/" . $newFolder);
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         LogUtil::registerStatus($this->__('Directory created', $dom));
         $inFolder = ($folder == '') ? $newFolder : $folder . "/" . $newFolder;
-        pnModFunc('Files', 'user', 'createaccessfile', array('folderNew' => $inFolder));
+        ModUtil::func('Files', 'user', 'createaccessfile', array('folderNew' => $inFolder));
         // update the number of bytes used by user
-        pnModAPIFunc('Files', 'user', 'updateUsedSpace');
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+        ModUtil::apiFunc('Files', 'user', 'updateUsedSpace');
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     
     /**
@@ -1031,21 +1031,21 @@ class Files_User extends AbstractController
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $type = ($external == 1) ? 'external' : 'user';
         $func = ($external == 1) ? 'getFiles' : 'main';
         // Create output object
-        $pnRender = pnRender::getInstance('Files', false);
-        $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
-        $pnRender->assign('type', $type);
-        $pnRender->assign('func', $func);
-        $pnRender->assign('external', $external);
-        $pnRender->assign('hook', $hook);
-        return $pnRender->fetch('Files_user_createDir.htm');
+        $renderer = Renderer::getInstance('Files', false);
+        $renderer->assign('folder', DataUtil::formatForDisplay($folder));
+        $renderer->assign('type', $type);
+        $renderer->assign('func', $func);
+        $renderer->assign('external', $external);
+        $renderer->assign('hook', $hook);
+        return $renderer->fetch('Files_user_createDir.htm');
     }
     
     /**
@@ -1068,55 +1068,55 @@ class Files_User extends AbstractController
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('Files', $returnType, $returnFunc));
+            return LogUtil::registerAuthidError(ModUtil::url('Files', $returnType, $returnFunc));
         }
         // gets the attached file array
         $fileName = $_FILES['newFile']['name'];
         // update the attached file to the server
         if ($fileName != '') {
-            $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+            $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
             // check if folder exists. If not returns error.
             if (!file_exists($initFolderPath . '/' . $folder)) {
                 LogUtil::registerError(__f('The directory <strong>%s</strong> does not exist', DataUtil::formatForDisplay($folder), $dom));
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+                return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
             }
             // get file extension
             $file_extension = FileUtil::getExtension($fileName);
-            $allowedExtensions = pnModGetVar('Files', 'allowedExtensions');
+            $allowedExtensions = ModUtil::getVar('Files', 'allowedExtensions');
             $allowedExtensionsArray = explode(',', $allowedExtensions);
             if (!in_array(strtolower($file_extension), $allowedExtensionsArray) && !in_array(strtoupper(($file_extension)), $allowedExtensionsArray)) {
                 LogUtil::registerError(__f('The extension <strong>%s</strong> is not allowed. The allowed extensions are: <strong>%s</strong>.', array(
                     $file_extension,
                     str_replace(',', ', ', $allowedExtensions)), $dom));
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+                return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
             }
             // gets the file size
             $fileSize = $_FILES['newFile']['size'];
             // check the file
-            if ($fileSize > pnModGetVar('Files', 'filesMaxSize')) {
-                LogUtil::registerError(__f('The file is to big. The maximum size allowed is "%s" bytes.', pnModGetVar('Files', 'filesMaxSize'), $dom));
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
+            if ($fileSize > ModUtil::getVar('Files', 'filesMaxSize')) {
+                LogUtil::registerError(__f('The file is to big. The maximum size allowed is "%s" bytes.', ModUtil::getVar('Files', 'filesMaxSize'), $dom));
+                return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array(
                     'folder' => $folder, 
                     'hook' => $hook)));
             }
             // get user used space in folder
-            $userDiskUse = pnModAPIFunc('Files', 'user', 'get');
+            $userDiskUse = ModUtil::apiFunc('Files', 'user', 'get');
             $usedSpace = $userDiskUse['diskUse'];
             // get user allowed space
-            $userAllowedSpace = pnModFunc('Files', 'user', 'getUserQuota') * 1024 * 1024;
+            $userAllowedSpace = ModUtil::func('Files', 'user', 'getUserQuota') * 1024 * 1024;
             // check if user have enough space to upload the file
             if ($fileSize + $usedSpace > $userAllowedSpace && $userAllowedSpace != -1048576) {
                 LogUtil::registerError(__f('You have not enough disk space to upload the file.', $fileSize + $usedSpace - $userAllowedSpace, $dom));
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
+                return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array(
                     'folder' => $folder, 
                     'hook' => $hook)));
             }
@@ -1135,15 +1135,15 @@ class Files_User extends AbstractController
             // update the file
             if (!FileUtil::uploadFile('newFile', $initFolderPath . '/' . $folder, $fileNameNew, true)) {
                 LogUtil::registerError($this->__('Failed to upload', $dom));
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
+                return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array(
                     'folder' => $folder, 
                     'hook' => $hook)));
             }
             LogUtil::registerStatus($this->__('Uploaded file success', $dom));
             // update the number of bytes used by user
-            pnModAPIFunc('Files', 'user', 'updateUsedSpace');
+            ModUtil::apiFunc('Files', 'user', 'updateUsedSpace');
         }
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     
     /**
@@ -1164,23 +1164,23 @@ class Files_User extends AbstractController
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
     
         $type = ($external == 1) ? 'external' : 'user';
         $func = ($external == 1) ? 'getFiles' : 'main';
         // create output object
-        $pnRender = pnRender::getInstance('Files', false);
-        $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
-        $pnRender->assign('extensions', DataUtil::formatForDisplay(str_replace(',', ', ', pnModGetVar('Files', 'allowedExtensions'))));
-        $pnRender->assign('external', $external);
-        $pnRender->assign('hook', $hook);
-        $pnRender->assign('type', $type);
-        $pnRender->assign('func', $func);
-        return $pnRender->fetch('Files_user_uploadFile.htm');
+        $renderer = Renderer::getInstance('Files', false);
+        $renderer->assign('folder', DataUtil::formatForDisplay($folder));
+        $renderer->assign('extensions', DataUtil::formatForDisplay(str_replace(',', ', ', ModUtil::getVar('Files', 'allowedExtensions'))));
+        $renderer->assign('external', $external);
+        $renderer->assign('hook', $hook);
+        $renderer->assign('type', $type);
+        $renderer->assign('func', $func);
+        return $renderer->fetch('Files_user_uploadFile.htm');
     }
     
     /**
@@ -1202,10 +1202,10 @@ class Files_User extends AbstractController
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
@@ -1220,40 +1220,40 @@ class Files_User extends AbstractController
         // check if the directory of document root files exists
         if ($menuaction == null) {
             LogUtil::registerError($this->__('No selected action', $dom));
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array(
                 'folder' => $folder,
                 'hook' => $hook)));
         }
         if (count($keyArray) == 0) {
             LogUtil::registerError($this->__('No selected file or directory', $dom));
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array(
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array(
                 'folder' => $folder,
                 'hook' => $hook)));
         }
         switch ($menuaction) {
             case move:
-                return pnModFunc('Files', 'user', 'moveListFile', array(
+                return ModUtil::func('Files', 'user', 'moveListFile', array(
                     'listFileName' => $keyArray,
                     'external' => $external,
                     'folder' => $folder,
                 	'hook' => $hook));
                 break;
             case delete:
-                return pnModFunc('Files', 'user', 'deleteListFile', array(
+                return ModUtil::func('Files', 'user', 'deleteListFile', array(
                     'listFileName' => $keyArray,
                     'external' => $external,
                     'folder' => $folder,
                 	'hook' => $hook));
                 break;
             case zip:
-                return pnModFunc('Files', 'user', 'createZipListFile', array(
+                return ModUtil::func('Files', 'user', 'createZipListFile', array(
                     'listFileName' => $keyArray,
                     'external' => $external,
                     'folder' => $folder,
                 	'hook' => $hook));
                 break;
         }
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder)));
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder)));
     }
     
     /**
@@ -1270,20 +1270,20 @@ class Files_User extends AbstractController
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         if ($handle = opendir($file)) {
             while (false !== ($item = readdir($handle))) {
                 if ($item != '.' && $item != '..') {
                     // check if it is a directory or a file
                     if (is_dir($file . '/' . $item)) {
-                        pnModFunc('Files', 'user', 'fullDeleteDir', array(
+                        ModUtil::func('Files', 'user', 'fullDeleteDir', array(
                             'file' => $file . '/' . $item));
                         rmdir($file . '/' . $item);
                     } else {
@@ -1319,13 +1319,13 @@ class Files_User extends AbstractController
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         if (!$confirm) {
             $array_items = array();
@@ -1333,7 +1333,7 @@ class Files_User extends AbstractController
                 $filePath = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $file : $initFolderPath . "/" . $file;
                 $array_items[] = $filePath;
                 if (is_dir($filePath)) {
-                    $array_items = array_merge($array_items, pnModFunc('Files', 'user', 'getListRecursive', array(
+                    $array_items = array_merge($array_items, ModUtil::func('Files', 'user', 'getListRecursive', array(
                         'dir' => $filePath)));
                 }
             }
@@ -1342,28 +1342,28 @@ class Files_User extends AbstractController
                 $array_show[] = str_replace($initFolderPath . "/", "", $item);
             }
             // create output object
-            $pnRender = pnRender::getInstance('Files', false);
-            $pnRender->assign('listFileName', DataUtil::formatForDisplay($array_show));
-            $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
+            $renderer = Renderer::getInstance('Files', false);
+            $renderer->assign('listFileName', DataUtil::formatForDisplay($array_show));
+            $renderer->assign('folder', DataUtil::formatForDisplay($folder));
             if ($external == 1) {
-                $pnRender->assign('external', 1);
-                $pnRender->assign('hook', $hook);
-                $content = $pnRender->fetch('Files_user_createZipListFile.htm');
+                $renderer->assign('external', 1);
+                $renderer->assign('hook', $hook);
+                $content = $renderer->fetch('Files_user_createZipListFile.htm');
                 echo $content;
                 exit();
             } else {
-                return $pnRender->fetch('Files_user_createZipListFile.htm');
+                return $renderer->fetch('Files_user_createZipListFile.htm');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
         // confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('Files', $returnType, $returnFunc));
+            return LogUtil::registerAuthidError(ModUtil::url('Files', $returnType, $returnFunc));
         }
         if (name == null) {
             LogUtil::registerError($this->__('No file name given', $dom));
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         require_once ('includes/pclzip.lib.php');
         $zipFileName = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $name . ".zip" : $initFolderPath . "/" . $name . ".zip";
@@ -1375,12 +1375,12 @@ class Files_User extends AbstractController
         $archive = new PclZip($zipFileName);
         if (!$archive->create(implode(',', $listZipFile), PCLZIP_OPT_REMOVE_PATH, ($initFolderPath . "/" . $folder))) {
             LogUtil::registerError($this->__('Error creating ZIP file') . ': ' . $file);
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         LogUtil::registerStatus($this->__('Successfully zipped', $dom));
         // update the number of bytes used by user
-        pnModAPIFunc('Files', 'user', 'updateUsedSpace');
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+        ModUtil::apiFunc('Files', 'user', 'updateUsedSpace');
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     
     /**
@@ -1402,33 +1402,33 @@ class Files_User extends AbstractController
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $file = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $fileName : $initFolderPath . "/" . $fileName;
         require_once ('includes/pclzip.lib.php');
         $archive = new PclZip($file);
         if (($list = $archive->listContent()) == 0) {
             LogUtil::registerError($this->__('Failed to list content zip file.', $dom) . ': ' . $fileName);
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         // create output object
-        $pnRender = pnRender::getInstance('Files', false);
-        $pnRender->assign('list', DataUtil::formatForDisplay($list));
-        $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
+        $renderer = Renderer::getInstance('Files', false);
+        $renderer->assign('list', DataUtil::formatForDisplay($list));
+        $renderer->assign('folder', DataUtil::formatForDisplay($folder));
         if ($external == 1) {
-            $pnRender->assign('external', 1);
-            $pnRender->assign('hook', $hook);
-            $content = $pnRender->fetch('Files_user_listContentZip.htm');
+            $renderer->assign('external', 1);
+            $renderer->assign('hook', $hook);
+            $content = $renderer->fetch('Files_user_listContentZip.htm');
             echo $content;
             exit();
         } else {
-            return $pnRender->fetch('Files_user_listContentZip.htm');
+            return $renderer->fetch('Files_user_listContentZip.htm');
         }
     }
     
@@ -1450,17 +1450,17 @@ class Files_User extends AbstractController
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         if (!$confirm) {
             $url = $initFolderPath;
-            $directoris = pnModFunc('Files', 'user', 'getListDirRecursive', array('dir' => $url));
+            $directoris = ModUtil::func('Files', 'user', 'getListDirRecursive', array('dir' => $url));
             foreach ($directoris as $dir) {
                 foreach ($listFileName as $file) {
                     $file = ($folder != "") ? $folder . "/" . $file : $file;
@@ -1471,25 +1471,25 @@ class Files_User extends AbstractController
                 }
             }
             // create output object
-            $pnRender = pnRender::getInstance('Files', false);
-            $pnRender->assign('listFileName', DataUtil::formatForDisplay($listFileName));
-            $pnRender->assign('directoris', DataUtil::formatForDisplay($directoris));
-            $pnRender->assign('folder', DataUtil::formatForDisplay($folder));
+            $renderer = Renderer::getInstance('Files', false);
+            $renderer->assign('listFileName', DataUtil::formatForDisplay($listFileName));
+            $renderer->assign('directoris', DataUtil::formatForDisplay($directoris));
+            $renderer->assign('folder', DataUtil::formatForDisplay($folder));
             if ($external == 1) {
-                $pnRender->assign('external', 1);
-                $pnRender->assign('hook', $hook);
-                $content = $pnRender->fetch('Files_user_moveListFile.htm');
+                $renderer->assign('external', 1);
+                $renderer->assign('hook', $hook);
+                $content = $renderer->fetch('Files_user_moveListFile.htm');
                 echo $content;
                 exit();
             } else {
-                return $pnRender->fetch('Files_user_moveListFile.htm');
+                return $renderer->fetch('Files_user_moveListFile.htm');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
         // confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('Files', $returnType, $returnFunc, array(
+            return LogUtil::registerAuthidError(ModUtil::url('Files', $returnType, $returnFunc, array(
                 'folder' => $folder,
                 'hook' => $hook)));
         }
@@ -1499,22 +1499,22 @@ class Files_User extends AbstractController
         foreach ($listFileName as $file) { 
             if (!rename($url_old . $file, $url_new . $file)) {
                 LogUtil::registerError($this->__('Error moving') . ': ' . $file);
-                return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder,'hook' => $hook)));
+                return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder,'hook' => $hook)));
             }
             //check if the file is an image and move its thumbnail
             if((FileUtil::getExtension($file)==('jpg'||'gif'||'png'))&&file_exists($url_old . '.tbn/' . $file)){
                 if(!file_exists($url_new . '.tbn')) mkdir($url_new . '.tbn'); 
                 if (!rename($url_old . '.tbn/' . $file, $url_new . '.tbn/' . $file)) {
                     LogUtil::registerError($this->__('Error moving') . ': ' . $file);
-                    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder,'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder,'hook' => $hook)));
                 }
             }
             
         }
         // protect the folders with the .htaccess and .locked files
-        pnModFunc('Files', 'user', 'createProtectFiles', array('folder' => str_replace($initFolderPath . '/', '', $url_new)));
+        ModUtil::func('Files', 'user', 'createProtectFiles', array('folder' => str_replace($initFolderPath . '/', '', $url_new)));
         LogUtil::registerStatus($this->__('Successfully moved', $dom));
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder,'hook' => $hook)));
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder,'hook' => $hook)));
     }
     
     /**
@@ -1536,23 +1536,23 @@ class Files_User extends AbstractController
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $file = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $fileName : $initFolderPath . "/" . $fileName;
         require_once ('includes/pclzip.lib.php');
         $archive = new PclZip($file);
         if (($list = $archive->listContent()) == 0) {
             LogUtil::registerError($this->__('Failed to list content zip file.', $dom) . ': ' . $fileName);
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         $filesSize = 0;
-        $allowedExtensions = pnModGetVar('Files', 'allowedExtensions');
+        $allowedExtensions = ModUtil::getVar('Files', 'allowedExtensions');
         $allowedExtensionsArray = explode(',', $allowedExtensions);
         foreach ($list as $file) {
             // calc the size of the file unziped
@@ -1565,31 +1565,31 @@ class Files_User extends AbstractController
                     LogUtil::registerError(__f('The zip file contains at least one file with the extension <strong>%s</strong> which is not allowed. The allowed extensions are: <strong>%s</strong>.', array(
                         $file_extension,
                         str_replace(',', ', ', $allowedExtensions)), $dom));
-                    return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+                    return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
                 }
             }
         }
         // check if user have enough space to unzip the file
         // get user used space in folder
-        $userDiskUse = pnModAPIFunc('Files', 'user', 'get');
+        $userDiskUse = ModUtil::apiFunc('Files', 'user', 'get');
         $usedSpace = $userDiskUse['diskUse'];
         // get user allowed space
-        $userAllowedSpace = pnModFunc('Files', 'user', 'getUserQuota') * 1024 * 1024;
+        $userAllowedSpace = ModUtil::func('Files', 'user', 'getUserQuota') * 1024 * 1024;
         // check if user have enough space to unzip the file
         if ($filesSize + $usedSpace > $userAllowedSpace && $userAllowedSpace != -1048576) {
             LogUtil::registerError(__f('You have not enough disk space to unzip the file. You need %s extra bytes.', $filesSize + $usedSpace - $userAllowedSpace, $dom));
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         if ($archive->extract(PCLZIP_OPT_PATH, ($initFolderPath . "/" . $folder)) == 0) {
             LogUtil::registerError($this->__('Failed to unzip', $dom));
-            return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+            return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         // update the number of bytes used by user
-        pnModAPIFunc('Files', 'user', 'updateUsedSpace');
+        ModUtil::apiFunc('Files', 'user', 'updateUsedSpace');
         // protect the folders with the .htaccess and .locked files
-        pnModFunc('Files', 'user', 'createProtectFiles', array('folder' => $folder));
+        ModUtil::func('Files', 'user', 'createProtectFiles', array('folder' => $folder));
         LogUtil::registerStatus($this->__('Successfully unzipped', $dom));
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     
     /**
@@ -1602,7 +1602,7 @@ class Files_User extends AbstractController
     {
         $dom = ZLanguage::getModuleDomain('Files');
         // security check
-        if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD) || !pnUserLogin()) {
+        if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD) || !UserUtil::login()) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
         if ($GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
@@ -1610,29 +1610,29 @@ class Files_User extends AbstractController
             // if siteDNS is the main site the root is the initial folder. If not it is the initial folder by the site
             $rootFolderPath = ($siteDNS == $GLOBALS['PNConfig']['Multisites']['mainSiteURL']) ? $GLOBALS['PNConfig']['Multisites']['filesRealPath'] : $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
         } else {
-            $rootFolderPath = pnModGetVar('Files', 'folderPath');
+            $rootFolderPath = ModUtil::getVar('Files', 'folderPath');
         }
         // checks if $rootFolderPath exists. If not user is send to error page
         if (!file_exists($rootFolderPath)) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = __f('The folder <strong>%s</strong> has not been found.', $rootFolderPath, $dom);
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         // checks if users folder exists. If user is admimistrator return initial folder otherwise return an error page
-        $userFolder = $rootFolderPath . '/' . pnModGetVar('Files', 'usersFolder');
+        $userFolder = $rootFolderPath . '/' . ModUtil::getVar('Files', 'usersFolder');
         if (!file_exists($userFolder)) {
             if (SecurityUtil::checkPermission('Files::', "::", ACCESS_ADMIN)) {
                 return $rootFolderPath;
             } else {
-                $pnRender = pnRender::getInstance('Files', false);
+                $renderer = Renderer::getInstance('Files', false);
                 $errorMsg = $this->__('Directory creation error. Please contact with the administrator', $dom) . ': ' . $folderName;
-                $pnRender->assign('errorMsg', $errorMsg);
-                return $pnRender->fetch('Files_user_errorMsg.htm');
+                $renderer->assign('errorMsg', $errorMsg);
+                return $renderer->fetch('Files_user_errorMsg.htm');
             }
         }
         // get user folder path depending on user name and if it not exists, create it
-        $userFolder = pnModGetVar('Files', 'usersFolder') . '/' . strtolower(substr(pnuserGetVar('uname'), 0, 1));
+        $userFolder = ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0, 1));
         if (!file_exists($rootFolderPath . '/' . $userFolder)) {
             if (!FileUtil::mkdirs($rootFolderPath . '/' . $userFolder, 0777, true)) {
                 LogUtil::registerError($this->__('Directory creation error') . ': ' . $rootFolderPath . '/' . $userFolder);
@@ -1642,27 +1642,27 @@ class Files_User extends AbstractController
             FileUtil::writeFile($rootFolderPath . '/' . $userFolder . '/.htaccess', $this->_HTACCESSCONTENT, true);
             FileUtil::writeFile($rootFolderPath . '/' . $userFolder . '/.locked', $this->_LOCKEDCONTENT, true);
         }
-        $userFolder .= '/' . pnuserGetVar('uname');
+        $userFolder .= '/' . UserUtil::getVar('uname');
         if (!file_exists($rootFolderPath . '/' . $userFolder)) {
             // create user record in database
-            if ($created = pnModAPIFunc('Files', 'user', 'createUserFilesInfo')) {
+            if ($created = ModUtil::apiFunc('Files', 'user', 'createUserFilesInfo')) {
                 // create dir
                 if (!FileUtil::mkdirs($rootFolderPath . '/' . $userFolder, 0777, true)) {
                     LogUtil::registerError($this->__('Directory creation error') . ': ' . $rootFolderPath . '/' . $userFolder);
                     return false;
                 }
                 // create .htaccess and .locked files
-                pnModFunc('Files', 'user', 'createaccessfile',
+                ModUtil::func('Files', 'user', 'createaccessfile',
                             array('folder' => $userFolder));
             }
         }
         // get user init folder
         $initFolderPath = (SecurityUtil::checkPermission('Files::', "::", ACCESS_ADMIN)) ? $rootFolderPath : $rootFolderPath . '/' . $userFolder;
         if (!file_exists($initFolderPath) || !is_writable($initFolderPath)) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = __f('The "%s" directory does not exist or is not writable.', $initFolderPath, $dom);
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         return $initFolderPath;
     }
@@ -1676,20 +1676,20 @@ class Files_User extends AbstractController
     public function getUserQuota($args)
     {
         $dom = ZLanguage::getModuleDomain('Files');
-        $userId = FormUtil::getPassedValue('userId', isset($args['userId']) ? $args['userId'] : pnUserGetVar('uid'), 'POST');
+        $userId = FormUtil::getPassedValue('userId', isset($args['userId']) ? $args['userId'] : UserUtil::getVar('uid'), 'POST');
         // security check
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
         $diskQuota = -2;
         // get assigned quotas
-        $groupsQuotas = pnModGetVar('Files', 'groupsQuota');
+        $groupsQuotas = ModUtil::getVar('Files', 'groupsQuota');
         $groupsQuotas = unserialize($groupsQuotas);
         foreach ($groupsQuotas as $quota) {
             $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'], 'quota' => $quota['quota']);
         }
         // get user groups
-        $userGroups = pnModAPIFunc('Groups', 'user', 'getusergroups');
+        $userGroups = ModUtil::apiFunc('Groups', 'user', 'getusergroups');
         foreach ($userGroups as $group) {
             // not limit
             if (array_key_exists($group['gid'], $groupsQuotasArray) && $groupsQuotasArray[$group['gid']]['quota'] == '-1') {
@@ -1702,7 +1702,7 @@ class Files_User extends AbstractController
         // if is not designed a disk quota is set the default quota
         // by default the disk quota is the default value
         if ($diskQuota == -2) {
-            $diskQuota = pnModGetVar('Files', 'defaultQuota');
+            $diskQuota = ModUtil::getVar('Files', 'defaultQuota');
         }
         return $diskQuota;
     }
@@ -1727,20 +1727,20 @@ class Files_User extends AbstractController
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
         if ($not == null) {
-            $url = $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath') . '/' . $folder;
+            $url = $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath') . '/' . $folder;
             // if the folder .tbn for thumbnails does not exists create it
             if (!file_exists($url .'/.tbn')) {
                 if (FileUtil::mkdirs($url .'/.tbn', 0777, true)) {
                     // create protection files
-                    pnModFunc('Files', 'user', 'createaccessfile',
+                    ModUtil::func('Files', 'user', 'createaccessfile',
                                 array('folder' => $folder .'/.tbn',
                                       'onlyHtaccess' => 1));
                 }
@@ -1756,13 +1756,13 @@ class Files_User extends AbstractController
             }
         } else {
             // create protection files
-            if (pnModFunc('Files', 'user', 'createaccessfile',
+            if (ModUtil::func('Files', 'user', 'createaccessfile',
                         array('folder' => $folder))) {
-                pnModFunc('Files', 'user', 'createaccessfile',
+                ModUtil::func('Files', 'user', 'createaccessfile',
                             array('folder' => $folder .'/.tbn'));
             }
         }
-        return pnRedirect(pnModURL('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
+        return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
     }
     
     /**
@@ -1779,19 +1779,19 @@ class Files_User extends AbstractController
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.', $dom), 403);
         }
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            return $pnRender->fetch('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            return $renderer->fetch('Files_user_errorMsg.htm');
         }
         $initFolder = $initFolderPath . "/" . $folder;
-        $directoris = pnModFunc('Files', 'user', 'getListDirRecursive', array('dir' => $initFolder));
+        $directoris = ModUtil::func('Files', 'user', 'getListDirRecursive', array('dir' => $initFolder));
         foreach ($directoris as $dir) {
             // not public directori
-            pnModFunc('Files', 'user', 'createaccessfile', array('folder' => $dir));
+            ModUtil::func('Files', 'user', 'createaccessfile', array('folder' => $dir));
         }
         return true;
     }

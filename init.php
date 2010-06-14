@@ -25,27 +25,27 @@ function Files_init()
     // Create module table
     if (!DBUtil::createTable('Files')) return false;
     //Create indexes
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $c = $pntable['Files_column'];
     // create security files
     DBUtil::createIndex($c['userId'], 'Files', 'userId');
-    FileUtil::writeFile(pnModGetVar('Files', 'folderPath') . '/.htaccess', $htaccessContent, true);
-    FileUtil::writeFile(pnModGetVar('Files', 'folderPath') . '/.locked', $lockedContent, true);
-    FileUtil::writeFile(pnModGetVar('Files', 'folderPath') . '/' . pnModGetVar('Files', 'usersFolder') . '/.htaccess', $htaccessContent, true);
-    FileUtil::writeFile(pnModGetVar('Files', 'folderPath') . '/' . pnModGetVar('Files', 'usersFolder') . '/.locked', $lockedContent, true);
+    FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/.htaccess', $htaccessContent, true);
+    FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/.locked', $lockedContent, true);
+    FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/' . ModUtil::getVar('Files', 'usersFolder') . '/.htaccess', $htaccessContent, true);
+    FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/' . ModUtil::getVar('Files', 'usersFolder') . '/.locked', $lockedContent, true);
     //Create module vars
-    pnModSetVar('Files', 'showHideFiles', '0');
-    pnModSetVar('Files', 'allowedExtensions', 'gif,png,jpg,odt,doc,pdf,zip');
-    pnModSetVar('Files', 'defaultQuota', 1);
-    pnModSetVar('Files', 'groupsQuota', 's:0:"";');
-    pnModSetVar('Files', 'filesMaxSize', '1000000');
-    pnModSetVar('Files', 'maxWidth', '250');
-    pnModSetVar('Files', 'maxHeight', '250');
-    pnModSetVar('Files', 'editableExtensions', 'php,htm,html,htaccess,css,js,tpl');
+    ModUtil::setVar('Files', 'showHideFiles', '0');
+    ModUtil::setVar('Files', 'allowedExtensions', 'gif,png,jpg,odt,doc,pdf,zip');
+    ModUtil::setVar('Files', 'defaultQuota', 1);
+    ModUtil::setVar('Files', 'groupsQuota', 's:0:"";');
+    ModUtil::setVar('Files', 'filesMaxSize', '1000000');
+    ModUtil::setVar('Files', 'maxWidth', '250');
+    ModUtil::setVar('Files', 'maxHeight', '250');
+    ModUtil::setVar('Files', 'editableExtensions', 'php,htm,html,htaccess,css,js,tpl');
     
     
     // Set up module hook
-    pnModRegisterHook('item', 'display', 'GUI', 'Files', 'user', 'Files');
+    ModUtil::registerHook('item', 'display', 'GUI', 'Files', 'user', 'Files');
     return true;
 }
 
@@ -56,22 +56,22 @@ function Files_init()
  */
 function Files_init_interactiveinit()
 {
-	if (!pnSecAuthAction(0, 'Files::', '::', ACCESS_ADMIN)) {
+	if (!SecurityUtil::checkPermission*(0, 'Files::', '::', ACCESS_ADMIN)) {
 		return LogUtil::registerPermissionError();
 	}
-    $pnRender = pnRender::getInstance('Files', false);
-    $pnRender->assign('step', 'info');
-    return $pnRender->fetch('Files_init.htm');
+    $renderer = Renderer::getInstance('Files', false);
+    $renderer->assign('step', 'info');
+    return $renderer->fetch('Files_init.htm');
 }
 
 function Files_init_form($args)
 {
     $file1 = FormUtil::getPassedValue('file1', isset($args['file1']) ? $args['file1'] : null, 'GET');
     $file2 = FormUtil::getPassedValue('file2', isset($args['file2']) ? $args['file2'] : 'users', 'GET');
-    if (!pnSecAuthAction(0, 'Files::', '::', ACCESS_ADMIN)){
+    if (!SecurityUtil::checkPermission*(0, 'Files::', '::', ACCESS_ADMIN)){
         return LogUtil::registerPermissionError();
     }
-    $pnRender = pnRender::getInstance('Multisites', false);
+    $renderer = Renderer::getInstance('Multisites', false);
     if($GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
         $filesRealPath = 'files';
         $createdFilesFolder = true;
@@ -85,12 +85,12 @@ function Files_init_form($args)
         }
         $createdFilesFolder = false;
     }
-    $pnRender = pnRender::getInstance('Files', false);
-    $pnRender->assign('filesRealPath', $filesRealPath);
-    $pnRender->assign('usersFolder', $file2);
-    $pnRender->assign('createdFilesFolder', $createdFilesFolder);
-    $pnRender->assign('step', 'form');
-    return $pnRender->fetch('Files_init.htm');
+    $renderer = Renderer::getInstance('Files', false);
+    $renderer->assign('filesRealPath', $filesRealPath);
+    $renderer->assign('usersFolder', $file2);
+    $renderer->assign('createdFilesFolder', $createdFilesFolder);
+    $renderer->assign('step', 'form');
+    return $renderer->fetch('Files_init.htm');
 }
 
 /**
@@ -102,7 +102,7 @@ function Files_init_update()
 {
     $filesRealPath = FormUtil::getPassedValue('filesRealPath', isset($args['filesRealPath']) ? $args['filesRealPath'] : null, 'POST');
     $usersFolder = FormUtil::getPassedValue('usersFolder', isset($args['usersFolder']) ? $args['usersFolder'] : null, 'POST');
-	if (!pnSecAuthAction(0, 'Files::', '::', ACCESS_ADMIN)) {
+	if (!SecurityUtil::checkPermission*(0, 'Files::', '::', ACCESS_ADMIN)) {
 		return LogUtil::registerPermissionError();
 	}
 	$multisites = false;
@@ -136,19 +136,19 @@ function Files_init_update()
         $fileWriteable2 = true;
     }
     if($fileWriteable1 && $fileWriteable2) {
-        pnModSetVar('Files', 'folderPath', $filesRealPath);
-        pnModSetVar('Files', 'usersFolder', $usersFolder);
+        ModUtil::setVar('Files', 'folderPath', $filesRealPath);
+        ModUtil::setVar('Files', 'usersFolder', $usersFolder);
     }
-    $pnRender = pnRender::getInstance('Files', false);
-    $pnRender->assign('filesRealPath', $filesRealPath);
-    $pnRender->assign('usersFolder', $usersFolder);
-    $pnRender->assign('file1', $file1);
-    $pnRender->assign('file2', $file2);
-    $pnRender->assign('multisites', $multisites);
-    $pnRender->assign('fileWriteable1', $fileWriteable1);
-    $pnRender->assign('fileWriteable2', $fileWriteable2);
-    $pnRender->assign('step', 'check');
-    return $pnRender->fetch('Files_init.htm');
+    $renderer = Renderer::getInstance('Files', false);
+    $renderer->assign('filesRealPath', $filesRealPath);
+    $renderer->assign('usersFolder', $usersFolder);
+    $renderer->assign('file1', $file1);
+    $renderer->assign('file2', $file2);
+    $renderer->assign('multisites', $multisites);
+    $renderer->assign('fileWriteable1', $fileWriteable1);
+    $renderer->assign('fileWriteable2', $fileWriteable2);
+    $renderer->assign('step', 'check');
+    return $renderer->fetch('Files_init.htm');
 }
 
 /**
@@ -161,16 +161,16 @@ function Files_delete()
     // Delete module table
     DBUtil::dropTable('Files');
 	//Delete module vars
-    pnModDelVar('Files', 'folderPath');
-    pnModDelVar('Files', 'usersFolder');
-    pnModDelVar('Files', 'showHideFiles');
-    pnModDelVar('Files', 'allowedExtensions');
-    pnModDelVar('Files', 'defaultQuota');
-    pnModDelVar('Files', 'groupsQuota');
-    pnModDelVar('Files', 'filesMaxSize');
-    pnModDelVar('Files', 'maxWidth');
-    pnModDelVar('Files', 'maxHeight');
-    pnModDelVar('Files', 'editableExtensions');
+    ModUtil::delVar('Files', 'folderPath');
+    ModUtil::delVar('Files', 'usersFolder');
+    ModUtil::delVar('Files', 'showHideFiles');
+    ModUtil::delVar('Files', 'allowedExtensions');
+    ModUtil::delVar('Files', 'defaultQuota');
+    ModUtil::delVar('Files', 'groupsQuota');
+    ModUtil::delVar('Files', 'filesMaxSize');
+    ModUtil::delVar('Files', 'maxWidth');
+    ModUtil::delVar('Files', 'maxHeight');
+    ModUtil::delVar('Files', 'editableExtensions');
     //Deletion successfull
     return true;
 }

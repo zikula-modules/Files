@@ -23,7 +23,7 @@ class Files_Ajax extends AbstractController
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}
-        $content = pnModFunc('Files', 'admin', 'newGroupQuotaForm');
+        $content = ModUtil::func('Files', 'admin', 'newGroupQuotaForm');
         AjaxUtil::output(array('content' => $content));
     }
     
@@ -51,15 +51,15 @@ class Files_Ajax extends AbstractController
         if(is_numeric($gid) && is_numeric($quota)){
             //create a new assignament for a disk quote
             $data = array('gid' => $gid, 'quota' => $quota);
-            $assignments = unserialize(pnModGetVar('Files', 'groupsQuota'));
+            $assignments = unserialize(ModUtil::getVar('Files', 'groupsQuota'));
             if($assignments == ''){
                 $assignments = array();
             }        
             array_push($assignments, $data);
             $data = serialize($assignments);
-            pnModSetVar('Files', 'groupsQuota', $data);
+            ModUtil::setVar('Files', 'groupsQuota', $data);
         }
-        $content = pnModFunc('Files', 'admin', 'getQuotasTable');
+        $content = ModUtil::func('Files', 'admin', 'getQuotasTable');
         AjaxUtil::output(array('content' => $content));
     }
     
@@ -80,7 +80,7 @@ class Files_Ajax extends AbstractController
     		AjaxUtil::error($this->__('no group found', $dom));
     	}
         if(is_numeric($gid)){
-            $assignaments = unserialize(pnModGetVar('Files', 'groupsQuota'));
+            $assignaments = unserialize(ModUtil::getVar('Files', 'groupsQuota'));
             $assignamentsArray = array();
             foreach($assignaments as $assign){
                 if($assign['gid'] != $gid){
@@ -89,9 +89,9 @@ class Files_Ajax extends AbstractController
                 }
             }
             $data = serialize($assignamentsArray);
-            pnModSetVar('Files', 'groupsQuota', $data);
+            ModUtil::setVar('Files', 'groupsQuota', $data);
         }
-        $content = pnModFunc('Files', 'admin', 'getQuotasTable');
+        $content = ModUtil::func('Files', 'admin', 'getQuotasTable');
         AjaxUtil::output(array('content' => $content));
     }
     /**
@@ -112,7 +112,7 @@ class Files_Ajax extends AbstractController
     		AjaxUtil::error($this->__('No folder defined.', $dom));
     	}
         $external = FormUtil::getPassedValue('external', -1, 'GET');
-        $content = pnModFunc('Files', 'user', 'createDirForm',
+        $content = ModUtil::func('Files', 'user', 'createDirForm',
                               array('folder' => $folder,
                                     'external' => $external));
         AjaxUtil::output(array('content' => $content));
@@ -134,7 +134,7 @@ class Files_Ajax extends AbstractController
     	if ($folder == -1) {
     		AjaxUtil::error($this->__('No folder defined.', $dom));
     	}
-        $content = pnModFunc('Files', 'user', 'uploadFileForm',
+        $content = ModUtil::func('Files', 'user', 'uploadFileForm',
                               array('folder' => $folder));
         AjaxUtil::output(array('content' => $content));
     }
@@ -158,9 +158,9 @@ class Files_Ajax extends AbstractController
     	}
         $action = FormUtil::getPassedValue('action', -1, 'GET');
     
-        $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : pnModGetVar('Files', 'usersFolder') . '/' . strtolower(substr(pnUserGetVar('uname'), 0 , 1)) . '/' . pnUserGetVar('uname') . '/' .$folderName;
+        $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0 , 1)) . '/' . UserUtil::getVar('uname') . '/' .$folderName;
         // gets root folder for the user
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         list($width, $height) = getimagesize($initFolderPath . '/' . $folderName . '/' . $image);
     
         $factor = ($action == 'increase') ? round($factor / 1.2, 2) : round($factor * 1.2, 2);
@@ -176,16 +176,16 @@ class Files_Ajax extends AbstractController
                         'height' => $height,
                         'factor' => $factor);
         // create new thumbnail
-        pnModFunc('Files', 'user', 'thumbnail',
+        ModUtil::func('Files', 'user', 'thumbnail',
                 array('fileName' => $image,
                       'folder' => $folderName,
                       'newWidth' => $newWidth,
                       'fromAjax' => 1));
-        $pnRender = pnRender::getInstance('Files', false);
-        $pnRender -> assign('file',  $file);
-        $pnRender -> assign('folderPath',  $folderPath);
-        $pnRender -> assign('folderName',  $folderName);
-        $content = $pnRender -> fetch('Files_external_getFilesImgContent.htm');
+        $renderer = Renderer::getInstance('Files', false);
+        $renderer -> assign('file',  $file);
+        $renderer -> assign('folderPath',  $folderPath);
+        $renderer -> assign('folderName',  $folderName);
+        $content = $renderer -> fetch('Files_external_getFilesImgContent.htm');
         AjaxUtil::output(array('image' => $image,
                                 'content' => $content));
     }

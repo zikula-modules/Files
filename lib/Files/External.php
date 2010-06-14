@@ -15,33 +15,33 @@ class Files_External extends AbstractController
         // get arguments
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
         // security check
-        if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD) || !pnUserLogin()) {
-            $pnRender = pnRender::getInstance('Files', false);
+        if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD) || !UserUtil::login()) {
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = __('Sorry! You have not been granted access to this page.', $dom);
-            $pnRender->assign('errorMsg', $errorMsg);
-            $pnRender->assign('external', 1);
-            $pnRender->display('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            $renderer->assign('external', 1);
+            $renderer->display('Files_user_errorMsg.htm');
             exit;
         }
         $oFolder = $folder;
         // gets root folder for the user
-        $initFolderPath = pnModFunc('Files', 'user', 'getInitFolderPath');
+        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // check if the root folder exists
         if(!file_exists($initFolderPath)){
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = __('The server directory does not exist. Contact with the website administrator to solve this problem.', $dom);
-            $pnRender->assign('errorMsg',  $errorMsg);
-            $pnRender->assign('external', 1);
-            $pnRender->display('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg',  $errorMsg);
+            $renderer->assign('external', 1);
+            $renderer->display('Files_user_errorMsg.htm');
             exit;
         }
         // protection. User can not navigate out their root folder
         if($folder == ".." || $folder == "."){
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = __('Invalid folder', $dom) . ': ' . $folder;
-            $pnRender->assign('errorMsg', $errorMsg);
-            $pnRender->assign('external', 1);
-            $pnRender->display('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg', $errorMsg);
+            $renderer->assign('external', 1);
+            $renderer->display('Files_user_errorMsg.htm');
             exit;
         }
         // get folder name
@@ -50,55 +50,55 @@ class Files_External extends AbstractController
         // users can not browser the thumbnails folders
         if(strpos($folder, '.tbn') !== false) {
             LogUtil::registerError(__('It is not possible to browse this folder', $dom));
-            return pnRedirect(pnModURL('Files', 'external', 'getFiles', array('folder' => substr($folderName, 0, strrpos($folderName, '/')))));
+            return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => substr($folderName, 0, strrpos($folderName, '/')))));
         }
         // needed arguments
         // check if the folder exists
         if(!file_exists($folder)){
-            $pnRender = pnRender::getInstance('Files', false);
+            $renderer = Renderer::getInstance('Files', false);
             $errorMsg = __('Invalid folder', $dom).': '.$folderName;
-            $pnRender->assign('errorMsg',  $errorMsg);
-            $pnRender->assign('external', 1);
-            $pnRender->display('Files_user_errorMsg.htm');
+            $renderer->assign('errorMsg',  $errorMsg);
+            $renderer->assign('external', 1);
+            $renderer->display('Files_user_errorMsg.htm');
             exit;
         }
         // get user's disk use
-        $userDiskUse = pnModAPIFunc('Files', 'user', 'get');
+        $userDiskUse = ModUtil::apiFunc('Files', 'user', 'get');
         $usedSpace = $userDiskUse['diskUse'];
         // get user's allowed space
-        $userAllowedSpace = pnModFunc('Files', 'user', 'getUserQuota');
+        $userAllowedSpace = ModUtil::func('Files', 'user', 'getUserQuota');
         $maxDiskSpace = round($userAllowedSpace * 1024 * 1024);
         $percentage = round($usedSpace * 100 / $maxDiskSpace);
         $widthUsage = ($percentage > 100) ? 100 : $percentage;
-        $usedSpaceArray = array('maxDiskSpace' => pnModFunc('Files', 'user', 'diskUseFormat',
+        $usedSpaceArray = array('maxDiskSpace' => ModUtil::func('Files', 'user', 'diskUseFormat',
                                                             array('value' => $maxDiskSpace)),
                                                                   'percentage' => $percentage,
-                                'usedDiskSpace' => pnModFunc('Files', 'user', 'diskUseFormat',
+                                'usedDiskSpace' => ModUtil::func('Files', 'user', 'diskUseFormat',
                                                              array('value' => $usedSpace)),
                                                                    'widthUsage' => $widthUsage);
         // create output object
-        $pnRender = pnRender::getInstance('Files', false);
+        $renderer = Renderer::getInstance('Files', false);
         // get folder files and subfolders
-        $fileList = pnModFunc('Files', 'user', 'dir_list',
+        $fileList = ModUtil::func('Files', 'user', 'dir_list',
                                 array('folder' => $folder,
                                       'external' => 1));
         sort($fileList[dir]);
         sort($fileList[file]);
         if(!is_writable($folder)){
-            $pnRender->assign('notwriteable', true);
+            $renderer->assign('notwriteable', true);
         }
         // check if it is a public directori
         if(!file_exists($folder.'/.locked')){
             // it is a public directori
             $is_public = true;
         }
-        $pnRender->assign('publicFolder',  $is_public);
-        $pnRender->assign('folderPrev', substr($folderName, 0 ,  strrpos($folderName, '/')));
-        $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : pnModGetVar('Files', 'usersFolder') . '/' . strtolower(substr(pnUserGetVar('uname'), 0 , 1)) . '/' . pnUserGetVar('uname') . '/' .$folderName;
+        $renderer->assign('publicFolder',  $is_public);
+        $renderer->assign('folderPrev', substr($folderName, 0 ,  strrpos($folderName, '/')));
+        $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0 , 1)) . '/' . UserUtil::getVar('uname') . '/' .$folderName;
         $imagesArray = array();
         // get folder files and subfolders
         if(file_exists($folder . '/.tbn')) {
-            $images = pnModFunc('Files', 'user', 'dir_list',
+            $images = ModUtil::func('Files', 'user', 'dir_list',
                                 array('folder' => $folder . '/.tbn',
                                       'external' => 1));
             foreach($images['file'] as $file) {
@@ -116,12 +116,12 @@ class Files_External extends AbstractController
                 }
             }
         }
-        $pnRender->assign('folderPath', DataUtil::formatForDisplay($folderPath));
-        $pnRender->assign('folderName', DataUtil::formatForDisplay($folderName));
-        $pnRender->assign('fileList', $fileList);
-        $pnRender->assign('hook', $hook);
-        $pnRender->assign('imagesArray', DataUtil::formatForDisplay($imagesArray));
-        $pnRender->assign('usedSpace',  $usedSpaceArray);
-        return $pnRender->display('Files_external_getFiles.htm');
+        $renderer->assign('folderPath', DataUtil::formatForDisplay($folderPath));
+        $renderer->assign('folderName', DataUtil::formatForDisplay($folderName));
+        $renderer->assign('fileList', $fileList);
+        $renderer->assign('hook', $hook);
+        $renderer->assign('imagesArray', DataUtil::formatForDisplay($imagesArray));
+        $renderer->assign('usedSpace',  $usedSpaceArray);
+        return $renderer->display('Files_external_getFiles.htm');
     }
 }

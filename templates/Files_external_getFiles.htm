@@ -6,7 +6,7 @@
 
 <div class="files_container">
     <div class="z-clearfix">
-        <div class="userpageicon">{pnimg modname='core' src='lists.gif' set='icons/large' alt=$templatetitle}</div>
+        <div class="userpageicon">{img modname='core' src='lists.gif' set='icons/large' alt=$templatetitle}</div>
         <h2>{gt text="List of files in folder"} <strong>{$folderName}</strong></h2>
     </div>
 
@@ -20,9 +20,9 @@
         <a class="fi_image fi_createdir" href="javascript: createDir('{$folderName}',1,{$hook})">{gt text="Create directory"}</a>
         <a class="fi_image fi_uploadfile" href="javascript: uploadFile('{$folderName}',1,{$hook})">{gt text="Upload file"}</a>
         {if $publicFolder}
-        <a class="fi_image fi_public" href='{pnmodurl modname="Files" func="setAsPublic" external="1" folder=$folderName hook=$hook not=1}'>{gt text="Set as not public folder"}</a>
+        <a class="fi_image fi_public" href='{modurl modname="Files" func="setAsPublic" external="1" folder=$folderName hook=$hook not=1}'>{gt text="Set as not public folder"}</a>
         {elseif $folderName neq ''}
-        <a class="fi_image fi_notpublic" href='{pnmodurl modname="Files" func="setAsPublic" external="1" folder=$folderName hook=$hook}'>{gt text="Set as a public folder"}</a>
+        <a class="fi_image fi_notpublic" href='{modurl modname="Files" func="setAsPublic" external="1" folder=$folderName hook=$hook}'>{gt text="Set as a public folder"}</a>
         {/if}
     </div>
 
@@ -41,11 +41,11 @@
     {if $publicFolder}
     <p class="z-informationmsg">
         {gt text="The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL:"}
-        <strong>{pngetbaseurl}file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}{gt text="file_name"}</strong>
+        <strong>{getbaseurl}file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}{gt text="file_name"}</strong>
     </p>
     {/if}
 
-    <form class="z-form" method="post" action="{pnmodurl modname="Files" func="actionSelect" folder=$folderName hook=$hook}"  id="form1">
+    <form class="z-form" method="post" action="{modurl modname="Files" func="actionSelect" folder=$folderName hook=$hook}"  id="form1">
         <div>
             <input type="hidden" name="external" value="1" />
             <table class="z-datatable" summary="table files">
@@ -62,14 +62,14 @@
                     {if $folderName neq ""}
                     <tr class="{cycle values="z-odd,z-even"}">
                         <td>&nbsp;</td>
-                        <td><a class="fi_image fi_folder" href="{pnmodurl modname="Files" type="external" func="getFiles" hook=$hook folder=""}">.</a></td>
+                        <td><a class="fi_image fi_folder" href="{modurl modname="Files" type="external" func="getFiles" hook=$hook folder=""}">.</a></td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                     </tr>
                     <tr class="{cycle values="z-odd,z-even"}">
                         <td>&nbsp;</td>
-                        <td><a class="fi_image fi_folder" href="{pnmodurl modname="Files" type="external" func="getFiles" hook=$hook folder=$folderPrev}">..</a></td>
+                        <td><a class="fi_image fi_folder" href="{modurl modname="Files" type="external" func="getFiles" hook=$hook folder=$folderPrev}">..</a></td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
@@ -84,16 +84,16 @@
                         </td>
                         <td align="left">
                             {if $folderName eq ''}
-                            <a class="fi_image fi_folder" href="{pnmodurl modname="Files" func="getFiles" type="external" hook=$hook folder=$file.name}">{$file.name}</a>
+                            <a class="fi_image fi_folder" href="{modurl modname="Files" func="getFiles" type="external" hook=$hook folder=$file.name}">{$file.name}</a>
                             {else}
-                            <a class="fi_image fi_folder" href="{pnmodurl modname="Files" func="getFiles" type="external" hook=$hook folder=$folderName|cat:'/'|cat:$file.name}">{$file.name}</a>
+                            <a class="fi_image fi_folder" href="{modurl modname="Files" func="getFiles" type="external" hook=$hook folder=$folderName|cat:'/'|cat:$file.name}">{$file.name}</a>
                             {/if}
                         </td>
                         <td>&nbsp;</td>
-                        <td align="right">{$file.time|pndate_format:'datetimebrief'}</td>
+                        <td align="right">{$file.time|date_format:'datetimebrief'}</td>
                         <td align="right">
-                            <a href='{pnmodurl modname="Files" external="1" func="action" do="rename" fileName=$file.name folder=$folderName hook=$hook}'>{pnimg modname='core' src='edit.gif' set='icons/extrasmall' __alt="Rename file" __title="Rename folder"}</a>
-                            <a href='{pnmodurl modname="Files" external="1" func="action" do="delete" fileName=$file.name folder=$folderName hook=$hook}'>{pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete folder" __title="Delete folder"}</a>
+                            <a href='{modurl modname="Files" external="1" func="action" do="rename" fileName=$file.name folder=$folderName hook=$hook}'>{img modname='core' src='edit.gif' set='icons/extrasmall' __alt="Rename file" __title="Rename folder"}</a>
+                            <a href='{modurl modname="Files" external="1" func="action" do="delete" fileName=$file.name folder=$folderName hook=$hook}'>{img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete folder" __title="Delete folder"}</a>
                         </td>
                     </tr>
                     {/if}
@@ -108,19 +108,19 @@
                         <td align="left">
                             {if $publicFolder}
 								{if $hook eq 1}
-                            		<a class="fi_image" style="background: url({pngetbaseurl}modules/Files/pnimages/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href='{pnmodurl modname="Files" func="downloadFile" folder=$folderName fileName=$file.name hook=$hook}' />{$file.name}</a>
+                            		<a class="fi_image" style="background: url({getbaseurl}modules/Files/pnimages/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href='{modurl modname="Files" func="downloadFile" folder=$folderName fileName=$file.name hook=$hook}' />{$file.name}</a>
 								{else}
-									<a class="fi_image" style="background: url({pngetbaseurl}modules/Files/pnimages/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" />{$file.name}</a>
+									<a class="fi_image" style="background: url({getbaseurl}modules/Files/pnimages/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" />{$file.name}</a>
 								{/if}
                             {else}
                             {$file.name}
                             {/if}
                         </td>
                         <td align="right">{$file.size} {gt text="Bytes"}</td>
-                        <td align="right">{$file.time|pndate_format:'datetimebrief'}</td>
+                        <td align="right">{$file.time|date_format:'datetimebrief'}</td>
                         <td align="right">
                             {foreach item=option from=$file.options}
-                                <a href="{$option.url|pnvarprepfordisplay}&hook={$hook}">{pnimg modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}</a>
+                                <a href="{$option.url|varprepfordisplay}&hook={$hook}">{img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}</a>
                             {/foreach}
                         </td>
                     </tr>

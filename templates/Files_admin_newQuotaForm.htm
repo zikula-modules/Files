@@ -3,14 +3,14 @@
     <select name="groupId">
         <option value="0">{gt text="Choose a group..."}</option>
         {foreach item="group" from=$groups}
-        <option value="{$group.gid|pnvarprepfordisplay}">{$group.name|pnvarprepfordisplay}</option>
+        <option value="{$group.gid|varprepfordisplay}">{$group.name|varprepfordisplay}</option>
         {/foreach}
     </select>
     
     <input type="text" size="3" name="quotaValue" /> {gt text="Mb"}
     
     <a href="javascript:createGroupQuota();">
-        {pnimg modname='core' src='button_ok.gif' set='icons/extrasmall' __alt="Save the changes" __title="Save the changes"}
+        {img modname='core' src='button_ok.gif' set='icons/extrasmall' __alt="Save the changes" __title="Save the changes"}
     </a>
     
     <div class="z-informationmsg">
