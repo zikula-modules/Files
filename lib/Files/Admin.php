@@ -12,7 +12,7 @@
  * @subpackage Files
  */
 
-class Files_Admin extends AbstractController
+class Files_Admin extends Zikula_Controller
 {
     /**
      * Give access to the administrator main page

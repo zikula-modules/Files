@@ -11,7 +11,7 @@
  * @package    Utilities
  * @subpackage Files
  */
-class Files_Api_User extends AbstractApi
+class Files_Api_User extends Zikula_Api
 {
     /**
      * Get an user files information

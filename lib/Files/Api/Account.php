@@ -12,7 +12,7 @@
  * @subpackage Files
  */
 
-class Files_Api_Account extends AbstractApi
+class Files_Api_Account extends Zikula_Api
 {
     /**
      * Give access to personal configuration from their account panel

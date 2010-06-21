@@ -11,7 +11,7 @@
  * @package    Utilities
  * @subpackage Files
  */
-class Files_Ajax extends AbstractController
+class Files_Ajax extends Zikula_Controller
 { 
     /**
      * shows the form to define a new group quota

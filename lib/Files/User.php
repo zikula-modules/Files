@@ -12,7 +12,7 @@
  * @subpackage Files
  */
 
-class Files_User extends AbstractController
+class Files_User extends Zikula_Controller
 {
     // set content of the files .htaccess and .locked
     protected $_HTACCESSCONTENT = "# Avoid direct web access to folder files\r\nOrder deny,allow\r\nDeny from all\r\n";

@@ -1,5 +1,5 @@
 <?php
-class Files_External extends AbstractController
+class Files_External extends Zikula_Controller
 {
     /**
      * List the files in server folder
