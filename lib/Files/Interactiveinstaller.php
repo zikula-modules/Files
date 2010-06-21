@@ -21,7 +21,7 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
      */
     public function install()
     {
-    	if (!SecurityUtil::checkPermission(0, 'Files::', '::', ACCESS_ADMIN)) {
+    	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
     		return LogUtil::registerPermissionError();
     	}
         $renderer = Renderer::getInstance('Files', false);
@@ -29,11 +29,11 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
         return $renderer->fetch('Files_init.htm');
     }
     
-    public function Files_init_form($args)
+    public function form($args)
     {
         $file1 = FormUtil::getPassedValue('file1', isset($args['file1']) ? $args['file1'] : null, 'GET');
         $file2 = FormUtil::getPassedValue('file2', isset($args['file2']) ? $args['file2'] : 'users', 'GET');
-        if (!SecurityUtil::checkPermission(0, 'Files::', '::', ACCESS_ADMIN)){
+        if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)){
             return LogUtil::registerPermissionError();
         }
         $renderer = Renderer::getInstance('Multisites', false);
@@ -63,11 +63,11 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
      * @author Albert Pérez Monfort (aperezm@xtec.cat)
      * @return if they exist and are writeable user can jump to step 2
      */
-    public function Files_init_update()
+    public function update()
     {
         $filesRealPath = FormUtil::getPassedValue('filesRealPath', isset($args['filesRealPath']) ? $args['filesRealPath'] : null, 'POST');
         $usersFolder = FormUtil::getPassedValue('usersFolder', isset($args['usersFolder']) ? $args['usersFolder'] : null, 'POST');
-    	if (!SecurityUtil::checkPermission(0, 'Files::', '::', ACCESS_ADMIN)) {
+    	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
     		return LogUtil::registerPermissionError();
     	}
     	$multisites = false;
@@ -123,6 +123,9 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
     */
     public function finalInstall()
     {
+    	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
+    		return LogUtil::registerPermissionError();
+    	}
         // set content of the files .htaccess and .locked
         $htaccessContent = "# Avoid direct web access to folder files\r\nOrder deny,allow\r\nDeny from all\r\n";
         $lockedContent = "# Avoid direct web access with the file file.php\r\n";
@@ -131,8 +134,8 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
         //Create indexes
         $pntable = System::dbGetTables();
         $c = $pntable['Files_column'];
-        // create security files
         DBUtil::createIndex($c['userId'], 'Files', 'userId');
+        // create security files
         FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/.htaccess', $htaccessContent, true);
         FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/.locked', $lockedContent, true);
         FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/' . ModUtil::getVar('Files', 'usersFolder') . '/.htaccess', $htaccessContent, true);

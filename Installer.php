@@ -11,11 +11,11 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 class Files_Installer extends Zikula_Installer
 {
     public function install()
 	{
+	    return true;
     }
 
     /**
@@ -25,7 +25,6 @@ class Files_Installer extends Zikula_Installer
      */
     public function uninstall()
     {
-        die();
         // Delete module table
         DBUtil::dropTable('Files');
     	//Delete module vars

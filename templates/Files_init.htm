@@ -7,14 +7,14 @@
 <p class="z-informationmsg">
     {gt text="This module allow user to manage their own files.<br />Each user has a folder for his/her files.<br />This module needs two writable folders that have to be created."}
 </p>
-<p class="z-center"><a href="{modurl modname="Files" type="init" func="form"}">{gt text="Proceed with the installation"}</a></p>
+<p class="z-center"><a href="{modurl modname="Files" type="interactiveinstaller" func="form"}">{gt text="Proceed with the installation"}</a></p>
 
 {elseif $step eq 'form'}
 <p class="z-informationmsg">
     {gt text="Check if the files folders in the server have been created and define them using the form below.<br />These folders will be used to save the files of the site and the users' files.<br />We recommend to locate them out of the public HTTP."}
 </p>
 
-<form class="z-form" method="post" action="{modurl modname="Files" type="init" func="update"}">
+<form class="z-form" method="post" action="{modurl modname="Files" type="interactiveinstaller" func="update"}">
     <fieldset>
         <legend>{gt text="Defining the files folders"}</legend>
         <div class="z-formrow">
@@ -101,10 +101,10 @@
 
 <div class="z-center">
     {if !$file1 OR !$file2}
-    <a href="{modurl modname="Files" type="init" func="form" file1=$filesRealPath file2=$usersFolder}">{gt text="Define folders again. Remember that you have to create the folders after define them."}</a>
+    <a href="{modurl modname="Files" type="interactiveinstaller" func="form" file1=$filesRealPath file2=$usersFolder}">{gt text="Define folders again. Remember that you have to create the folders after define them."}</a>
     {/if}
     {if (!$fileWriteable1 OR !$fileWriteable2) AND NOT (!$file1 OR !$file2)}
-    <a href="{modurl modname="Files" type="init" func="form" file1=$filesRealPath file2=$usersFolder}">{gt text="Make the folders writable and try again."}</a>
+    <a href="{modurl modname="Files" type="interactiveinstaller" func="form" file1=$filesRealPath file2=$usersFolder}">{gt text="Make the folders writable and try again."}</a>
     {/if}
 
     {if $fileWriteable1 AND $fileWriteable2}
