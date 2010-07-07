@@ -90,7 +90,7 @@
                             {/if}
                         </td>
                         <td>&nbsp;</td>
-                        <td align="right">{$file.time|date_format:'datetimebrief'}</td>
+                        <td align="right">{$file.time|dateformat:'datetimebrief'}</td>
                         <td align="right">
                             <a href='{modurl modname="Files" external="1" func="action" do="rename" fileName=$file.name folder=$folderName hook=$hook}'>{img modname='core' src='edit.gif' set='icons/extrasmall' __alt="Rename file" __title="Rename folder"}</a>
                             <a href='{modurl modname="Files" external="1" func="action" do="delete" fileName=$file.name folder=$folderName hook=$hook}'>{img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete folder" __title="Delete folder"}</a>
@@ -117,10 +117,10 @@
                             {/if}
                         </td>
                         <td align="right">{$file.size} {gt text="Bytes"}</td>
-                        <td align="right">{$file.time|date_format:'datetimebrief'}</td>
+                        <td align="right">{$file.time|dateformat:'datetimebrief'}</td>
                         <td align="right">
                             {foreach item=option from=$file.options}
-                                <a href="{$option.url|varprepfordisplay}&hook={$hook}">{img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}</a>
+                                <a href="{$option.url|safetext}&hook={$hook}">{img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}</a>
                             {/foreach}
                         </td>
                     </tr>

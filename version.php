@@ -15,12 +15,12 @@
 /**
  * Load the module version information
  *
- * @author		Albert Pérez Monfort (aperezm@xtec.cat)
- * @return		The version information
+ * @author      Albert Pérez Monfort (aperezm@xtec.cat)
+ * @return      The version information
  */
 $dom = ZLanguage::getModuleDomain('Files');
 $modversion['name'] = 'Files';
-$modversion['version'] = '1.0';
+$modversion['version'] = '1.0.0';
 $modversion['description'] = __('File manager for Zikula sites.', $dom);
 $modversion['displayname'] = __('File Manager', $dom);
 $modversion['url'] = __('files', $dom);

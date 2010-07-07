@@ -24,7 +24,7 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
     		return LogUtil::registerPermissionError();
     	}
-        $renderer = Renderer::getInstance('Files', false);
+        $renderer = Zikula_View::getInstance('Files', false);
         $renderer->assign('step', 'info');
         return $renderer->fetch('Files_init.htm');
     }
@@ -36,7 +36,7 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)){
             return LogUtil::registerPermissionError();
         }
-        $renderer = Renderer::getInstance('Multisites', false);
+        $renderer = Zikula_View::getInstance('Multisites', false);
         if($GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
             $filesRealPath = 'files';
             $createdFilesFolder = true;
@@ -50,7 +50,7 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
             }
             $createdFilesFolder = false;
         }
-        $renderer = Renderer::getInstance('Files', false);
+        $renderer = Zikula_View::getInstance('Files', false);
         $renderer->assign('filesRealPath', $filesRealPath);
         $renderer->assign('usersFolder', $file2);
         $renderer->assign('createdFilesFolder', $createdFilesFolder);
@@ -104,7 +104,7 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
             ModUtil::setVar('Files', 'folderPath', $filesRealPath);
             ModUtil::setVar('Files', 'usersFolder', $usersFolder);
         }
-        $renderer = Renderer::getInstance('Files', false);
+        $renderer = Zikula_View::getInstance('Files', false);
         $renderer->assign('filesRealPath', $filesRealPath);
         $renderer->assign('usersFolder', $usersFolder);
         $renderer->assign('file1', $file1);
@@ -132,7 +132,7 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
         // Create module table
         if (!DBUtil::createTable('Files')) return false;
         //Create indexes
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $c = $pntable['Files_column'];
         DBUtil::createIndex($c['userId'], 'Files', 'userId');
         // create security files

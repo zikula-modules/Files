@@ -181,7 +181,7 @@ class Files_Ajax extends Zikula_Controller
                       'folder' => $folderName,
                       'newWidth' => $newWidth,
                       'fromAjax' => 1));
-        $renderer = Renderer::getInstance('Files', false);
+        $renderer = Zikula_View::getInstance('Files', false);
         $renderer -> assign('file',  $file);
         $renderer -> assign('folderPath',  $folderPath);
         $renderer -> assign('folderName',  $folderName);

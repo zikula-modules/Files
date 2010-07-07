@@ -38,14 +38,14 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // check if the root folder exists
         if (!file_exists($initFolderPath)) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('The server directory does not exist.', $dom);
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -61,7 +61,7 @@ class Files_User extends Zikula_Controller
         // needed arguments
         // check if the folder exists
         if (!file_exists($folder)) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folderName;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -79,7 +79,7 @@ class Files_User extends Zikula_Controller
                                     'usedDiskSpace' => ModUtil::func('Files', 'user', 'diskUseFormat', array('value' => $usedSpace)),
                                     'widthUsage' => $widthUsage);
         // create output object
-        $renderer = Renderer::getInstance('Files', false);
+        $renderer = Zikula_View::getInstance('Files', false);
         // get folder files and subfolders
         $fileList = $this->dir_list(array('folder' => $folder));                            
         sort($fileList[dir]);
@@ -151,7 +151,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -187,7 +187,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -321,7 +321,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -375,7 +375,7 @@ class Files_User extends Zikula_Controller
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -456,7 +456,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -610,7 +610,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -622,7 +622,7 @@ class Files_User extends Zikula_Controller
         // get file extension
         $fileExtension = FileUtil::getExtension($fileName);
         if (strpos($editableExtensions, strtolower($fileExtension)) === false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = __f('Sorry! The file %s is not editable.', $fileName, $dom);
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -631,7 +631,7 @@ class Files_User extends Zikula_Controller
         // checks if file exists
         $file = $initFolderPath . '/' . $folder . '/' . $fileName;
         if (!file_exists($file)) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = __f('Sorry! The file %s has not been found.', $fileName, $dom);
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -642,13 +642,13 @@ class Files_User extends Zikula_Controller
             // get file content
             if (!$fileContent = FileUtil::readFile($file, true)) {
                 // error reading the file
-                $renderer = Renderer::getInstance('Files', false);
+                $renderer = Zikula_View::getInstance('Files', false);
                 $errorMsg = __f('Error! It has not been possible to read the content of the file %s.', $fileName, $dom);
                 $renderer->assign('errorMsg', $errorMsg);
                 return $renderer->fetch('Files_user_errorMsg.htm');
             }
             // create output object
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $renderer->assign('folder', DataUtil::formatForDisplay($folder));
             $renderer->assign('fileName', DataUtil::formatForDisplay($fileName));
             $renderer->assign('fileContent', DataUtil::formatForDisplay($fileContent));
@@ -672,7 +672,7 @@ class Files_User extends Zikula_Controller
         // the file has been edited. Update its content
     	if (!FileUtil::writeFile($file, $fileContent, true)) {
             // error writing the file
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = __f('Error! It has not been possible to write the content to the file %s.', $fileName, $dom);
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');	    
@@ -718,7 +718,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -737,7 +737,7 @@ class Files_User extends Zikula_Controller
                 $array_show[] = str_replace($initFolderPath . "/", "", $item);
             }
             // create output object
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $renderer->assign('listFileName', DataUtil::formatForDisplay($listFileName));
             $renderer->assign('list_show', DataUtil::formatForDisplay($array_show));
             $renderer->assign('folder', DataUtil::formatForDisplay($folder));
@@ -804,7 +804,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($dir == ".." || $dir == "." || strpos($dir, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -843,7 +843,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($dir == ".." || $dir == "." || strpos($dir, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -888,7 +888,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -903,7 +903,7 @@ class Files_User extends Zikula_Controller
         if (!$confirm) {
             // show an error page
             // create output object
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $renderer->assign('fileName', DataUtil::formatForDisplay($fileName));
             $renderer->assign('folder', DataUtil::formatForDisplay($folder));
             if ($external == 1) {
@@ -994,7 +994,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             $renderer->assign('hook', $hook);
@@ -1031,7 +1031,7 @@ class Files_User extends Zikula_Controller
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1039,7 +1039,7 @@ class Files_User extends Zikula_Controller
         $type = ($external == 1) ? 'external' : 'user';
         $func = ($external == 1) ? 'getFiles' : 'main';
         // Create output object
-        $renderer = Renderer::getInstance('Files', false);
+        $renderer = Zikula_View::getInstance('Files', false);
         $renderer->assign('folder', DataUtil::formatForDisplay($folder));
         $renderer->assign('type', $type);
         $renderer->assign('func', $func);
@@ -1068,7 +1068,7 @@ class Files_User extends Zikula_Controller
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1164,7 +1164,7 @@ class Files_User extends Zikula_Controller
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1173,7 +1173,7 @@ class Files_User extends Zikula_Controller
         $type = ($external == 1) ? 'external' : 'user';
         $func = ($external == 1) ? 'getFiles' : 'main';
         // create output object
-        $renderer = Renderer::getInstance('Files', false);
+        $renderer = Zikula_View::getInstance('Files', false);
         $renderer->assign('folder', DataUtil::formatForDisplay($folder));
         $renderer->assign('extensions', DataUtil::formatForDisplay(str_replace(',', ', ', ModUtil::getVar('Files', 'allowedExtensions'))));
         $renderer->assign('external', $external);
@@ -1202,7 +1202,7 @@ class Files_User extends Zikula_Controller
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1273,7 +1273,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1322,7 +1322,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1342,7 +1342,7 @@ class Files_User extends Zikula_Controller
                 $array_show[] = str_replace($initFolderPath . "/", "", $item);
             }
             // create output object
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $renderer->assign('listFileName', DataUtil::formatForDisplay($array_show));
             $renderer->assign('folder', DataUtil::formatForDisplay($folder));
             if ($external == 1) {
@@ -1405,7 +1405,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1418,7 +1418,7 @@ class Files_User extends Zikula_Controller
             return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder, 'hook' => $hook)));
         }
         // create output object
-        $renderer = Renderer::getInstance('Files', false);
+        $renderer = Zikula_View::getInstance('Files', false);
         $renderer->assign('list', DataUtil::formatForDisplay($list));
         $renderer->assign('folder', DataUtil::formatForDisplay($folder));
         if ($external == 1) {
@@ -1453,7 +1453,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1471,7 +1471,7 @@ class Files_User extends Zikula_Controller
                 }
             }
             // create output object
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $renderer->assign('listFileName', DataUtil::formatForDisplay($listFileName));
             $renderer->assign('directoris', DataUtil::formatForDisplay($directoris));
             $renderer->assign('folder', DataUtil::formatForDisplay($folder));
@@ -1539,7 +1539,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1614,7 +1614,7 @@ class Files_User extends Zikula_Controller
         }
         // checks if $rootFolderPath exists. If not user is send to error page
         if (!file_exists($rootFolderPath)) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = __f('The folder <strong>%s</strong> has not been found.', $rootFolderPath, $dom);
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1625,7 +1625,7 @@ class Files_User extends Zikula_Controller
             if (SecurityUtil::checkPermission('Files::', "::", ACCESS_ADMIN)) {
                 return $rootFolderPath;
             } else {
-                $renderer = Renderer::getInstance('Files', false);
+                $renderer = Zikula_View::getInstance('Files', false);
                 $errorMsg = $this->__('Directory creation error. Please contact with the administrator', $dom) . ': ' . $folderName;
                 $renderer->assign('errorMsg', $errorMsg);
                 return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1659,7 +1659,7 @@ class Files_User extends Zikula_Controller
         // get user init folder
         $initFolderPath = (SecurityUtil::checkPermission('Files::', "::", ACCESS_ADMIN)) ? $rootFolderPath : $rootFolderPath . '/' . $userFolder;
         if (!file_exists($initFolderPath) || !is_writable($initFolderPath)) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = __f('The "%s" directory does not exist or is not writable.', $initFolderPath, $dom);
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1727,7 +1727,7 @@ class Files_User extends Zikula_Controller
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');
@@ -1782,7 +1782,7 @@ class Files_User extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             return $renderer->fetch('Files_user_errorMsg.htm');

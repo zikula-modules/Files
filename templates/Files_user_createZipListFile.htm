@@ -19,8 +19,8 @@
                 <legend>{gt text="Generates a zip with this content"}</legend>
                 {foreach item=fileName from=$listFileName}
                 <div class="z-formnote">
-                    {$fileName|varprepfordisplay}
-                    <input type="hidden" name="listFileName[]" value="{$fileName|varprepfordisplay}" />
+                    {$fileName|safetext}
+                    <input type="hidden" name="listFileName[]" value="{$fileName|safetext}" />
                 </div>
                 {/foreach}
                 <div class="z-formrow">

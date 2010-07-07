@@ -3,7 +3,7 @@
     <select name="groupId">
         <option value="0">{gt text="Choose a group..."}</option>
         {foreach item="group" from=$groups}
-        <option value="{$group.gid|varprepfordisplay}">{$group.name|varprepfordisplay}</option>
+        <option value="{$group.gid|safetext}">{$group.name|safetext}</option>
         {/foreach}
     </select>
     

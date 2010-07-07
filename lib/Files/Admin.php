@@ -54,7 +54,7 @@ class Files_Admin extends Zikula_Controller
             $fileFileNotInRoot = true;
         }
         // Create output object
-        $renderer = Renderer::getInstance('Files',false);
+        $renderer = Zikula_View::getInstance('Files',false);
         if(!is_writable($folderPath) || !file_exists($folderPath)){
             $renderer -> assign('folderPathProblem', true);
         }
@@ -155,7 +155,7 @@ class Files_Admin extends Zikula_Controller
             }
         }
         // create output object
-        $renderer = Renderer::getInstance('Files',false);
+        $renderer = Zikula_View::getInstance('Files',false);
         $renderer -> assign('groups', $groupsArray);
         return $renderer -> fetch('Files_admin_newQuotaForm.htm');
     }
@@ -188,7 +188,7 @@ class Files_Admin extends Zikula_Controller
         }
         array_multisort($name, SORT_ASC,$groupsQuotas);
         // Create output object
-        $renderer = Renderer::getInstance('Files',false);
+        $renderer = Zikula_View::getInstance('Files',false);
         if(count(ModUtil::apiFunc('Groups', 'user', 'getall')) == $i){
             $renderer -> assign('noMoreGroups', true);
         }

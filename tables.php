@@ -17,7 +17,7 @@
  * @author Albert Pérez Monfort
  * @return module tables information
  */
-function Files_pntables()
+function Files_tables()
 {
     // Initialise table array
     $pntable = array();		

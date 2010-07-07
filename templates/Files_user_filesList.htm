@@ -84,7 +84,7 @@
                         {/if}
                     </td>
                     <td>&nbsp;</td>
-                    <td align="right">{$file.time|date_format:'datetimebrief'}</td>
+                    <td align="right">{$file.time|dateformat:'datetimebrief'}</td>
                     <td align="right">
                         <a href="{modurl modname="Files" func="action" do="rename" fileName=$file.name folder=$folderName}">{img modname='core' src='edit.gif' set='icons/extrasmall' __alt="Rename file" __title="Rename folder"}</a>
                         <a href="{modurl modname="Files" func="action" do="delete" fileName=$file.name folder=$folderName}">{img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete folder" __title="Delete File"}</a>
@@ -102,10 +102,10 @@
                         <a class="fi_image" style="background: url({getbaseurl}modules/Files/pnimages/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="{modurl modname="Files" func="downloadFile" folder=$folderName fileName=$file.name}">{$file.name}</a>
                     </td>
                     <td align="right">{$file.size} {gt text="Bytes"}</td>
-                    <td align="right">{$file.time|date_format:'datetimebrief'}</td>
+                    <td align="right">{$file.time|dateformat:'datetimebrief'}</td>
                     <td align="right">
                         {foreach item=option from=$file.options}
-                            <a href="{$option.url|varprepfordisplay}">{img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}</a>
+                            <a href="{$option.url|safetext}">{img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}</a>
                         {/foreach}
                     </td>
                 </tr>

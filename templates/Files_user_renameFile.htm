@@ -13,14 +13,14 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Files"}" />
             <input type="hidden" name="confirm" value="1" />
-            <input type="hidden" name="fileName" value="{$fileName|varprepfordisplay}" />
-            <input type="hidden" name="folder" value="{$folder|varprepfordisplay}" />
-            <input type="hidden" name="external" value="{$external|varprepfordisplay}" />
+            <input type="hidden" name="fileName" value="{$fileName|safetext}" />
+            <input type="hidden" name="folder" value="{$folder|safetext}" />
+            <input type="hidden" name="external" value="{$external|safetext}" />
             <fieldset>
                 <legend>{gt text="Rename file"}</legend>
                 <div class="z-formrow">
                     <label for="newname">{gt text="New filename"}</label>
-                    <input type="text" name="newname" id="newname" value="{$fileName|varprepfordisplay}" />
+                    <input type="text" name="newname" id="newname" value="{$fileName|safetext}" />
                 </div>
             </fieldset>
             <div class="z-formbuttons">

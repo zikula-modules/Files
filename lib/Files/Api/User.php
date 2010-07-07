@@ -84,7 +84,7 @@ class Files_Api_User extends Zikula_Api
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         $spaceUsed = ModUtil::apiFunc('Files', 'user', 'calcUsedSpace', array('folderToCalc' => $initFolderPath));
         $item = array('diskUse' => DataUtil::formatForStore($spaceUsed));
-    	$pntable =& System::dbGetTables();
+    	$pntable =& DBUtil::getTables();
     	$c = $pntable['Files_column'];
     	$where = "$c[userId]=" . UserUtil::getVar('uid');
     	if (!DBUtil::updateObject($item, 'Files', $where, 'fileId')) {

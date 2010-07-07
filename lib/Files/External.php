@@ -16,7 +16,7 @@ class Files_External extends Zikula_Controller
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
         // security check
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD) || !UserUtil::login()) {
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = __('Sorry! You have not been granted access to this page.', $dom);
             $renderer->assign('errorMsg', $errorMsg);
             $renderer->assign('external', 1);
@@ -28,7 +28,7 @@ class Files_External extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // check if the root folder exists
         if(!file_exists($initFolderPath)){
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = __('The server directory does not exist. Contact with the website administrator to solve this problem.', $dom);
             $renderer->assign('errorMsg',  $errorMsg);
             $renderer->assign('external', 1);
@@ -37,7 +37,7 @@ class Files_External extends Zikula_Controller
         }
         // protection. User can not navigate out their root folder
         if($folder == ".." || $folder == "."){
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = __('Invalid folder', $dom) . ': ' . $folder;
             $renderer->assign('errorMsg', $errorMsg);
             $renderer->assign('external', 1);
@@ -55,7 +55,7 @@ class Files_External extends Zikula_Controller
         // needed arguments
         // check if the folder exists
         if(!file_exists($folder)){
-            $renderer = Renderer::getInstance('Files', false);
+            $renderer = Zikula_View::getInstance('Files', false);
             $errorMsg = __('Invalid folder', $dom).': '.$folderName;
             $renderer->assign('errorMsg',  $errorMsg);
             $renderer->assign('external', 1);
@@ -77,7 +77,7 @@ class Files_External extends Zikula_Controller
                                                              array('value' => $usedSpace)),
                                                                    'widthUsage' => $widthUsage);
         // create output object
-        $renderer = Renderer::getInstance('Files', false);
+        $renderer = Zikula_View::getInstance('Files', false);
         // get folder files and subfolders
         $fileList = ModUtil::func('Files', 'user', 'dir_list',
                                 array('folder' => $folder,
