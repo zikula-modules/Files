@@ -12,8 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
+class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
 {
+    public function postInitialize()
+    {
+        $this->view->setCaching(false);
+    }
+
      /**
      * Initialise the interactive install system for the Files module. Checks if the needed folders exists and they are writeable
      * @author Albert Pérez Monfort (aperezm@xtec.cat)
@@ -24,9 +29,8 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
     		return LogUtil::registerPermissionError();
     	}
-        $renderer = Zikula_View::getInstance('Files', false);
-        $renderer->assign('step', 'info');
-        return $renderer->fetch('Files_init.htm');
+        $this->view->assign('step', 'info');
+        return $this->view->fetch('Files_init.htm');
     }
     
     public function form($args)
@@ -36,7 +40,6 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)){
             return LogUtil::registerPermissionError();
         }
-        $renderer = Zikula_View::getInstance('Multisites', false);
         if($GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
             $filesRealPath = 'files';
             $createdFilesFolder = true;
@@ -50,12 +53,11 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
             }
             $createdFilesFolder = false;
         }
-        $renderer = Zikula_View::getInstance('Files', false);
-        $renderer->assign('filesRealPath', $filesRealPath);
-        $renderer->assign('usersFolder', $file2);
-        $renderer->assign('createdFilesFolder', $createdFilesFolder);
-        $renderer->assign('step', 'form');
-        return $renderer->fetch('Files_init.htm');
+        $this->view->assign('filesRealPath', $filesRealPath);
+        $this->view->assign('usersFolder', $file2);
+        $this->view->assign('createdFilesFolder', $createdFilesFolder);
+        $this->view->assign('step', 'form');
+        return $this->view->fetch('Files_init.htm');
     }
     
     /**
@@ -76,7 +78,7 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
     		$siteDNS = (isset($_GET['siteDNS']) ? DataUtil::formatForOS($_GET['siteDNS']) : null);
     		$filesRealPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
     		if(!FileUtil::mkdirs($filesRealPath . '/' . $usersFolder, 0777, true)) {
-                LogUtil::registerError(__('Directory creation error') . ': ' . $usersFolder);
+                LogUtil::registerError($this->__('Directory creation error') . ': ' . $usersFolder);
                 return false;
     		}
     		$multisites = true;
@@ -104,16 +106,15 @@ class Files_Interactiveinstaller extends Zikula_InteractiveInstaller
             ModUtil::setVar('Files', 'folderPath', $filesRealPath);
             ModUtil::setVar('Files', 'usersFolder', $usersFolder);
         }
-        $renderer = Zikula_View::getInstance('Files', false);
-        $renderer->assign('filesRealPath', $filesRealPath);
-        $renderer->assign('usersFolder', $usersFolder);
-        $renderer->assign('file1', $file1);
-        $renderer->assign('file2', $file2);
-        $renderer->assign('multisites', $multisites);
-        $renderer->assign('fileWriteable1', $fileWriteable1);
-        $renderer->assign('fileWriteable2', $fileWriteable2);
-        $renderer->assign('step', 'check');
-        return $renderer->fetch('Files_init.htm');
+        $this->view->assign('filesRealPath', $filesRealPath);
+        $this->view->assign('usersFolder', $usersFolder);
+        $this->view->assign('file1', $file1);
+        $this->view->assign('file2', $file2);
+        $this->view->assign('multisites', $multisites);
+        $this->view->assign('fileWriteable1', $fileWriteable1);
+        $this->view->assign('fileWriteable2', $fileWriteable2);
+        $this->view->assign('step', 'check');
+        return $this->view->fetch('Files_init.htm');
     }
 
     /**

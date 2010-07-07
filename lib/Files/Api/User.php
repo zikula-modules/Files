@@ -21,7 +21,6 @@ class Files_Api_User extends Zikula_Api
     */
     public function get($args)
     {
-        $dom = ZLanguage::getModuleDomain('Files');
         $userId = (isset($args['userId'])) ? $args['userId'] : UserUtil::getVar('uid');
         // security check
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD)) {
@@ -30,7 +29,7 @@ class Files_Api_User extends Zikula_Api
         $item = DBUtil::selectObjectByID('Files', $userId, 'userId');    
     	// error message and return
     	if ($item === false) {
-    		return LogUtil::registerError (__('Error! Could not load items.', $dom));
+    		return LogUtil::registerError ($this->__('Error! Could not load items.'));
     	}
         return $item;
     }
@@ -42,7 +41,6 @@ class Files_Api_User extends Zikula_Api
     */
     public function createUserFilesInfo()
     {
-        $dom = ZLanguage::getModuleDomain('Files');
         // security check
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
@@ -56,7 +54,7 @@ class Files_Api_User extends Zikula_Api
             $item = array('userId' => DataUtil::formatForStore($uid),
                             'quota' => DataUtil::formatForStore($diskQuota));
             if (!DBUtil::insertObject($item, 'Files')) {
-                return LogUtil::registerError (__('Error! Could not create the new item.', $dom));
+                return LogUtil::registerError ($this->__('Error! Could not create the new item.'));
             }
         }
         return true;
@@ -69,7 +67,6 @@ class Files_Api_User extends Zikula_Api
     */
     public function updateUsedSpace()
     {
-        $dom = ZLanguage::getModuleDomain('Files');
         // security check
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
@@ -88,7 +85,7 @@ class Files_Api_User extends Zikula_Api
     	$c = $pntable['Files_column'];
     	$where = "$c[userId]=" . UserUtil::getVar('uid');
     	if (!DBUtil::updateObject($item, 'Files', $where, 'fileId')) {
-    		return LogUtil::registerError (__('Error! Could not update the used disk.'), $dom);
+    		return LogUtil::registerError ($this->__('Error! Could not update the used disk.'));
     	}
         // Let the calling process know that we have finished successfully
     	return true;
@@ -104,7 +101,7 @@ class Files_Api_User extends Zikula_Api
     {
     	$folderToCalc = FormUtil::getPassedValue('folderToCalc', isset($args['folderToCalc']) ? $args['folderToCalc'] : null, 'POST');
     	if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
-    		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom), 403);
+    		return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
     	}
     	if ($handle = opendir($folderToCalc)) {
     		while (false !== ($file = readdir($handle))) {

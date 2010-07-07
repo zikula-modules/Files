@@ -21,13 +21,12 @@ class Files_Api_Account extends Zikula_Api
      */
     function getall($args)
     {
-        $dom = ZLanguage::getModuleDomain('Files');
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD)) {
             return false;
         }
         // create an array of links to return
         $items = array(array('url'     => ModUtil::url('Files', 'user','main'),
-                             'title'   => $this->__('File Manager', $dom),
+                             'title'   => $this->__('File Manager'),
                              'icon'    => 'user.gif'));
         // Return the items
         return $items;

@@ -11,7 +11,7 @@
  * @package    Utilities
  * @subpackage Files
  */
-class Files_Ajax extends Zikula_Controller
+class Files_Controller_Ajax extends Zikula_Controller
 { 
     /**
      * shows the form to define a new group quota
@@ -36,17 +36,16 @@ class Files_Ajax extends Zikula_Controller
     */
     public function createGroupQuota($args)
     {
-        $dom = ZLanguage::getModuleDomain('Files');
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}
         $gid = FormUtil::getPassedValue('gid', -1, 'GET');
     	if ($gid == -1) {
-    		AjaxUtil::error($this->__('no group found', $dom));
+    		AjaxUtil::error($this->__('no group found'));
     	}
         $quota = FormUtil::getPassedValue('quota', -10, 'GET');
     	if ($quota == -10) {
-    		AjaxUtil::error($this->__('no quota defined', $dom));
+    		AjaxUtil::error($this->__('no quota defined'));
     	}
         if(is_numeric($gid) && is_numeric($quota)){
             //create a new assignament for a disk quote
@@ -71,13 +70,12 @@ class Files_Ajax extends Zikula_Controller
     */
     public function deleteGroupQuota($args)
     {
-        $dom = ZLanguage::getModuleDomain('Files');
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}
         $gid = FormUtil::getPassedValue('gid', -1, 'GET');
     	if ($gid == -1) {
-    		AjaxUtil::error($this->__('no group found', $dom));
+    		AjaxUtil::error($this->__('no group found'));
     	}
         if(is_numeric($gid)){
             $assignaments = unserialize(ModUtil::getVar('Files', 'groupsQuota'));
@@ -103,13 +101,12 @@ class Files_Ajax extends Zikula_Controller
     public function createDir($args)
     {
         die();
-        $dom = ZLanguage::getModuleDomain('Files');
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}
     	$folder = FormUtil::getPassedValue('folder', -1, 'GET');
     	if ($folder == -1) {
-    		AjaxUtil::error($this->__('No folder defined.', $dom));
+    		AjaxUtil::error($this->__('No folder defined.'));
     	}
         $external = FormUtil::getPassedValue('external', -1, 'GET');
         $content = ModUtil::func('Files', 'user', 'createDirForm',
@@ -126,13 +123,12 @@ class Files_Ajax extends Zikula_Controller
     */
     public function uploadFile($args)
     {
-        $dom = ZLanguage::getModuleDomain('Files');
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}
     	$folder = FormUtil::getPassedValue('folder', -1, 'GET');
     	if ($folder == -1) {
-    		AjaxUtil::error($this->__('No folder defined.', $dom));
+    		AjaxUtil::error($this->__('No folder defined.'));
     	}
         $content = ModUtil::func('Files', 'user', 'uploadFileForm',
                               array('folder' => $folder));
@@ -140,21 +136,20 @@ class Files_Ajax extends Zikula_Controller
     }
     
     public function externalModifyImg($args){
-        $dom = ZLanguage::getModuleDomain('Files');
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}
         $image = FormUtil::getPassedValue('image', -1, 'GET');
     	if ($image == -1) {
-    		AjaxUtil::error($this->__('no image found', $dom));
+    		AjaxUtil::error($this->__('no image found'));
     	}
         $factor = FormUtil::getPassedValue('factor', -1, 'GET');
     	if ($factor == -1) {
-    		AjaxUtil::error($this->__('no size factor defined', $dom));
+    		AjaxUtil::error($this->__('no size factor defined'));
     	}
         $folderName = FormUtil::getPassedValue('folder', -1, 'GET');
     	if ($folderName == -1) {
-    		AjaxUtil::error($this->__('No folder defined.', $dom));
+    		AjaxUtil::error($this->__('No folder defined.'));
     	}
         $action = FormUtil::getPassedValue('action', -1, 'GET');
     
@@ -181,11 +176,11 @@ class Files_Ajax extends Zikula_Controller
                       'folder' => $folderName,
                       'newWidth' => $newWidth,
                       'fromAjax' => 1));
-        $renderer = Zikula_View::getInstance('Files', false);
-        $renderer -> assign('file',  $file);
-        $renderer -> assign('folderPath',  $folderPath);
-        $renderer -> assign('folderName',  $folderName);
-        $content = $renderer -> fetch('Files_external_getFilesImgContent.htm');
+        $this->view->setCaching(false);
+        $this->view -> assign('file',  $file);
+        $this->view -> assign('folderPath',  $folderPath);
+        $this->view -> assign('folderName',  $folderName);
+        $content = $this->view -> fetch('Files_external_getFilesImgContent.htm');
         AjaxUtil::output(array('image' => $image,
                                 'content' => $content));
     }

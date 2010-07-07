@@ -28,16 +28,16 @@ class Files_Installer extends Zikula_Installer
         // Delete module table
         DBUtil::dropTable('Files');
     	//Delete module vars
-        ModUtil::delVar('Files', 'folderPath');
-        ModUtil::delVar('Files', 'usersFolder');
-        ModUtil::delVar('Files', 'showHideFiles');
-        ModUtil::delVar('Files', 'allowedExtensions');
-        ModUtil::delVar('Files', 'defaultQuota');
-        ModUtil::delVar('Files', 'groupsQuota');
-        ModUtil::delVar('Files', 'filesMaxSize');
-        ModUtil::delVar('Files', 'maxWidth');
-        ModUtil::delVar('Files', 'maxHeight');
-        ModUtil::delVar('Files', 'editableExtensions');
+        $this->delVar('folderPath');
+        $this->delVar('usersFolder');
+        $this->delVar('showHideFiles');
+        $this->delVar('allowedExtensions');
+        $this->delVar('defaultQuota');
+        $this->delVar('groupsQuota');
+        $this->delVar('filesMaxSize');
+        $this->delVar('maxWidth');
+        $this->delVar('maxHeight');
+        $this->delVar('editableExtensions');
         //Deletion successfull
         return true;
     }

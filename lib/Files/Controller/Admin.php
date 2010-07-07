@@ -12,8 +12,13 @@
  * @subpackage Files
  */
 
-class Files_Admin extends Zikula_Controller
+class Files_Controller_Admin extends Zikula_Controller
 {
+    public function postInitialize()
+    {
+        $this->view->setCaching(false);
+    }
+
     /**
      * Give access to the administrator main page
      * @author:    Albert Pérez Monfort (aperezm@xtec.cat)
@@ -24,25 +29,25 @@ class Files_Admin extends Zikula_Controller
         // Security check
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }   
+        }
         $multisites = false;
         if($GLOBALS['PNConfig']['Multisites']['multi'] == 1){
             $multisites = true;
         }
         if($GLOBALS['PNConfig']['Multisites']['multi'] == 1){
             $siteDNS = FormUtil::getPassedValue('siteDNS', '', 'GET');
-       	    $folderPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
+            $folderPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
         }else{
             $folderPath = ModUtil::getVar('Files', 'folderPath');
         }
-       $moduleVars = array('usersFolder' => ModUtil::getVar('Files', 'usersFolder'),
-                           'allowedExtensions' => ModUtil::getVar('Files', 'allowedExtensions'),
-                           'defaultQuota' => ModUtil::getVar('Files', 'defaultQuota'),
-                           'filesMaxSize' => ModUtil::getVar('Files', 'filesMaxSize'),
-                           'maxWidth' => ModUtil::getVar('Files', 'maxWidth'),
-                           'maxHeight' => ModUtil::getVar('Files', 'maxHeight'),
-                           'showHideFiles' => ModUtil::getVar('Files', 'showHideFiles'),
-                           'editableExtensions' => ModUtil::getVar('Files', 'editableExtensions'));
+        $moduleVars = array('usersFolder' => ModUtil::getVar('Files', 'usersFolder'),
+                'allowedExtensions' => ModUtil::getVar('Files', 'allowedExtensions'),
+                'defaultQuota' => ModUtil::getVar('Files', 'defaultQuota'),
+                'filesMaxSize' => ModUtil::getVar('Files', 'filesMaxSize'),
+                'maxWidth' => ModUtil::getVar('Files', 'maxWidth'),
+                'maxHeight' => ModUtil::getVar('Files', 'maxHeight'),
+                'showHideFiles' => ModUtil::getVar('Files', 'showHideFiles'),
+                'editableExtensions' => ModUtil::getVar('Files', 'editableExtensions'));
         $fileFileInModule = false;
         $fileFileNotInRoot = false;
         // check if file file.php exists in folder modules/Files
@@ -54,24 +59,23 @@ class Files_Admin extends Zikula_Controller
             $fileFileNotInRoot = true;
         }
         // Create output object
-        $renderer = Zikula_View::getInstance('Files',false);
         if(!is_writable($folderPath) || !file_exists($folderPath)){
-            $renderer -> assign('folderPathProblem', true);
+            $this->view -> assign('folderPathProblem', true);
         }
         if(!is_writable($folderPath . '/' . $moduleVars['usersFolder']) || !file_exists($folderPath . '/' . $moduleVars['usersFolder']) || $moduleVars['usersFolder'] == ''){
-            $renderer -> assign('usersFolderProblem', true);
+            $this->view -> assign('usersFolderProblem', true);
         }
         $quotasTable = ModUtil::func('Files', 'admin', 'getQuotasTable');
-        $renderer->assign('folderPath', $folderPath);
-        $renderer->assign('multisites', $multisites);
-        $renderer->assign('quotasTable', $quotasTable);
-        $renderer->assign('moduleVars', $moduleVars);
-        $renderer->assign('fileFileInModule', $fileFileInModule);
-        $renderer->assign('fileFileNotInRoot', $fileFileNotInRoot);
-    
-        return $renderer -> fetch('Files_admin_conf.htm');
+        $this->view->assign('folderPath', $folderPath);
+        $this->view->assign('multisites', $multisites);
+        $this->view->assign('quotasTable', $quotasTable);
+        $this->view->assign('moduleVars', $moduleVars);
+        $this->view->assign('fileFileInModule', $fileFileInModule);
+        $this->view->assign('fileFileNotInRoot', $fileFileNotInRoot);
+
+        return $this->view -> fetch('Files_admin_conf.htm');
     }
-    
+
     /**
      * Update the module configuration
      * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
@@ -79,7 +83,6 @@ class Files_Admin extends Zikula_Controller
      */
     public function updateconfig($args)
     {
-        $dom = ZLanguage::getModuleDomain('Files');
         // Get parameters from whatever input we need.
         $showHideFiles = FormUtil::getPassedValue('showHideFiles', isset($args['showHideFiles']) ? $args['showHideFiles'] : 0, 'POST');
         $folderPath = FormUtil::getPassedValue('folderPath', isset($args['folderPath']) ? $args['folderPath'] : null, 'POST');
@@ -99,16 +102,16 @@ class Files_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError (ModUtil::url('Files', 'admin', 'main'));
         }
         $moduleVars = array('showHideFiles' => $showHideFiles,
-                            'allowedExtensions' => $allowedExtensions,
-                            'defaultQuota' => $defaultQuota,
-                            'filesMaxSize' => $filesMaxSize,
-                            'maxWidth' => $maxWidth,
-                            'maxHeight' => $maxHeight,
-                            'editableExtensions' => $editableExtensions);
+                'allowedExtensions' => $allowedExtensions,
+                'defaultQuota' => $defaultQuota,
+                'filesMaxSize' => $filesMaxSize,
+                'maxWidth' => $maxWidth,
+                'maxHeight' => $maxHeight,
+                'editableExtensions' => $editableExtensions);
         if($GLOBALS['PNConfig']['Multisites']['multi'] != 1){
             if(!file_exists($folderPath)){
                 ModUtil::setVars('Files', $moduleVars);
-                LogUtil::registerError (__f('The directory <strong>%s</strong> does not exist', $folderPath, $dom));
+                LogUtil::registerError ($this->__f('The directory <strong>%s</strong> does not exist', $folderPath));
                 return System::redirect(ModUtil::url('Files', 'admin', 'main'));
             }
             $folderPath = (substr($folderPath, -1) == '/') ? substr($folderPath, 0, strlen($folderPath) - 1) : $folderPath;
@@ -116,19 +119,19 @@ class Files_Admin extends Zikula_Controller
         }
         if(!file_exists($folderPath . '/' . $usersFolder) || $usersFolder == '' || $usersFolder == null){
             ModUtil::setVars('Files', $moduleVars);
-            LogUtil::registerError (__f('The directory <strong>%s</strong> for users does not exist', $usersFolder, $dom));
+            LogUtil::registerError ($this->__f('The directory <strong>%s</strong> for users does not exist', $usersFolder));
             return System::redirect(ModUtil::url('Files', 'admin', 'main'));
         }
         $usersFolder = (substr($usersFolder, -1) == '/') ? substr($usersFolder, 0, strlen($usersFolder) - 1) : $usersFolder;
         $usersFolder = (substr($usersFolder, 0, 1) == '/') ? substr($usersFolder, 1, strlen($usersFolder)) : $usersFolder;
         $moduleVars['usersFolder'] = $usersFolder;
         ModUtil::setVars('Files', $moduleVars);
-        LogUtil::registerStatus ($this->__('The configuration has been updated', $dom));    
+        LogUtil::registerStatus ($this->__('The configuration has been updated'));
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
         return System::redirect(ModUtil::url('Files', 'admin', 'main'));
     }
-    
+
     /**
      * get form to create a new quota
      * @author:    Albert Pérez Monfort (aperezm@xtec.cat)
@@ -146,20 +149,19 @@ class Files_Admin extends Zikula_Controller
         $groupsQuotas = unserialize($groupsQuotas);
         foreach($groupsQuotas as $quota){
             $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'],
-                                                        'quota' => $quota['quota']);
+                    'quota' => $quota['quota']);
         }
         foreach($groups as $group){
             if(!array_key_exists($group['gid'], $groupsQuotasArray)){
                 $groupsArray[] = array('name' => $group['name'],
-                                        'gid' => $group['gid']);
+                        'gid' => $group['gid']);
             }
         }
         // create output object
-        $renderer = Zikula_View::getInstance('Files',false);
-        $renderer -> assign('groups', $groupsArray);
-        return $renderer -> fetch('Files_admin_newQuotaForm.htm');
+        $this->view -> assign('groups', $groupsArray);
+        return $this->view -> fetch('Files_admin_newQuotaForm.htm');
     }
-    
+
     /**
      * get the table of quotas in configuration pannel
      * @author:    Albert Pérez Monfort (aperezm@xtec.cat)
@@ -188,11 +190,10 @@ class Files_Admin extends Zikula_Controller
         }
         array_multisort($name, SORT_ASC,$groupsQuotas);
         // Create output object
-        $renderer = Zikula_View::getInstance('Files',false);
         if(count(ModUtil::apiFunc('Groups', 'user', 'getall')) == $i){
-            $renderer -> assign('noMoreGroups', true);
+            $this->view -> assign('noMoreGroups', true);
         }
-        $renderer -> assign('groupsQuotas', $groupsQuotas);
-        return $renderer -> fetch('Files_admin_quotasTable.htm'); 
+        $this->view -> assign('groupsQuotas', $groupsQuotas);
+        return $this->view -> fetch('Files_admin_quotasTable.htm');
     }
 }

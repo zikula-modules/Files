@@ -1,6 +1,10 @@
 <?php
-class Files_External extends Zikula_Controller
+class Files_Controller_External extends Zikula_Controller
 {
+    public function postInitialize()
+    {
+        $this->view->setCaching(false);
+    }
     /**
      * List the files in server folder
      * @author:	Albert Pérez Monfort
@@ -11,16 +15,14 @@ class Files_External extends Zikula_Controller
     {
         $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : 0, 'GET');
     	PageUtil::AddVar('javascript', 'modules/Files/javascript/getFiles.js');
-        $dom = ZLanguage::getModuleDomain('Files');
         // get arguments
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
         // security check
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD) || !UserUtil::login()) {
-            $renderer = Zikula_View::getInstance('Files', false);
-            $errorMsg = __('Sorry! You have not been granted access to this page.', $dom);
-            $renderer->assign('errorMsg', $errorMsg);
-            $renderer->assign('external', 1);
-            $renderer->display('Files_user_errorMsg.htm');
+            $errorMsg = $this->__('Sorry! You have not been granted access to this page.');
+            $this->view->assign('errorMsg', $errorMsg);
+            $this->view->assign('external', 1);
+            $this->view->display('Files_user_errorMsg.htm');
             exit;
         }
         $oFolder = $folder;
@@ -28,20 +30,18 @@ class Files_External extends Zikula_Controller
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // check if the root folder exists
         if(!file_exists($initFolderPath)){
-            $renderer = Zikula_View::getInstance('Files', false);
-            $errorMsg = __('The server directory does not exist. Contact with the website administrator to solve this problem.', $dom);
-            $renderer->assign('errorMsg',  $errorMsg);
-            $renderer->assign('external', 1);
-            $renderer->display('Files_user_errorMsg.htm');
+            $errorMsg = $this->__('The server directory does not exist. Contact with the website administrator to solve this problem.');
+            $this->view->assign('errorMsg',  $errorMsg);
+            $this->view->assign('external', 1);
+            $this->view->display('Files_user_errorMsg.htm');
             exit;
         }
         // protection. User can not navigate out their root folder
         if($folder == ".." || $folder == "."){
-            $renderer = Zikula_View::getInstance('Files', false);
-            $errorMsg = __('Invalid folder', $dom) . ': ' . $folder;
-            $renderer->assign('errorMsg', $errorMsg);
-            $renderer->assign('external', 1);
-            $renderer->display('Files_user_errorMsg.htm');
+            $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
+            $this->view->assign('errorMsg', $errorMsg);
+            $this->view->assign('external', 1);
+            $this->view->display('Files_user_errorMsg.htm');
             exit;
         }
         // get folder name
@@ -49,17 +49,16 @@ class Files_External extends Zikula_Controller
         $folder = $initFolderPath . '/' .  $folder;
         // users can not browser the thumbnails folders
         if(strpos($folder, '.tbn') !== false) {
-            LogUtil::registerError(__('It is not possible to browse this folder', $dom));
+            LogUtil::registerError($this->__('It is not possible to browse this folder'));
             return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => substr($folderName, 0, strrpos($folderName, '/')))));
         }
         // needed arguments
         // check if the folder exists
         if(!file_exists($folder)){
-            $renderer = Zikula_View::getInstance('Files', false);
-            $errorMsg = __('Invalid folder', $dom).': '.$folderName;
-            $renderer->assign('errorMsg',  $errorMsg);
-            $renderer->assign('external', 1);
-            $renderer->display('Files_user_errorMsg.htm');
+            $errorMsg = $this->__('Invalid folder').': '.$folderName;
+            $this->view->assign('errorMsg',  $errorMsg);
+            $this->view->assign('external', 1);
+            $this->view->display('Files_user_errorMsg.htm');
             exit;
         }
         // get user's disk use
@@ -77,7 +76,7 @@ class Files_External extends Zikula_Controller
                                                              array('value' => $usedSpace)),
                                                                    'widthUsage' => $widthUsage);
         // create output object
-        $renderer = Zikula_View::getInstance('Files', false);
+        $this->view = Zikula_View::getInstance('Files', false);
         // get folder files and subfolders
         $fileList = ModUtil::func('Files', 'user', 'dir_list',
                                 array('folder' => $folder,
@@ -85,15 +84,15 @@ class Files_External extends Zikula_Controller
         sort($fileList[dir]);
         sort($fileList[file]);
         if(!is_writable($folder)){
-            $renderer->assign('notwriteable', true);
+            $this->view->assign('notwriteable', true);
         }
         // check if it is a public directori
         if(!file_exists($folder.'/.locked')){
             // it is a public directori
             $is_public = true;
         }
-        $renderer->assign('publicFolder',  $is_public);
-        $renderer->assign('folderPrev', substr($folderName, 0 ,  strrpos($folderName, '/')));
+        $this->view->assign('publicFolder',  $is_public);
+        $this->view->assign('folderPrev', substr($folderName, 0 ,  strrpos($folderName, '/')));
         $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0 , 1)) . '/' . UserUtil::getVar('uname') . '/' .$folderName;
         $imagesArray = array();
         // get folder files and subfolders
@@ -116,12 +115,12 @@ class Files_External extends Zikula_Controller
                 }
             }
         }
-        $renderer->assign('folderPath', DataUtil::formatForDisplay($folderPath));
-        $renderer->assign('folderName', DataUtil::formatForDisplay($folderName));
-        $renderer->assign('fileList', $fileList);
-        $renderer->assign('hook', $hook);
-        $renderer->assign('imagesArray', DataUtil::formatForDisplay($imagesArray));
-        $renderer->assign('usedSpace',  $usedSpaceArray);
-        return $renderer->display('Files_external_getFiles.htm');
+        $this->view->assign('folderPath', DataUtil::formatForDisplay($folderPath));
+        $this->view->assign('folderName', DataUtil::formatForDisplay($folderName));
+        $this->view->assign('fileList', $fileList);
+        $this->view->assign('hook', $hook);
+        $this->view->assign('imagesArray', DataUtil::formatForDisplay($imagesArray));
+        $this->view->assign('usedSpace',  $usedSpaceArray);
+        return $this->view->display('Files_external_getFiles.htm');
     }
 }
