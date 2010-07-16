@@ -27,7 +27,7 @@ class Files_Version extends Zikula_Version
         $meta['description'] = $this->__('File manager for Zikula sites.');
         $meta['displayname'] = $this->__('File Manager');
         $meta['url'] = $this->__('files');
-        $meta['contact'] = 'Albert Perez Monfort , Robert Barrera i Fèlix Casanellas aperezm@xtec.cat';
+
         $meta['securityschema'] = array('Files::' => '::');
         return $meta;
     }
