@@ -122,6 +122,7 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
     * @author Albert Pérez Monfort (aperezm@xtec.cat)
     * @return If the files folder and users folder are not created and writeable it is not possible to install
     */
+    /*
     public function finalInstall()
     {
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
@@ -154,4 +155,5 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
         ModUtil::registerHook('item', 'display', 'GUI', 'Files', 'user', 'Files');
         return true;
     }
+    */
 }
