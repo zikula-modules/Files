@@ -100,7 +100,6 @@ class Files_Controller_Ajax extends Zikula_Controller
     */
     public function createDir($args)
     {
-        die();
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}

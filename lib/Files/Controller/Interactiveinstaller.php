@@ -116,44 +116,4 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
         $this->view->assign('step', 'check');
         return $this->view->fetch('Files_init.htm');
     }
-
-    /**
-    * Proceed with the module installation
-    * @author Albert Pérez Monfort (aperezm@xtec.cat)
-    * @return If the files folder and users folder are not created and writeable it is not possible to install
-    */
-    /*
-    public function finalInstall()
-    {
-    	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
-    		return LogUtil::registerPermissionError();
-    	}
-        // set content of the files .htaccess and .locked
-        $htaccessContent = "# Avoid direct web access to folder files\r\nOrder deny,allow\r\nDeny from all\r\n";
-        $lockedContent = "# Avoid direct web access with the file file.php\r\n";
-        // Create module table
-        if (!DBUtil::createTable('Files')) return false;
-        //Create indexes
-        $pntable = DBUtil::getTables();
-        $c = $pntable['Files_column'];
-        DBUtil::createIndex($c['userId'], 'Files', 'userId');
-        // create security files
-        FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/.htaccess', $htaccessContent, true);
-        FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/.locked', $lockedContent, true);
-        FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/' . ModUtil::getVar('Files', 'usersFolder') . '/.htaccess', $htaccessContent, true);
-        FileUtil::writeFile(ModUtil::getVar('Files', 'folderPath') . '/' . ModUtil::getVar('Files', 'usersFolder') . '/.locked', $lockedContent, true);
-        //Create module vars
-        ModUtil::setVar('Files', 'showHideFiles', '0');
-        ModUtil::setVar('Files', 'allowedExtensions', 'gif,png,jpg,odt,doc,pdf,zip');
-        ModUtil::setVar('Files', 'defaultQuota', 1);
-        ModUtil::setVar('Files', 'groupsQuota', 's:0:"";');
-        ModUtil::setVar('Files', 'filesMaxSize', '1000000');
-        ModUtil::setVar('Files', 'maxWidth', '250');
-        ModUtil::setVar('Files', 'maxHeight', '250');
-        ModUtil::setVar('Files', 'editableExtensions', 'php,htm,html,htaccess,css,js,tpl');
-        // Set up module hook
-        ModUtil::registerHook('item', 'display', 'GUI', 'Files', 'user', 'Files');
-        return true;
-    }
-    */
 }

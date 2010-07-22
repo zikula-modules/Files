@@ -5,8 +5,8 @@
  *          external => 1 if user is in a external plug-in and 0 otherwise
  * @return: form with the needed fields  
  */
-function createDir(folder,external,hook){
-    alert('r');
+function createDir(folder,external,hook)
+{
 	var pars = "module=Files&func=createDir&folder=" + folder + "&external=" + external + "&hook=" + hook;
     Element.update('actionForm', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
 	var myAjax = new Ajax.Request("ajax.php", 
@@ -18,7 +18,8 @@ function createDir(folder,external,hook){
 	});
 }
 
-function createDir_response(req){
+function createDir_response(req)
+{
 	if (req.status != 200 ) { 
 		pnshowajaxerror(req.responseText);
 		return;
@@ -27,7 +28,8 @@ function createDir_response(req){
 	Element.update('actionForm', json.content);
 }
 
-function createDir_failure(){
+function createDir_failure()
+{
 
 }
 
@@ -38,7 +40,8 @@ function createDir_failure(){
  *          external => 1 if user is in a external plug-in and 0 otherwise
  * @return: form with the needed fields  
  */
-function uploadFile(folder,external,hook){
+function uploadFile(folder,external,hook)
+{
 	var pars = "module=Files&func=uploadFile&folder=" + folder + "&external=" + external + "&hook=" + hook;;
     Element.update('actionForm', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
 	var myAjax = new Ajax.Request("ajax.php", 
@@ -50,7 +53,8 @@ function uploadFile(folder,external,hook){
 	});
 }
 
-function uploadFile_response(req){
+function uploadFile_response(req)
+{
 	if (req.status != 200 ) { 
 		pnshowajaxerror(req.responseText);
 		return;
@@ -59,7 +63,8 @@ function uploadFile_response(req){
 	Element.update('actionForm', json.content);
 }
 
-function uploadFile_failure(){
+function uploadFile_failure()
+{
 
 }
 
@@ -68,7 +73,8 @@ function uploadFile_failure(){
  * @author: Albert Pérez Monfort
  * @return: true if success and false otherwise  
  */
-function submitUpdateFile(){
+function submitUpdateFile()
+{
     document.forms["updateFile"].submit();
     Element.update('actionForm', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
 }
@@ -78,7 +84,8 @@ function submitUpdateFile(){
  * @author: Albert Pérez Monfort
  * @return: true if success and false otherwise  
  */
-function submitCreateDir(){
+function submitCreateDir()
+{
     document.forms["createDir"].submit();
     Element.update('actionForm', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
 }
@@ -88,7 +95,8 @@ function submitCreateDir(){
  * @author: Albert Pérez Monfort
  * @return: The form fields
  */
-function newGroupQuota(){
+function newGroupQuota()
+{
     var pars = "module=Files&func=newGroupQuota";
     Element.update('newQuota', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
 	var myAjax = new Ajax.Request("ajax.php", 
@@ -100,7 +108,8 @@ function newGroupQuota(){
 	});
 }
 
-function newGroupQuota_response(req){
+function newGroupQuota_response(req)
+{
 	if (req.status != 200 ) { 
 		pnshowajaxerror(req.responseText);
 		return;
@@ -109,7 +118,8 @@ function newGroupQuota_response(req){
 	Element.update('newQuota', json.content);
 }
 
-function newGroupQuota_failure(){
+function newGroupQuota_failure()
+{
 
 }
 
@@ -118,7 +128,8 @@ function newGroupQuota_failure(){
  * @author: Albert Pérez Monfort
  * @return: True if success and false otherwise
  */
-function createGroupQuota(){
+function createGroupQuota()
+{
     var groupId = document.forms["newQuota"].groupId.value;
     var quota = document.forms["newQuota"].quotaValue.value;
     var pars = "module=Files&func=createGroupQuota&gid=" + groupId + "&quota=" + quota;
@@ -132,7 +143,8 @@ function createGroupQuota(){
 	});
 }
 
-function createGroupQuota_response(req){
+function createGroupQuota_response(req)
+{
 	if (req.status != 200 ) { 
 		pnshowajaxerror(req.responseText);
 		return;
@@ -141,7 +153,8 @@ function createGroupQuota_response(req){
 	Element.update('quotaTable', json.content);
 }
 
-function createGroupQuota_failure(){
+function createGroupQuota_failure()
+{
 
 }
 
@@ -150,7 +163,8 @@ function createGroupQuota_failure(){
  * @author: Albert Pérez Monfort
  * @return: True if success and false otherwise
  */
-function deleteGroupQuota(gid){
+function deleteGroupQuota(gid)
+{
     var pars = "module=Files&func=deleteGroupQuota&gid=" + gid;
     Element.update('newQuota', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
 	var myAjax = new Ajax.Request("ajax.php", 
@@ -162,7 +176,8 @@ function deleteGroupQuota(gid){
 	});
 }
 
-function deleteGroupQuota_response(req){
+function deleteGroupQuota_response(req)
+{
 	if (req.status != 200 ) { 
 		pnshowajaxerror(req.responseText);
 		return;
@@ -171,7 +186,7 @@ function deleteGroupQuota_response(req){
 	Element.update('quotaTable', json.content);
 }
 
-function deleteGroupQuota_failure(){
+function deleteGroupQuota_failure()
+{
 
 }
-

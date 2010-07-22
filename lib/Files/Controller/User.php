@@ -34,7 +34,7 @@ class Files_Controller_User extends Zikula_Controller
         // get arguments
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
         // security check
-        if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD) || !UserUtil::login()) {
+        if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD) || !UserUtil::isLoggedIn()) {
             return LogUtil::registerPermissionError();
         }
         $oFolder = $folder;
@@ -84,8 +84,8 @@ class Files_Controller_User extends Zikula_Controller
         // create output object
         // get folder files and subfolders
         $fileList = $this->dir_list(array('folder' => $folder));                            
-        sort($fileList[dir]);
-        sort($fileList[file]);
+        sort($fileList['dir']);
+        sort($fileList['file']);
         if (!is_writable($folder)) {
             $this->view->assign('notwriteable', true);
         }
@@ -213,6 +213,8 @@ class Files_Controller_User extends Zikula_Controller
         $thumbnailExtensions = array('gif','jpg','png');
         $dir_handle = opendir($folder);
         $dir_objects = array();
+        $dir_objects['dir'] = array();
+        $dir_objects['file'] = array();
         while ($object = readdir($dir_handle)) {
             if (!in_array($object, array('.', '..'))) {
                 $filename = DataUtil::formatForDisplay($folder . $object);
@@ -220,76 +222,78 @@ class Files_Controller_User extends Zikula_Controller
                 $fileExtension = FileUtil::getExtension($filename);
                 // get file icon
                 $ctypeArray = ModUtil::func('Files', 'user', 'getMimetype',
-                                        array('extension' => $fileExtension));                                      
-                $editable = (strpos($editableExtensions, strtolower($fileExtension)) !== false) ? 1 : 0;
+                                        array('extension' => $fileExtension));
+                $editable = 0;
+                if ($fileExtension) {
+                    $editable = (strpos($editableExtensions, strtolower($fileExtension)) !== false) ? 1 : 0;
+                }
                 $thumbnailable = (in_array(strtolower($fileExtension), $thumbnailExtensions)) ? 1 : 0;
                 $fileIcon = $ctypeArray['icon'];
                 $options = array();
                 if (substr($filename, strrpos($filename, '/') + 1, 1) != '.' || ModUtil::getVar('Files', 'showHideFiles') == 1 || (ModUtil::getVar('Files', 'showHideFiles') == 2 && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN))) {
                     if (strtolower($fileExtension) == 'zip') {
                         $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
-                                                            array('do' => 'unzip',
-                                                            'fileName' => $object,
-                                                            'folder' => $folderName,
-                                                            'external' => $external)),
-                                           'image' => 'folder_tar.gif',
-                                           'title' => $this->__('Unzip file'));
+                                                                  array('do' => 'unzip',
+                                                                        'fileName' => $object,
+                                                                        'folder' => $folderName,
+                                                                        'external' => $external)),
+                                                                        'image' => 'folder_tar.gif',
+                                                                        'title' => $this->__('Unzip file'));
                         $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
-                                                            array('do' => 'listcontentzip',
-                                                            'fileName' => $object,
-                                                            'folder' => $folderName,
-                                                            'external' => $external)),
-                                           'image' => 'list.gif',
-                                           'title' => $this->__('List of the file content'));
+                                                                  array('do' => 'listcontentzip',
+                                                                        'fileName' => $object,
+                                                                        'folder' => $folderName,
+                                                                        'external' => $external)),
+                                                                        'image' => 'list.gif',
+                                                                        'title' => $this->__('List of the file content'));
                     }
                     $options[] = array('url' => ModUtil::url('Files', 'user', 'downloadFile',
-                                                        array('fileName' => $object,
-                                                        'folder' => $folderName)),
-                                       'image' => 'agt_update_misc.gif',
-                                       'title' => $this->__('Download file'));
+                                                              array('fileName' => $object,
+                                                                    'folder' => $folderName)),
+                                                                    'image' => 'agt_update_misc.gif',
+                                                                    'title' => $this->__('Download file'));
                     if ($editable) {
                         $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
-                                                            array('do' => 'edit',
-                                                            'fileName' => $object,
-                                                            'folder' => $folderName,
-                                                            'external' => $external)),
-                                           'image' => 'xedit.gif',
-                                           'title' => $this->__('Edit file'));
+                                                                  array('do' => 'edit',
+                                                                        'fileName' => $object,
+                                                                        'folder' => $folderName,
+                                                                        'external' => $external)),
+                                                                        'image' => 'xedit.gif',
+                                                                        'title' => $this->__('Edit file'));
                     }
                     if ($thumbnailable && $external == 1 && !file_exists($folder . '.tbn/' . $object)) {
                         $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
-                                                            array('do' => 'thumbnail',
-                                                            'fileName' => $object,
-                                                            'folder' => $folderName,
-                                                            'external' => $external)),
-                                           'image' => 'inline_image.gif',
-                                           'title' => $this->__('Create Thumbnail'));
+                                                                  array('do' => 'thumbnail',
+                                                                        'fileName' => $object,
+                                                                        'folder' => $folderName,
+                                                                        'external' => $external)),
+                                                                        'image' => 'inline_image.gif',
+                                                                        'title' => $this->__('Create Thumbnail'));
                     }
                     $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
-                                                        array('do' => 'rename',
-                                                        'fileName' => $object,
-                                                        'folder' => $folderName,
-                                                        'external' => $external)),
-                                       'image' => 'edit.gif',
-                                       'title' => $this->__('Rename file'));
+                                                              array('do' => 'rename',
+                                                                    'fileName' => $object,
+                                                                    'folder' => $folderName,
+                                                                    'external' => $external)),
+                                                                    'image' => 'edit.gif',
+                                                                    'title' => $this->__('Rename file'));
                     $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
-                                                        array('do' => 'delete',
-                                                        'fileName' => $object,
-                                                        'folder' => $folderName,
-                                                        'external' => $external)),
-                                       'image' => '14_layer_deletelayer.gif',
-                                       'title' => $this->__('Delete File'));
-                    $file_object = array(
-                        'name' => DataUtil::formatForDisplay($object),
-                        'size' => filesize($filename),
-                        'type' => filetype($filename),
-                        'time' => date("j F Y, H:i", filemtime($filename)),
-                        'fileIcon' => $fileIcon,
-                        'options' => $options);
+                                                              array('do' => 'delete',
+                                                                    'fileName' => $object,
+                                                                    'folder' => $folderName,
+                                                                    'external' => $external)),
+                                                                    'image' => '14_layer_deletelayer.gif',
+                                                                    'title' => $this->__('Delete File'));
+                    $file_object = array('name' => DataUtil::formatForDisplay($object),
+                                         'size' => filesize($filename),
+                                         'type' => filetype($filename),
+                                         'time' => date("j F Y, H:i", filemtime($filename)),
+                                         'fileIcon' => $fileIcon,
+                                         'options' => $options);
                     if (is_dir($filename)) {
-                        $dir_objects[dir][] = $file_object;
+                        $dir_objects['dir'][] = $file_object;
                     } else {
-                        $dir_objects[file][] = $file_object;
+                        $dir_objects['file'][] = $file_object;
                     }
                 }
             }
@@ -1552,7 +1556,7 @@ class Files_Controller_User extends Zikula_Controller
     public function getInitFolderPath()
     {
         // security check
-        if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD) || !UserUtil::login()) {
+        if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD) || !UserUtil::isLoggedIn()) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.'), 403);
         }
         if ($GLOBALS['PNConfig']['Multisites']['multi'] == 1) {

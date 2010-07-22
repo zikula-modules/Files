@@ -135,9 +135,13 @@ class Files_Controller_Admin extends Zikula_Controller
         $groups = ModUtil::apiFunc('Groups', 'user', 'getall');
         $groupsQuotas = ModUtil::getVar('Files', 'groupsQuota');
         $groupsQuotas = unserialize($groupsQuotas);
-        foreach ($groupsQuotas as $quota) {
-            $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'],
-                                                      'quota' => $quota['quota']);
+        $groupsArray = array();
+        $groupsQuotasArray = array();
+        if ($groupsQuotas) {
+	        foreach ($groupsQuotas as $quota) {
+	            $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'],
+	                                                      'quota' => $quota['quota']);
+            }
         }
         foreach ($groups as $group) {
             if (!array_key_exists($group['gid'], $groupsQuotasArray)) {
@@ -163,20 +167,22 @@ class Files_Controller_Admin extends Zikula_Controller
         }
         $groupsQuotas = ModUtil::getVar('Files', 'groupsQuota');
         $groupsQuotas = unserialize($groupsQuotas);
-        $i = 0;
-        foreach ($groupsQuotas as $group) {
-            if ($group['gid'] > 0) {
-                // get group name
-                $grupValues = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $group['gid']));
-                $groupsQuotas[$i]['name'] = $grupValues['name'];
-                $i++;
-            }
-        }
-        // sort the array using the field name
-        foreach ($groupsQuotas as $key => $row) {
-            $name[$key] = $row['name'];
-        }
+        if ($groupsQuotas) {
+	        $i = 0;
+	        foreach ($groupsQuotas as $group) {
+	            if ($group['gid'] > 0) {
+	                // get group name
+	                $grupValues = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $group['gid']));
+	                $groupsQuotas[$i]['name'] = $grupValues['name'];
+	                $i++;
+	            }
+	        }
+	        // sort the array using the field name
+	        foreach ($groupsQuotas as $key => $row) {
+	            $name[$key] = $row['name'];
+	        }
         array_multisort($name, SORT_ASC, $groupsQuotas);
+        }
         $noMoreGroups = (count(ModUtil::apiFunc('Groups', 'user', 'getall')) == $i) ? true : false;
         $this->view->assign('groupsQuotas', $groupsQuotas);
         $this->view->assign('noMoreGroups', $noMoreGroups);
