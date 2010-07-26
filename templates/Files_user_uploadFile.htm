@@ -14,7 +14,7 @@
             <p class="z-formnote">{gt text="Allowed extensions (comma separated list)"} {$extensions|safetext}</p>
             <div class="z-formbuttons">
                 <a href="javascript:submitUpdateFile();">{img modname='core' src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}</a>
-                <a href="{modurl modname="Files" type=$type func=$func folder=$folder hook=$hook}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
+                <a href="{modurl modname="Files" type=$type func=$func folder=$folder|replace:'/':'|' hook=$hook}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
             </div>
         </fieldset>
     </div>

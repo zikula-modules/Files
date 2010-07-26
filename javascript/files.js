@@ -9,9 +9,9 @@ function createDir(folder,external,hook)
 {
 	var pars = "module=Files&func=createDir&folder=" + folder + "&external=" + external + "&hook=" + hook;
     Element.update('actionForm', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
-	var myAjax = new Ajax.Request("ajax.php", 
+	var myAjax = new Ajax.Request(document.location.pnbaseURL +"ajax.php", 
 	{
-		method: 'get', 
+		method: 'post', 
 		parameters: pars, 
 		onComplete: createDir_response,
 		onFailure: createDir_failure
@@ -44,9 +44,9 @@ function uploadFile(folder,external,hook)
 {
 	var pars = "module=Files&func=uploadFile&folder=" + folder + "&external=" + external + "&hook=" + hook;;
     Element.update('actionForm', '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
-	var myAjax = new Ajax.Request("ajax.php", 
+	var myAjax = new Ajax.Request(document.location.pnbaseURL +"ajax.php", 
 	{
-		method: 'get', 
+		method: 'post', 
 		parameters: pars, 
 		onComplete: uploadFile_response,
 		onFailure: uploadFile_failure

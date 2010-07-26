@@ -15,9 +15,9 @@
     </div>
     <div class="z-formbuttons">
         {if $external eq 1}
-        <a href="{modurl modname="Files" type="external" func="getFiles" folder=$folder hook=$hook}">{img modname='core' src='button_ok.gif' set='icons/small' __alt="Accept" __title="Accept"}</a>
+        <a href="{modurl modname="Files" fqurl="true" type="external" func="getFiles" folder=$folder|replace:'/':'|' hook=$hook}">{img modname='core' src='button_ok.gif' set='icons/small' __alt="Accept" __title="Accept"}</a>
         {else}
-        <a href="{modurl modname="Files" func="main" folder=$folder}">{img modname='core' src='button_ok.gif' set='icons/small' __alt="Accept" __title="Accept"}</a>
+        <a href="{modurl modname="Files" func="main" folder=$folder|replace:'/':'|'}">{img modname='core' src='button_ok.gif' set='icons/small' __alt="Accept" __title="Accept"}</a>
         {/if}
     </div>
 </div>

@@ -100,14 +100,15 @@ class Files_Controller_Ajax extends Zikula_Controller
     */
     public function createDir($args)
     {
+        $folder = FormUtil::getPassedValue('folder', -1, 'POST');
+        $external = FormUtil::getPassedValue('external', -1, 'POST');
+        
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}
-    	$folder = FormUtil::getPassedValue('folder', -1, 'GET');
     	if ($folder == -1) {
     		AjaxUtil::error($this->__('No folder defined.'));
     	}
-        $external = FormUtil::getPassedValue('external', -1, 'GET');
         $content = ModUtil::func('Files', 'user', 'createDirForm',
                               array('folder' => $folder,
                                     'external' => $external));
@@ -122,10 +123,11 @@ class Files_Controller_Ajax extends Zikula_Controller
     */
     public function uploadFile($args)
     {
+    	$folder = FormUtil::getPassedValue('folder', -1, 'POST');
+    	
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}
-    	$folder = FormUtil::getPassedValue('folder', -1, 'GET');
     	if ($folder == -1) {
     		AjaxUtil::error($this->__('No folder defined.'));
     	}

@@ -17,6 +17,7 @@ class Files_Controller_External extends Zikula_Controller
     	PageUtil::AddVar('javascript', 'modules/Files/javascript/getFiles.js');
         // get arguments
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
+        $folder = str_replace("|", "/", $folder);
         // security check
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD) || !UserUtil::login()) {
             $errorMsg = $this->__('Sorry! You have not been granted access to this page.');
@@ -80,7 +81,8 @@ class Files_Controller_External extends Zikula_Controller
         // get folder files and subfolders
         $fileList = ModUtil::func('Files', 'user', 'dir_list',
                                 array('folder' => $folder,
-                                      'external' => 1));
+                                      'external' => 1,
+                               		  'hook' => $hook));
         sort($fileList[dir]);
         sort($fileList[file]);
         if(!is_writable($folder)){

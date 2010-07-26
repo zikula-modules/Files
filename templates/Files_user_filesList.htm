@@ -16,9 +16,9 @@
         <a class="fi_image fi_createdir" href="javascript: createDir('{$folderName}',0)">{gt text="Create directory"}</a>
         <a class="fi_image fi_uploadfile" href="javascript: uploadFile('{$folderName}',0)">{gt text="Upload file"}</a>
         {if $publicFolder}
-        <a class="fi_image fi_public" href="{modurl modname="Files" func="setAsPublic" folder=$folderName not=1}">{gt text="Set as not public folder"}</a>
+        <a class="fi_image fi_public" href="{modurl modname="Files" func="setAsPublic" folder=$folderName|replace:'/':'|' not=1}">{gt text="Set as not public folder"}</a>
         {elseif $folderName neq ''}
-        <a class="fi_image fi_notpublic" href="{modurl modname="Files" func="setAsPublic" folder=$folderName}">{gt text="Set as a public folder"}</a>
+        <a class="fi_image fi_notpublic" href="{modurl modname="Files" func="setAsPublic" folder=$folderName|replace:'/':'|'}">{gt text="Set as a public folder"}</a>
         {/if}
     </div>
 
@@ -37,11 +37,11 @@
     {if $publicFolder}
     <p class="z-informationmsg">
         {gt text="The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL:"}
-        <strong>{getbaseurl}file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}{gt text="file_name"}</strong>
+        <strong>{getbaseurl}file.php?file={$folderPath|replace:'/':'|'}{if $folderPath|substr:-1 neq '/'}|{/if}{gt text="file_name"}</strong>
     </p>
     {/if}
 
-    <form class="z-form" method="post" action="{modurl modname="Files" func="actionSelect" folder=$folderName}" id="form1">
+    <form class="z-form" method="post" action="{modurl modname="Files" func="actionSelect" folder=$folderName|replace:'/':'|'}" id="form1">
         <table class="z-datatable" summary="table files">
             <thead>
                 <tr>
@@ -63,7 +63,7 @@
                 </tr>
                 <tr class="{cycle values="z-odd,z-even"}">
                     <td>&nbsp;</td>
-                    <td><a class="fi_image fi_folder" href="{modurl modname="Files" func="main" folder=$folderPrev}">..</a></td>
+                    <td><a class="fi_image fi_folder" href="{modurl modname="Files" func="main" folder=$folderPrev|replace:'/':'|'}">..</a></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -78,16 +78,16 @@
                     </td>
                     <td align="left">
                         {if $folderName eq ''}
-                        <a class="fi_image fi_folder" href="{modurl modname="Files" func="main" folder=$file.name}">{$file.name}</a>
+                        <a class="fi_image fi_folder" href="{modurl modname="Files" func="main" folder=$file.name|replace:'/':'|'}">{$file.name}</a>
                         {else}
-                        <a class="fi_image fi_folder" href="{modurl modname="Files" func="main" folder=$folderName|cat:'/'|cat:$file.name}">{$file.name}</a>
+                        <a class="fi_image fi_folder" href="{modurl modname="Files" func="main" folder=$folderName|cat:'|'|cat:$file.name|replace:'/':'|'}">{$file.name}</a>
                         {/if}
                     </td>
                     <td>&nbsp;</td>
                     <td align="right">{$file.time|dateformat:'datetimebrief'}</td>
                     <td align="right">
-                        <a href="{modurl modname="Files" func="action" do="rename" fileName=$file.name folder=$folderName}">{img modname='core' src='edit.gif' set='icons/extrasmall' __alt="Rename file" __title="Rename folder"}</a>
-                        <a href="{modurl modname="Files" func="action" do="delete" fileName=$file.name folder=$folderName}">{img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete folder" __title="Delete File"}</a>
+                        <a href="{modurl modname="Files" func="action" do="rename" fileName=$file.name folder=$folderName|replace:'/':'|'}">{img modname='core' src='edit.gif' set='icons/extrasmall' __alt="Rename file" __title="Rename folder"}</a>
+                        <a href="{modurl modname="Files" func="action" do="delete" fileName=$file.name folder=$folderName|replace:'/':'|'}">{img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete folder" __title="Delete File"}</a>
                     </td>
                 </tr>
                 {/if}
@@ -99,7 +99,7 @@
                         <input type="checkbox" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)"/>
                     </td>
                     <td align="left">
-                        <a class="fi_image" style="background: url({getbaseurl}modules/Files/pnimages/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="{modurl modname="Files" func="downloadFile" folder=$folderName fileName=$file.name}">{$file.name}</a>
+                        <a class="fi_image" style="background: url({getbaseurl}modules/Files/pnimages/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="{modurl modname="Files" func="downloadFile" folder=$folderName|replace:'/':'|' fileName=$file.name|replace:'/':'|'}">{$file.name}</a>
                     </td>
                     <td align="right">{$file.size} {gt text="Bytes"}</td>
                     <td align="right">{$file.time|dateformat:'datetimebrief'}</td>

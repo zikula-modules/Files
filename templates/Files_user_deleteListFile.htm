@@ -23,6 +23,7 @@
             <input type="hidden" name="confirm" value="1" />
             <input type="hidden" name="external" value="{$external}" />
             <input type="hidden" name="thumb" value="{$thumb}" />
+			<input type="hidden" name="hook" value="{$hook}" />
             {foreach item=file from=$listFileName}
             <input type="hidden" name="listFileName[]" value="{$file}" />
             {/foreach}
@@ -31,9 +32,9 @@
                 <div class="z-formbuttons">
                     {button src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}
                     {if $external eq 1}
-                    <a href="{modurl modname="Files" type="external" func="getFiles" folder=$folder hook=$hook}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
+                    <a href="{modurl fqurl="true" modname="Files" type="external" func="getFiles" folder=$folder hook=$hook|replace:'/':'|'}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
                     {else}
-                    <a href="{modurl modname="Files" func="main" folder=$folder hook=$hook}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
+                    <a href="{modurl modname="Files" func="main" folder=$folder|replace:'/':'|' hook=$hook}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
                     {/if}
                 </div>
             </fieldset>
