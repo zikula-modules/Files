@@ -29,9 +29,9 @@ if($GLOBALS['ZConfig']['Multizk']['multi'] == 1){
     // if you decide to do it you have to delete the call to System::shutdown(); too below in this code
     // init zikula engine
     include 'lib/ZLoader.php';
-    ZLoader::register();    
+    ZLoader::register();
     // start Zikula
-    System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_AJAX);
+    System::init(System::STAGES_ALL & ~System::STAGES_AJAX);
     $folderPath = ModUtil::getVar('Files', 'folderPath') . '/';
 }
 $fileName = $folderPath . $fileNameGet;
