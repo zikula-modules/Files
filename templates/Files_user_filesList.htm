@@ -37,7 +37,7 @@
     {if $publicFolder}
     <p class="z-informationmsg">
         {gt text="The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL:"}
-        <strong>{getbaseurl}file.php?file={$folderPath|replace:'/':'|'}{if $folderPath|substr:-1 neq '/'}|{/if}{gt text="file_name"}</strong>
+        <strong>{getbaseurl}file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}{gt text="file_name"}</strong>
     </p>
     {/if}
 
