@@ -87,9 +87,7 @@ class Files_Controller_User extends Zikula_Controller
         $fileList = $this->dir_list(array('folder' => $folder));                            
         sort($fileList['dir']);
         sort($fileList['file']);
-        if (!is_writable($folder)) {
-            $this->view->assign('notwriteable', true);
-        }
+        $notwriteable = (!is_writable($folder)) ? true : false;
         // check if it is a public directori
         if (!file_exists($folder . '/.locked')) {
             // it is a public directori
@@ -105,6 +103,7 @@ class Files_Controller_User extends Zikula_Controller
         $this->view->assign('folderName', DataUtil::formatForDisplay($folderName));
         $this->view->assign('fileList', $fileList);
         $this->view->assign('usedSpace', $usedSpaceArray);
+        $this->view->assign('notwriteable', $notwriteable);
         return $this->view->fetch('Files_user_filesList.htm');
     }
     
@@ -199,17 +198,15 @@ class Files_Controller_User extends Zikula_Controller
         if (!file_exists($folder)) {
             return LogUtil::registerError($this->__('Invalid folder') . ': ' . $folderName);
         }
-    
+        //TODO: Check if the three next lines are needed
         // check is the last character is a /
-        if ($dir[strlen($folder) - 1] != '/') {
+        if (strlen($folder) - 1 != '/') {
             $folder .= '/';
         }
-    
         // check is a directory
         if (!is_dir($folder)) {
             return array();
         }
-    
         // set editable and thumbnailable extensions
         $editableExtensions = ModUtil::getVar('Files','editableExtensions');
         $thumbnailExtensions = array('gif','jpg','png');
@@ -1626,7 +1623,7 @@ class Files_Controller_User extends Zikula_Controller
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD) || !UserUtil::isLoggedIn()) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.'), 403);
         }
-        if ($GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
+        if (isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
             $siteDNS = FormUtil::getPassedValue('siteDNS', '', 'GET');
             // if siteDNS is the main site the root is the initial folder. If not it is the initial folder by the site
             $rootFolderPath = ($siteDNS == $GLOBALS['PNConfig']['Multisites']['mainSiteURL']) ? $GLOBALS['PNConfig']['Multisites']['filesRealPath'] : $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
@@ -1702,8 +1699,12 @@ class Files_Controller_User extends Zikula_Controller
         // get assigned quotas
         $groupsQuotas = ModUtil::getVar('Files', 'groupsQuota');
         $groupsQuotas = unserialize($groupsQuotas);
-        foreach ($groupsQuotas as $quota) {
-            $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'], 'quota' => $quota['quota']);
+        $groupsQuotasArray = array();
+        if ($groupsQuotas) {
+	        foreach ($groupsQuotas as $quota) {
+	            $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'],
+	                                                      'quota' => $quota['quota']);
+	        }
         }
         // get user groups
         $userGroups = ModUtil::apiFunc('Groups', 'user', 'getusergroups');

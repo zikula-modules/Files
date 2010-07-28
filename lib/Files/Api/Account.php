@@ -19,15 +19,17 @@ class Files_Api_Account extends Zikula_Api
      *
      * @return   array
      */
-    function getall($args)
+    public function getall($args)
     {
+    	$items = array();
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD)) {
             return false;
         }
         // create an array of links to return
-        $items = array(array('url'     => ModUtil::url('Files', 'user','main'),
-                             'title'   => $this->__('File Manager'),
-                             'icon'    => 'user.gif'));
+        $items['1'] = array('url' => ModUtil::url('Files', 'user','main'),
+                             'module' => 'Files',
+                             'title' => $this->__('File Manager'),
+                             'icon' => 'user.gif');
         // Return the items
         return $items;
     }

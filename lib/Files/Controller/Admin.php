@@ -30,7 +30,7 @@ class Files_Controller_Admin extends Zikula_Controller
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-        $multisites = ($GLOBALS['PNConfig']['Multisites']['multi'] == 1) ? true : false;
+        $multisites = (isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) ? true : false;
         if ($multisites) {
             $siteDNS = FormUtil::getPassedValue('siteDNS', '', 'GET');
             $folderPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
@@ -167,8 +167,8 @@ class Files_Controller_Admin extends Zikula_Controller
         }
         $groupsQuotas = ModUtil::getVar('Files', 'groupsQuota');
         $groupsQuotas = unserialize($groupsQuotas);
+        $i = 0;
         if ($groupsQuotas) {
-	        $i = 0;
 	        foreach ($groupsQuotas as $group) {
 	            if ($group['gid'] > 0) {
 	                // get group name
@@ -181,7 +181,9 @@ class Files_Controller_Admin extends Zikula_Controller
 	        foreach ($groupsQuotas as $key => $row) {
 	            $name[$key] = $row['name'];
 	        }
-        array_multisort($name, SORT_ASC, $groupsQuotas);
+            array_multisort($name, SORT_ASC, $groupsQuotas);
+        } else {
+        	$groupsQuotas = array();
         }
         $noMoreGroups = (count(ModUtil::apiFunc('Groups', 'user', 'getall')) == $i) ? true : false;
         $this->view->assign('groupsQuotas', $groupsQuotas);
