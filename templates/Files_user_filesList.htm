@@ -2,7 +2,7 @@
 {ajaxheader modname=Files filename=files.js}
 <div class="files_container">
     <div class="z-clearfix">
-        <div class="userpageicon">{img modname='core' src='lists.gif' set='icons/large' alt=$templatetitle}</div>
+        <div class="userpageicon">{img modname='core' src='lists.gif' set='icons/large'}</div>
         <h2>{gt text="List of files in folder"} <strong>{$folderName}</strong></h2>
     </div>
 
@@ -26,7 +26,7 @@
         <div class="diskSpace">
             {gt text="Disk use:"}
             {if $usedSpace.maxDiskSpace neq -1048576}
-            <div style="width:{$usedSpace.widthUsage}px; background:url({getbaseurl}modules/Files/pnimages/usage.gif);">&nbsp;</div>
+            <div style="width:{$usedSpace.widthUsage}px; background:url({getbaseurl}modules/Files/images/usage.gif);">&nbsp;</div>
             {gt text="%s%% - %s of %s" tag1=$usedSpace.percentage tag2=$usedSpace.usedDiskSpace tag3=$usedSpace.maxDiskSpace}
             {else}
             <div class="diskSpace">{$usedSpace.usedDiskSpace}</div>
@@ -99,7 +99,7 @@
                         <input type="checkbox" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)"/>
                     </td>
                     <td align="left">
-                        <a class="fi_image" style="background: url({getbaseurl}modules/Files/pnimages/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="{modurl modname="Files" func="downloadFile" folder=$folderName|replace:'/':'|' fileName=$file.name|replace:'/':'|'}">{$file.name}</a>
+                        <a class="fi_image" style="background: url({getbaseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="{modurl modname="Files" func="downloadFile" folder=$folderName|replace:'/':'|' fileName=$file.name|replace:'/':'|'}">{$file.name}</a>
                     </td>
                     <td align="right">{$file.size} {gt text="Bytes"}</td>
                     <td align="right">{$file.time|dateformat:'datetimebrief'}</td>
