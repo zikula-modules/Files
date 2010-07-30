@@ -40,7 +40,7 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)){
             return LogUtil::registerPermissionError();
         }
-        if($GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
+        if(isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
             $filesRealPath = 'files';
             $createdFilesFolder = true;
         } else {
@@ -73,7 +73,7 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
     		return LogUtil::registerPermissionError();
     	}
     	$multisites = false;
-    	if($GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
+    	if(isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
     		// create the needed folders for the site
     		$siteDNS = (isset($_GET['siteDNS']) ? DataUtil::formatForOS($_GET['siteDNS']) : null);
     		$filesRealPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
