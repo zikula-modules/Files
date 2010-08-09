@@ -19,7 +19,7 @@ class Files_Controller_External extends Zikula_Controller
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
         $folder = str_replace("|", "/", $folder);
         // security check
-        if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD) || !UserUtil::login()) {
+        if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD) || !UserUtil::isLoggedIn()) {
             $errorMsg = $this->__('Sorry! You have not been granted access to this page.');
             $this->view->assign('errorMsg', $errorMsg);
             $this->view->assign('external', 1);
@@ -51,7 +51,8 @@ class Files_Controller_External extends Zikula_Controller
         // users can not browser the thumbnails folders
         if(strpos($folder, '.tbn') !== false) {
             LogUtil::registerError($this->__('It is not possible to browse this folder'));
-            return System::redirect(ModUtil::url('Files', 'external', 'getFiles', array('folder' => substr($folderName, 0, strrpos($folderName, '/')))));
+            return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
+                                                  array('folder' => substr($folderName, 0, strrpos($folderName, '/')))));
         }
         // needed arguments
         // check if the folder exists
@@ -71,28 +72,23 @@ class Files_Controller_External extends Zikula_Controller
         $percentage = round($usedSpace * 100 / $maxDiskSpace);
         $widthUsage = ($percentage > 100) ? 100 : $percentage;
         $usedSpaceArray = array('maxDiskSpace' => ModUtil::func('Files', 'user', 'diskUseFormat',
-                                                            array('value' => $maxDiskSpace)),
-                                                                  'percentage' => $percentage,
+                                                                 array('value' => $maxDiskSpace)),
+                                                                       'percentage' => $percentage,
                                 'usedDiskSpace' => ModUtil::func('Files', 'user', 'diskUseFormat',
-                                                             array('value' => $usedSpace)),
-                                                                   'widthUsage' => $widthUsage);
+                                                                  array('value' => $usedSpace)),
+                                                                        'widthUsage' => $widthUsage);
         // create output object
         $this->view = Zikula_View::getInstance('Files', false);
         // get folder files and subfolders
         $fileList = ModUtil::func('Files', 'user', 'dir_list',
-                                array('folder' => $folder,
-                                      'external' => 1,
-                               		  'hook' => $hook));
-        sort($fileList[dir]);
-        sort($fileList[file]);
-        if(!is_writable($folder)){
-            $this->view->assign('notwriteable', true);
-        }
+                                   array('folder' => $folder,
+                                         'external' => 1,
+                               		     'hook' => $hook));
+        sort($fileList['dir']);
+        sort($fileList['file']);
+        $notwriteable = (!is_writable($folder)) ? true : false;
         // check if it is a public directori
-        if(!file_exists($folder.'/.locked')){
-            // it is a public directori
-            $is_public = true;
-        }
+        $is_public = (!file_exists($folder.'/.locked')) ? true : false ;
         $this->view->assign('publicFolder',  $is_public);
         $this->view->assign('folderPrev', substr($folderName, 0 ,  strrpos($folderName, '/')));
         $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0 , 1)) . '/' . UserUtil::getVar('uname') . '/' .$folderName;
@@ -123,6 +119,7 @@ class Files_Controller_External extends Zikula_Controller
         $this->view->assign('hook', $hook);
         $this->view->assign('imagesArray', DataUtil::formatForDisplay($imagesArray));
         $this->view->assign('usedSpace',  $usedSpaceArray);
+        $this->view->assign('notwriteable', $notwriteable);
         return $this->view->display('Files_external_getFiles.htm');
     }
 }

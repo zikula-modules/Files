@@ -49,7 +49,8 @@ class Files_Controller_Ajax extends Zikula_Controller
     	}
         if(is_numeric($gid) && is_numeric($quota)){
             //create a new assignament for a disk quote
-            $data = array('gid' => $gid, 'quota' => $quota);
+            $data = array('gid' => $gid,
+                          'quota' => $quota);
             $assignments = unserialize(ModUtil::getVar('Files', 'groupsQuota'));
             if($assignments == ''){
                 $assignments = array();
@@ -83,7 +84,7 @@ class Files_Controller_Ajax extends Zikula_Controller
             foreach($assignaments as $assign){
                 if($assign['gid'] != $gid){
                     $assignamentsArray[] = array('gid' => $assign['gid'],
-                                                   'quota' => $assign['quota']);
+                                                 'quota' => $assign['quota']);
                 }
             }
             $data = serialize($assignamentsArray);
@@ -110,8 +111,8 @@ class Files_Controller_Ajax extends Zikula_Controller
     		AjaxUtil::error($this->__('No folder defined.'));
     	}
         $content = ModUtil::func('Files', 'user', 'createDirForm',
-                              array('folder' => $folder,
-                                    'external' => $external));
+                                  array('folder' => $folder,
+                                        'external' => $external));
         AjaxUtil::output(array('content' => $content));
     }
     
@@ -124,7 +125,8 @@ class Files_Controller_Ajax extends Zikula_Controller
     public function uploadFile($args)
     {
     	$folder = FormUtil::getPassedValue('folder', -1, 'POST');
-    	
+    	$external = FormUtil::getPassedValue('external', -1, 'POST');
+
     	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
     		AjaxUtil::error(DataUtil::formatForDisplayHTML(_MODULENOAUTH));
     	}
@@ -132,7 +134,8 @@ class Files_Controller_Ajax extends Zikula_Controller
     		AjaxUtil::error($this->__('No folder defined.'));
     	}
         $content = ModUtil::func('Files', 'user', 'uploadFileForm',
-                              array('folder' => $folder));
+                                  array('folder' => $folder,
+                                        'external' => $external));
         AjaxUtil::output(array('content' => $content));
     }
     
@@ -166,23 +169,23 @@ class Files_Controller_Ajax extends Zikula_Controller
     
         // create output object
         $file = array('name' => $image,
-                        'width' => $width,
-                        'viewWidth' => $newWidth,
-                        'viewHeight' => $newHeight,
-                        'height' => $height,
-                        'factor' => $factor);
+                      'width' => $width,
+                      'viewWidth' => $newWidth,
+                      'viewHeight' => $newHeight,
+                      'height' => $height,
+                      'factor' => $factor);
         // create new thumbnail
         ModUtil::func('Files', 'user', 'thumbnail',
-                array('fileName' => $image,
-                      'folder' => $folderName,
-                      'newWidth' => $newWidth,
-                      'fromAjax' => 1));
+		               array('fileName' => $image,
+		                     'folder' => $folderName,
+		                     'newWidth' => $newWidth,
+		                     'fromAjax' => 1));
         $this->view->setCaching(false);
         $this->view -> assign('file',  $file);
         $this->view -> assign('folderPath',  $folderPath);
         $this->view -> assign('folderName',  $folderName);
         $content = $this->view -> fetch('Files_external_getFilesImgContent.htm');
         AjaxUtil::output(array('image' => $image,
-                                'content' => $content));
+                               'content' => $content));
     }
 }
