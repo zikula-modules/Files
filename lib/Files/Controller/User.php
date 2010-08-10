@@ -46,14 +46,14 @@ class Files_Controller_User extends Zikula_Controller
             $this->view = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('The server directory does not exist.');
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $this->view = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         // get folder name
         $folderName = str_replace($initFolderPath . '/', '', $folder);
@@ -69,7 +69,7 @@ class Files_Controller_User extends Zikula_Controller
         if (!file_exists($folder)) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folderName;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         // get user's disk use
         $userDiskUse = ModUtil::apiFunc('Files', 'user', 'get');
@@ -105,7 +105,7 @@ class Files_Controller_User extends Zikula_Controller
         $this->view->assign('fileList', $fileList);
         $this->view->assign('usedSpace', $usedSpaceArray);
         $this->view->assign('notwriteable', $notwriteable);
-        return $this->view->fetch('Files_user_filesList.htm');
+        return $this->view->fetch('Files_user_filesList.tpl');
     }
     
     /**
@@ -155,7 +155,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $file = $initFolderPath . '/' . $folder . '/.htaccess';
         if (!file_exists($file)) {
@@ -190,7 +190,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         // needed arguments
         // check if the directory of document root files exists
@@ -333,7 +333,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         // check if file exists. If not returns error.
         if (!file_exists($initFolderPath . '/' . $file)) {
@@ -389,7 +389,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         switch ($do) {
             case 'delete':
@@ -469,7 +469,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
     
         // create thumbnail image
@@ -661,7 +661,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
     
         //checks if it is an editable file
@@ -672,7 +672,7 @@ class Files_Controller_User extends Zikula_Controller
         if (strpos($editableExtensions, strtolower($fileExtension)) === false) {
             $errorMsg = $this->__f('Sorry! The file %s is not editable.', $fileName);
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
     
         // checks if file exists
@@ -680,7 +680,7 @@ class Files_Controller_User extends Zikula_Controller
         if (!file_exists($file)) {
             $errorMsg = $this->__f('Sorry! The file %s has not been found.', $fileName);
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
     
         if (!$confirm) {
@@ -690,7 +690,7 @@ class Files_Controller_User extends Zikula_Controller
                 // error reading the file
                 $errorMsg = $this->__f('Error! It has not been possible to read the content of the file %s.', $fileName);
                 $this->view->assign('errorMsg', $errorMsg);
-                return $this->view->fetch('Files_user_errorMsg.htm');
+                return $this->view->fetch('Files_user_errorMsg.tpl');
             }
             // create output object
             $this->view->assign('folder', DataUtil::formatForDisplay($folder));
@@ -698,12 +698,12 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('fileContent', DataUtil::formatForDisplay($fileContent));
             if ($external == 1) {
                 $this->view->assign('external', 1);
-                $content = $this->view->fetch('Files_user_editFile.htm');
+                $content = $this->view->fetch('Files_user_editFile.tpl');
                 echo $content;
                 exit();
             } else {
             	$this->view->assign('external', 0);
-                return $this->view->fetch('Files_user_editFile.htm');
+                return $this->view->fetch('Files_user_editFile.tpl');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
@@ -719,7 +719,7 @@ class Files_Controller_User extends Zikula_Controller
             // error writing the file
             $errorMsg = $this->__f('Error! It has not been possible to write the content to the file %s.', $fileName);
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
     	}
     
         // update the number of bytes used by user
@@ -770,7 +770,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         if (!$confirm) {
             $array_items = array();
@@ -794,12 +794,12 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('hook', $hook);
             if ($external == 1) {
                 $this->view->assign('external', 1);
-                $content = $this->view->fetch('Files_user_deleteListFile.htm');
+                $content = $this->view->fetch('Files_user_deleteListFile.tpl');
                 echo $content;
                 exit();
             } else {
             	$this->view->assign('external', 0);
-                return $this->view->fetch('Files_user_deleteListFile.htm');
+                return $this->view->fetch('Files_user_deleteListFile.tpl');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
@@ -861,7 +861,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($dir == ".." || $dir == "." || strpos($dir, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $array_items = array();
         if ($handle = opendir($dir)) {
@@ -898,7 +898,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($dir == ".." || $dir == "." || strpos($dir, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $array_items = array();
         if ($handle = opendir($dir)) {
@@ -946,7 +946,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $file = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $fileName : $initFolderPath . "/" . $fileName;
         // needed arguments
@@ -963,12 +963,12 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('hook', $hook);
             if ($external == 1) {
                 $this->view->assign('external', 1);
-                $content = $this->view->fetch('Files_user_renameFile.htm');
+                $content = $this->view->fetch('Files_user_renameFile.tpl');
                 echo $content;
                 exit();
             } else {
             	$this->view->assign('external', 0);
-                return $this->view->fetch('Files_user_renameFile.htm');
+                return $this->view->fetch('Files_user_renameFile.tpl');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
@@ -1057,7 +1057,7 @@ class Files_Controller_User extends Zikula_Controller
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
             $this->view->assign('hook', $hook);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $folderNew = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $newFolder : $initFolderPath . "/" . $newFolder;
         if (!FileUtil::mkdirs($folderNew, 0777, true)) {
@@ -1099,7 +1099,7 @@ class Files_Controller_User extends Zikula_Controller
             $this->view = Zikula_View::getInstance('Files', false);
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $type = ($external == 1) ? 'external' : 'user';
         $func = ($external == 1) ? 'getFiles' : 'main';
@@ -1109,7 +1109,7 @@ class Files_Controller_User extends Zikula_Controller
         $this->view->assign('func', $func);
         $this->view->assign('external', $external);
         $this->view->assign('hook', $hook);
-        return $this->view->fetch('Files_user_createDir.htm');
+        return $this->view->fetch('Files_user_createDir.tpl');
     }
     
     /**
@@ -1133,7 +1133,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
@@ -1239,7 +1239,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
     
         $type = ($external == 1) ? 'external' : 'user';
@@ -1251,7 +1251,7 @@ class Files_Controller_User extends Zikula_Controller
         $this->view->assign('hook', $hook);
         $this->view->assign('type', $type);
         $this->view->assign('func', $func);
-        return $this->view->fetch('Files_user_uploadFile.htm');
+        return $this->view->fetch('Files_user_uploadFile.tpl');
     }
     
     /**
@@ -1274,7 +1274,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
@@ -1345,7 +1345,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         if ($handle = opendir($file)) {
             while (false !== ($item = readdir($handle))) {
@@ -1393,7 +1393,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         if (!$confirm) {
             $array_items = array();
@@ -1415,12 +1415,12 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('hook', $hook);
             if ($external == 1) {
                 $this->view->assign('external', 1);
-                $content = $this->view->fetch('Files_user_createZipListFile.htm');
+                $content = $this->view->fetch('Files_user_createZipListFile.tpl');
                 echo $content;
                 exit();
             } else {
             	$this->view->assign('external', 0);
-                return $this->view->fetch('Files_user_createZipListFile.htm');
+                return $this->view->fetch('Files_user_createZipListFile.tpl');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
@@ -1484,7 +1484,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $file = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $fileName : $initFolderPath . "/" . $fileName;
         require_once ('modules/Files/includes/pclzip.lib.php');
@@ -1502,12 +1502,12 @@ class Files_Controller_User extends Zikula_Controller
         $this->view->assign('hook', $hook);
         if ($external == 1) {
             $this->view->assign('external', 1);
-            $content = $this->view->fetch('Files_user_listContentZip.htm');
+            $content = $this->view->fetch('Files_user_listContentZip.tpl');
             echo $content;
             exit();
         } else {
         	$this->view->assign('external', 0);
-            return $this->view->fetch('Files_user_listContentZip.htm');
+            return $this->view->fetch('Files_user_listContentZip.tpl');
         }
     }
     
@@ -1534,7 +1534,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         if (!$confirm) {
             $url = $initFolderPath;
@@ -1556,12 +1556,12 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('hook', $hook);
             if ($external == 1) {
                 $this->view->assign('external', 1);
-                $content = $this->view->fetch('Files_user_moveListFile.htm');
+                $content = $this->view->fetch('Files_user_moveListFile.tpl');
                 echo $content;
                 exit();
             } else {
             	$this->view->assign('external', 0);
-                return $this->view->fetch('Files_user_moveListFile.htm');
+                return $this->view->fetch('Files_user_moveListFile.tpl');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
@@ -1630,7 +1630,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $file = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $fileName : $initFolderPath . "/" . $fileName;
         require_once ('modules/Files/includes/pclzip.lib.php');
@@ -1719,7 +1719,7 @@ class Files_Controller_User extends Zikula_Controller
         if (!file_exists($rootFolderPath)) {
             $errorMsg = $this->__f('The folder <strong>%s</strong> has not been found.', $rootFolderPath);
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         // checks if users folder exists. If user is admimistrator return initial folder otherwise return an error page
         $userFolder = $rootFolderPath . '/' . ModUtil::getVar('Files', 'usersFolder');
@@ -1729,7 +1729,7 @@ class Files_Controller_User extends Zikula_Controller
             } else {
                 $errorMsg = $this->__('Directory creation error. Please contact with the administrator') . ': ' . $folderName;
                 $this->view->assign('errorMsg', $errorMsg);
-                return $this->view->fetch('Files_user_errorMsg.htm');
+                return $this->view->fetch('Files_user_errorMsg.tpl');
             }
         }
         // get user folder path depending on user name and if it not exists, create it
@@ -1762,7 +1762,7 @@ class Files_Controller_User extends Zikula_Controller
         if (!file_exists($initFolderPath) || !is_writable($initFolderPath)) {
             $errorMsg = $this->__f('The "%s" directory does not exist or is not writable.', $initFolderPath);
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         return $initFolderPath;
     }
@@ -1832,7 +1832,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
@@ -1888,7 +1888,7 @@ class Files_Controller_User extends Zikula_Controller
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
-            return $this->view->fetch('Files_user_errorMsg.htm');
+            return $this->view->fetch('Files_user_errorMsg.tpl');
         }
         $initFolder = $initFolderPath . "/" . $folder;
         $directoris = ModUtil::func('Files', 'user', 'getListDirRecursive',
