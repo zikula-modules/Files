@@ -30,8 +30,13 @@ if($GLOBALS['ZConfig']['Multizk']['multi'] == 1){
     // init zikula engine
     include 'lib/ZLoader.php';
     ZLoader::register();
-    // start Zikula
-    System::init(System::STAGES_ALL & ~System::STAGES_AJAX);
+    $core = new Zikula_Core();
+    $core->boot();
+    $eventManager = $core->getEventManager();
+    $serviceManager = $core->getServiceManager();
+    require 'config/config.php';
+    $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
+    $core->init(System::STAGES_ALL & ~System::STAGES_THEME & ~System::STAGES_MODS & ~System::STAGES_LANGS & ~System::STAGES_DECODEURLS & ~System::STAGES_SESSIONS);
     $folderPath = ModUtil::getVar('Files', 'folderPath') . '/';
 }
 $fileName = $folderPath . $fileNameGet;

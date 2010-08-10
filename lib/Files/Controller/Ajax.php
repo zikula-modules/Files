@@ -5,7 +5,7 @@
  * @copyright  (c) Zikula Development Team
  * @link       http://www.zikula.org
  * @version    $Id: pnajax.php 202 2009-12-09 20:28:11Z aperezm $
- * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.l
  * @author     Albert Pérez Monfort <aperezm@xtec.cat>
  * @category   Zikula_Extension
  * @package    Utilities
@@ -157,7 +157,7 @@ class Files_Controller_Ajax extends Zikula_Controller
     	}
         $action = FormUtil::getPassedValue('action', -1, 'GET');
     
-        $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0 , 1)) . '/' . UserUtil::getVar('uname') . '/' .$folderName;
+        $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0 , 1)) . '/' . UserUtil::getVar('uname') . '/' . $folderName;
         // gets root folder for the user
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         list($width, $height) = getimagesize($initFolderPath . '/' . $folderName . '/' . $image);
@@ -184,7 +184,8 @@ class Files_Controller_Ajax extends Zikula_Controller
         $this->view -> assign('file',  $file);
         $this->view -> assign('folderPath',  $folderPath);
         $this->view -> assign('folderName',  $folderName);
-        $content = $this->view -> fetch('Files_external_getFilesImgContent.htm');
+        $this->view -> assign('hook',  1);
+        $content = $this->view -> fetch('Files_external_getFilesImgContent.tpl');
         AjaxUtil::output(array('image' => $image,
                                'content' => $content));
     }
