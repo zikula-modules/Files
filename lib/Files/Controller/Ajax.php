@@ -181,11 +181,11 @@ class Files_Controller_Ajax extends Zikula_Controller
 		                     'newWidth' => $newWidth,
 		                     'fromAjax' => 1));
         $this->view->setCaching(false);
-        $this->view -> assign('file',  $file);
-        $this->view -> assign('folderPath',  $folderPath);
-        $this->view -> assign('folderName',  $folderName);
-        $this->view -> assign('hook',  1);
-        $content = $this->view -> fetch('Files_external_getFilesImgContent.tpl');
+        $this->view->assign('file',  $file);
+        $this->view->assign('folderPath',  $folderPath);
+        $this->view->assign('folderName',  $folderName);
+        $this->view->assign('hook',  0);
+        $content = $this->view->fetch('Files_external_getFilesImgContent.tpl');
         AjaxUtil::output(array('image' => $image,
                                'content' => $content));
     }

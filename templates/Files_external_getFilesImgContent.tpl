@@ -1,4 +1,4 @@
-<script src="modules/scribite/pnincludes/xinha/popups/popup.js" type="text/javascript"></script>
+<script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>
 <script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
 
 <span id="image_{$file.name}" name="image_{$file.name}">
@@ -16,7 +16,6 @@
                 {img modname='Files' src='increase.gif' set='images' __alt="Increase size" __title="Increase size"}
             </a>
             <a href="{modurl modname="Files" external="1" func="action" do="delete" fileName=$file.name folder=$folderName|replace:'/':'|' thumb=1 hook=$hook}">{img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete thumbnail" __title="Delete thumbnail"}</a>
-			
             {if $hook neq 1}
                 <a href="" onclick="__dlg_close('file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}.tbn/{$file.name}','tt');" title="Insert" >
                 	{img modname='core' set='icons/extrasmall' src='inbox.gif' __title="Insert" __alt="Insert"}
