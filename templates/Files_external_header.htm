@@ -1,26 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}" dir="{langdirection}">
     <head>
-    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Site name :: Site description</title>
-        <meta name="description" content="Site description" />
-        <meta name="keywords" content="zikula, community, portal, portal web, open source, gpl, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework" />
-        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-        <link rel="stylesheet" href="themes/SeaBreeze/style/style.css" type="text/css" media="screen,projection" /><link rel="stylesheet" href="styles/core.css" type="text/css" />
+    	<meta http-equiv="Content-Type" content="text/html; charset={charset}" />
+        <title>{title}</title>
+        <meta name="description" content="{slogan}" />
+        <meta name="keywords" content="{keywords}" />
+        <link rel="stylesheet" type="text/css" href="styles/core.css" media="print,projection,screen" />
+        {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" />{/browserhack}
+        <link rel="stylesheet" type="text/css" href="{$stylepath}/style.css" media="print,projection,screen" />
+        <link rel="stylesheet" type="text/css" href="{$stylepath}/print.css" media="print" />
         <link rel="stylesheet" href="modules/Scribite/style/style.css" type="text/css" />
         <link rel="stylesheet" href="modules/Files/style/style.css" type="text/css" />
-        <link rel="stylesheet" href="system/Blocks/style/style.css" type="text/css" />
-        <link rel="stylesheet" href="system/Blocks/style/extmenu.css" type="text/css" />
-        <link rel="stylesheet" href="system/Search/style/style.css" type="text/css" />
-        <link rel="stylesheet" href="system/Users/style/style.css" type="text/css" />
+		<meta http-equiv="X-UA-Compatible" content="chrome=1" />
         <script type="text/javascript">
-        	/* <![CDATA[ */ document.location.entrypoint="index.php";document.location.pnbaseURL="http://localhost/zikula/src/"; document.location.ajaxtimeout=5000;
-            if (typeof(Zikula) == 'undefined') {Zikula = {};}
-            Zikula.Config = {"entrypoint":"index.php","baseURL":"http:\/\/localhost\/zikula\/src\/","baseURI":"\/zikula\/src\/","ajaxtimeout":"5000","lang":"en"}
-            /* ]]> */
+        	document.location.entrypoint="{{homepage}}";
+			document.location.pnbaseURL="{{getbaseurl}}";
+			document.location.ajaxtimeout=5000;
         </script>
         <script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
-		<script type="text/javascript" src="javascript/livepipe/livepipe.combined.min.js"></script>
 		<script type="text/javascript" src="javascript/helpers/Zikula.js"></script>
 		<script type="text/javascript" src="modules/Files/javascript/files.js"></script>
 	</head>
