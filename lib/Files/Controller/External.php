@@ -23,7 +23,7 @@ class Files_Controller_External extends Zikula_Controller
             $errorMsg = $this->__('Sorry! You have not been granted access to this page.');
             $this->view->assign('errorMsg', $errorMsg);
             $this->view->assign('external', 1);
-            $this->view->display('Files_user_errorMsg.htm');
+            $this->view->display('Files_user_errorMsg.tpl');
             exit;
         }
         $oFolder = $folder;
@@ -34,7 +34,7 @@ class Files_Controller_External extends Zikula_Controller
             $errorMsg = $this->__('The server directory does not exist. Contact with the website administrator to solve this problem.');
             $this->view->assign('errorMsg',  $errorMsg);
             $this->view->assign('external', 1);
-            $this->view->display('Files_user_errorMsg.htm');
+            $this->view->display('Files_user_errorMsg.tpl');
             exit;
         }
         // protection. User can not navigate out their root folder
@@ -42,7 +42,7 @@ class Files_Controller_External extends Zikula_Controller
             $errorMsg = $this->__('Invalid folder') . ': ' . $folder;
             $this->view->assign('errorMsg', $errorMsg);
             $this->view->assign('external', 1);
-            $this->view->display('Files_user_errorMsg.htm');
+            $this->view->display('Files_user_errorMsg.tpl');
             exit;
         }
         // get folder name
@@ -60,7 +60,7 @@ class Files_Controller_External extends Zikula_Controller
             $errorMsg = $this->__('Invalid folder').': '.$folderName;
             $this->view->assign('errorMsg',  $errorMsg);
             $this->view->assign('external', 1);
-            $this->view->display('Files_user_errorMsg.htm');
+            $this->view->display('Files_user_errorMsg.tpl');
             exit;
         }
         // get user's disk use
@@ -120,6 +120,6 @@ class Files_Controller_External extends Zikula_Controller
         $this->view->assign('imagesArray', DataUtil::formatForDisplay($imagesArray));
         $this->view->assign('usedSpace',  $usedSpaceArray);
         $this->view->assign('notwriteable', $notwriteable);
-        return $this->view->display('Files_external_getFiles.htm');
+        return $this->view->display('Files_external_getFiles.tpl');
     }
 }
