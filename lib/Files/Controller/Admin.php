@@ -61,7 +61,7 @@ class Files_Controller_Admin extends Zikula_Controller
         $this->view->assign('folderPathProblem', $folderPathProblem);
         $this->view->assign('usersFolderProblem', $usersFolderProblem);
 
-        return $this->view->fetch('Files_admin_conf.htm');
+        return $this->view->fetch('Files_admin_conf.tpl');
     }
 
     /**
@@ -151,7 +151,7 @@ class Files_Controller_Admin extends Zikula_Controller
         }
         // create output object
         $this->view->assign('groups', $groupsArray);
-        return $this->view->fetch('Files_admin_newQuotaForm.htm');
+        return $this->view->fetch('Files_admin_newQuotaForm.tpl');
     }
 
     /**
@@ -188,6 +188,6 @@ class Files_Controller_Admin extends Zikula_Controller
         $noMoreGroups = (count(ModUtil::apiFunc('Groups', 'user', 'getall')) == $i) ? true : false;
         $this->view->assign('groupsQuotas', $groupsQuotas);
         $this->view->assign('noMoreGroups', $noMoreGroups);
-        return $this->view->fetch('Files_admin_quotasTable.htm');
+        return $this->view->fetch('Files_admin_quotasTable.tpl');
     }
 }

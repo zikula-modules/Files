@@ -30,7 +30,7 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
     		return LogUtil::registerPermissionError();
     	}
         $this->view->assign('step', 'info');
-        return $this->view->fetch('Files_init.htm');
+        return $this->view->fetch('Files_init.tpl');
     }
     
     public function form($args)
@@ -57,7 +57,7 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
         $this->view->assign('usersFolder', $file2);
         $this->view->assign('createdFilesFolder', $createdFilesFolder);
         $this->view->assign('step', 'form');
-        return $this->view->fetch('Files_init.htm');
+        return $this->view->fetch('Files_init.tpl');
     }
     
     /**
@@ -114,6 +114,6 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
         $this->view->assign('fileWriteable1', $fileWriteable1);
         $this->view->assign('fileWriteable2', $fileWriteable2);
         $this->view->assign('step', 'check');
-        return $this->view->fetch('Files_init.htm');
+        return $this->view->fetch('Files_init.tpl');
     }
 }
