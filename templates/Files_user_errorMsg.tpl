@@ -6,7 +6,7 @@
 <div class="files_container">
     <div class="z-clearfix">
         <div class="userpageicon">{img modname='core' src='lists.gif' set='icons/large'}</div>
-        <h2>{gt text="List of files in folder"} {$folderName}</h2>
+        <h2>{gt text="List of files in folder"}</h2>
     </div>
     <div class="z-errormsg">{$errorMsg}</div>
 </div>

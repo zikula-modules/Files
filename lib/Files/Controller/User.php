@@ -417,18 +417,6 @@ class Files_Controller_User extends Zikula_Controller
                                             'fileName' => $fileName,
                                             'hook' => $hook));
                 break;
-            /*case 'upload':
-                return ModUtil::func('Files', 'user', 'uploadFile',
-                                      array('folder' => $folder));
-                break;
-            case 'createDir':
-                return ModUtil::func('Files', 'user', 'createDir',
-                                      array('folder' => $folder));
-                break;
-            case 'createaccessfile':
-                return ModUtil::func('Files', 'user', 'createaccessfile',
-                                      array('folder' => $folder));
-                break;*/
             case 'edit':
                 return ModUtil::func('Files', 'user', 'editFile',
                                       array('folder' => $folder,
@@ -1177,6 +1165,13 @@ class Files_Controller_User extends Zikula_Controller
                                                       array('folder' => $folder,
                                                             'hook' => $hook)));
             }
+            if ($fileSize == 0) {
+                LogUtil::registerError($this->__f('Some problem has ocurred when uploading the file to the server.', ModUtil::getVar('Files', 'filesMaxSize')));
+                $folder = str_replace("/", "|", $folder);
+                return System::redirect(ModUtil::url('Files', $returnType, $returnFunc,
+                                                      array('folder' => $folder,
+                                                            'hook' => $hook)));
+            }
             // get user used space in folder
             $userDiskUse = ModUtil::apiFunc('Files', 'user', 'get');
             $usedSpace = $userDiskUse['diskUse'];
@@ -1241,7 +1236,7 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('errorMsg', $errorMsg);
             return $this->view->fetch('Files_user_errorMsg.tpl');
         }
-    
+
         $type = ($external == 1) ? 'external' : 'user';
         $func = ($external == 1) ? 'getFiles' : 'main';
         // create output object
