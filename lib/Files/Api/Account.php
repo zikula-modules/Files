@@ -12,7 +12,7 @@
  * @subpackage Files
  */
 
-class Files_Api_Account extends Zikula_Api
+class Files_Api_Account extends Zikula_AbstractApi
 {
     /**
      * Give access to personal configuration from their account panel
@@ -21,7 +21,7 @@ class Files_Api_Account extends Zikula_Api
      */
     public function getall($args)
     {
-    	$items = array();
+        $items = array();
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD)) {
             return false;
         }

@@ -12,7 +12,7 @@
  * @subpackage Files
  */
 
-class Files_Controller_User extends Zikula_Controller
+class Files_Controller_User extends Zikula_AbstractController
 {
     // set content of the files .htaccess and .locked
     protected $_HTACCESSCONTENT = "# Avoid direct web access to folder files\r\nOrder deny,allow\r\nDeny from all\r\n";
@@ -25,9 +25,9 @@ class Files_Controller_User extends Zikula_Controller
 
     /**
      * List the files in server folder
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	args   the folder name where to list the files and subfolders
-     * @return:	The list of files and folders
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  args   the folder name where to list the files and subfolders
+     * @return: The list of files and folders
      */
     public function main($args)
     {
@@ -107,17 +107,17 @@ class Files_Controller_User extends Zikula_Controller
         $this->view->assign('notwriteable', $notwriteable);
         return $this->view->fetch('Files_user_filesList.tpl');
     }
-    
+
     /**
      * format the use space
-     * @author:	Albert Pérez Monfort
-     * @param:	Disk use value
-     * @return:	Value formated
+     * @author: Albert Pérez Monfort
+     * @param:  Disk use value
+     * @return: Value formated
      */
     public function diskUseFormat($args)
     {
         $value = FormUtil::getPassedValue('value', isset($args['value']) ? $args['value'] : null, 'POST');
-    
+
         if ($value > 209715200) {
             $returnValue = $this->__('More than 200 Mb');
         } else if ($value >= 1048576) {
@@ -127,22 +127,22 @@ class Files_Controller_User extends Zikula_Controller
         } else {
             $returnValue = $this->__f("%s bytes", $value);
         }
-    
+
         return $returnValue;
     }
-    
+
     /**
      * Create a .htaccess and .locked files in the folder to protect access
-     * @author:	Albert Pérez Monfort
-     * @param:	dir Folder Path
-     * @return:	Objects array of the files
+     * @author: Albert Pérez Monfort
+     * @param:  dir Folder Path
+     * @return: Objects array of the files
      */
     public function createaccessfile($args)
     {
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'POST');
         $folderNew = FormUtil::getPassedValue('folderNew', isset($args['folderNew']) ? $args['folderNew'] : null, 'POST');
         $onlyHtaccess = FormUtil::getPassedValue('onlyHtaccess', isset($args['onlyHtaccess']) ? $args['onlyHtaccess'] : null, 'POST');
-    
+
         if ($folderNew != null) {
             $folder = $folderNew;
         }
@@ -169,12 +169,12 @@ class Files_Controller_User extends Zikula_Controller
         }
         return true;
     }
-    
+
     /**
      * List the information files in folder
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	dir Folder Path
-     * @return:	Objects array of the files
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  dir Folder Path
+     * @return: Objects array of the files
      */
     public function dir_list($args)
     {
@@ -239,7 +239,7 @@ class Files_Controller_User extends Zikula_Controller
                                                                         'external' => $external)),
                                                                         'image' => 'folder_tar.gif',
                                                                         'title' => $this->__('Unzip file'),
-                                                        				'hook' => $hook);
+                                                                        'hook' => $hook);
                         $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
                                                                   array('do' => 'listcontentzip',
                                                                         'fileName' => $object,
@@ -247,7 +247,7 @@ class Files_Controller_User extends Zikula_Controller
                                                                         'external' => $external)),
                                                                         'image' => 'list.gif',
                                                                         'title' => $this->__('List of the file content'),
-                                                        				'hook' => $hook);
+                                                                        'hook' => $hook);
                     }
                     $options[] = array('url' => ModUtil::url('Files', 'user', 'downloadFile',
                                                               array('fileName' => $object,
@@ -264,7 +264,7 @@ class Files_Controller_User extends Zikula_Controller
                                                                         'external' => $external)),
                                                                         'image' => 'xedit.gif',
                                                                         'title' => $this->__('Edit file'),
-                                                        				'hook' => $hook);
+                                                                        'hook' => $hook);
                     }
                     if ($thumbnailable && $external == 1 && !file_exists($folder . '.tbn/' . $object)) {
                         $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
@@ -274,7 +274,7 @@ class Files_Controller_User extends Zikula_Controller
                                                                         'external' => $external)),
                                                                         'image' => 'inline_image.gif',
                                                                         'title' => $this->__('Create Thumbnail'),
-                                                        				'hook' => $hook);
+                                                                        'hook' => $hook);
                     }
                     $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
                                                               array('do' => 'rename',
@@ -283,7 +283,7 @@ class Files_Controller_User extends Zikula_Controller
                                                                     'external' => $external)),
                                                                     'image' => 'edit.gif',
                                                                     'title' => $this->__('Rename file'),
-                                                        			'hook' => $hook);
+                                                                    'hook' => $hook);
                     $options[] = array('url' => ModUtil::url('Files', 'user', 'action',
                                                               array('do' => 'delete',
                                                                     'fileName' => $object,
@@ -291,7 +291,7 @@ class Files_Controller_User extends Zikula_Controller
                                                                     'external' => $external)),
                                                                     'image' => '14_layer_deletelayer.gif',
                                                                     'title' => $this->__('Delete File'),
-                                                        			'hook' => $hook);
+                                                                    'hook' => $hook);
                     $file_object = array('name' => DataUtil::formatForDisplay($object),
                                          'size' => filesize($filename),
                                          'type' => filetype($filename),
@@ -309,12 +309,12 @@ class Files_Controller_User extends Zikula_Controller
         closedir($dir_handle);
         return $dir_objects;
     }
-    
+
     /**
      * Downloa a file.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	name of the file that is going to be downloaded and forder where this file is located
-     * @return:	Download the requested file
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  name of the file that is going to be downloaded and forder where this file is located
+     * @return: Download the requested file
      */
     public function downloadFile($args)
     {
@@ -366,12 +366,12 @@ class Files_Controller_User extends Zikula_Controller
         @readfile($initFolderPath . '/' . $file);
         return true;
     }
-    
+
     /**
      * Select an action.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	action to do, folder where the action will be done and file name
-     * @return:	Redirect user to the function that do the action
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  action to do, folder where the action will be done and file name
+     * @return: Redirect user to the function that do the action
      */
     public function action($args)
     {
@@ -395,9 +395,9 @@ class Files_Controller_User extends Zikula_Controller
             case 'delete':
                 return ModUtil::func('Files', 'user', 'deleteListFile',
                                       array('folder' => $folder,
-						                    'fileName' => $fileName,
-						                    'thumb' => $thumb,
-						                    'hook' => $hook));
+                                            'fileName' => $fileName,
+                                            'thumb' => $thumb,
+                                            'hook' => $hook));
                     break;
             case 'rename':
                 return ModUtil::func('Files', 'user', 'renameFile',
@@ -431,12 +431,12 @@ class Files_Controller_User extends Zikula_Controller
         }
         return System::redirect(ModUtil::url('Files', 'user', 'main'));
     }
-    
+
     /**
      * Create a thumbnail from a image
-     * @author:	Albert Pérez Monfort
-     * @param:	name of the file that is going to be downloaded, forder where this file is located and width of the thumbnail
-     * @return:	true if success and false otherwise
+     * @author: Albert Pérez Monfort
+     * @param:  name of the file that is going to be downloaded, forder where this file is located and width of the thumbnail
+     * @return: true if success and false otherwise
      */
     public function thumbnail($args)
     {
@@ -446,12 +446,12 @@ class Files_Controller_User extends Zikula_Controller
         $newWidth = FormUtil::getPassedValue('newWidth', isset($args['newWidth']) ? $args['newWidth'] : null, 'POST');
         $fromAjax = FormUtil::getPassedValue('fromAjax', isset($args['fromAjax']) ? $args['fromAjax'] : null, 'POST');
         $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'POST');
-    
+
         // security check
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.'), 403);
         }
-    
+
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
@@ -459,7 +459,7 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('errorMsg', $errorMsg);
             return $this->view->fetch('Files_user_errorMsg.tpl');
         }
-    
+
         // create thumbnail image
         $fileExtension = FileUtil::getExtension($fileName);
         $thumbnailExtensions = array('gif','jpg','png');
@@ -483,24 +483,24 @@ class Files_Controller_User extends Zikula_Controller
             $folder = str_replace("/", "|", $folder);
             return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                   array('folder' => $folder,
-                                                        'hook' => $hook)));        
+                                                        'hook' => $hook)));
         }
         $format = '';
-    	if (strtolower($fileExtension) == 'jpg') {
-    		$format = 'image/jpeg';
-    	} elseif (strtolower($fileExtension) == 'gif') {
-    		$format = 'image/gif';
-    	} elseif (strtolower($fileExtension) == 'png') {
-    		$format = 'image/png';
-    	}
-    
+        if (strtolower($fileExtension) == 'jpg') {
+            $format = 'image/jpeg';
+        } elseif (strtolower($fileExtension) == 'gif') {
+            $format = 'image/gif';
+        } elseif (strtolower($fileExtension) == 'png') {
+            $format = 'image/png';
+        }
+
         // size calculation
-    	// get original image size
-    	list($width, $height) = getimagesize($imgSource);
-    	// fix the width to the value set in the module configuration (or lower if the image is smaller) and calc the height
+        // get original image size
+        list($width, $height) = getimagesize($imgSource);
+        // fix the width to the value set in the module configuration (or lower if the image is smaller) and calc the height
         if ($newWidth == null) {
             $newWidth = ($width <= ModUtil::getVar('Files', 'maxWidth')) ? $width : ModUtil::getVar('Files', 'maxWidth');
-        	$newHeight = $height * $newWidth / $width;
+            $newHeight = $height * $newWidth / $width;
             if ($newHeight > ModUtil::getVar('Files', 'maxHeight')) {
                 $newHeight = ModUtil::getVar('Files', 'maxHeight');
                 $newWidth = $width * $newHeight / $height;
@@ -508,27 +508,27 @@ class Files_Controller_User extends Zikula_Controller
         } else {
             $newHeight = $height * $newWidth / $width;
         }
-    
-    	if (!$destimg = imagecreatetruecolor($newWidth, $newHeight)) {
+
+        if (!$destimg = imagecreatetruecolor($newWidth, $newHeight)) {
             LogUtil::registerError($this->__('Error! Saving the image in memory.'));
             $folder = str_replace("/", "|", $folder);
             return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                   array('folder' => $folder,
-                                                        'hook' => $hook))); 
-    	}
+                                                        'hook' => $hook)));
+        }
         // set alphablending to on
         imagesavealpha($destimg, true);
         imagealphablending($destimg, true);
-    	// create the image
-    	switch($format) {
-    		case 'image/gif':
-    			if (!$srcimg = imagecreatefromgif($imgSource)) {
+        // create the image
+        switch($format) {
+            case 'image/gif':
+                if (!$srcimg = imagecreatefromgif($imgSource)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.'));
                     $folder = str_replace("/", "|", $folder);
                     return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                           array('folder' => $folder,
                                                                 'hook' => $hook)));
-    			}
+                }
                 // preserve the transparency
                 $transIndex = imagecolortransparent($srcimg);
                 if ($transIndex >= 0) {
@@ -541,52 +541,52 @@ class Files_Controller_User extends Zikula_Controller
                     // set the background color for destiny image to transparent
                     imagecolortransparent($destimg, $transIndex);
                 }
-    			if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,imagesx($srcimg),imagesy($srcimg))) {
+                if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,imagesx($srcimg),imagesy($srcimg))) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.'));
                     $folder = str_replace("/", "|", $folder);
                     return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                           array('folder' => $folder,
                                                                 'hook' => $hook)));
-    			}
-    		    if (!imagegif($destimg,$imgDest)) {
+                }
+                if (!imagegif($destimg,$imgDest)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.'));
                     $folder = str_replace("/", "|", $folder);
                     return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                           array('folder' => $folder,
                                                                 'hook' => $hook)));
-    		    }
-    			break;
-    		case 'image/jpeg':
-    			if (!$srcimg = imagecreatefromjpeg($imgSource)) {
+                }
+                break;
+            case 'image/jpeg':
+                if (!$srcimg = imagecreatefromjpeg($imgSource)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.'));
                     $folder = str_replace("/", "|", $folder);
                     return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                           array('folder' => $folder,
                                                                 'hook' => $hook)));
-    			}
-    			if (!imagecopyresampled($destimg, $srcimg, 0, 0, 0, 0, $newWidth, $newHeight, ImageSX($srcimg), ImageSY($srcimg))) {
+                }
+                if (!imagecopyresampled($destimg, $srcimg, 0, 0, 0, 0, $newWidth, $newHeight, ImageSX($srcimg), ImageSY($srcimg))) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.'));
                     $folder = str_replace("/", "|", $folder);
                     return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                           array('folder' => $folder,
                                                                 'hook' => $hook)));
-    			}
-    		    if (!imagejpeg($destimg,$imgDest)) {
+                }
+                if (!imagejpeg($destimg,$imgDest)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.'));
                     $folder = str_replace("/", "|", $folder);
                     return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                           array('folder' => $folder,
                                                                 'hook' => $hook)));
-    		    }
-    			break;
-    		case 'image/png':
-    			if (!$srcimg = imagecreatefrompng($imgSource)) {
+                }
+                break;
+            case 'image/png':
+                if (!$srcimg = imagecreatefrompng($imgSource)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.'));
                     $folder = str_replace("/", "|", $folder);
                     return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                           array('folder' => $folder,
                                                                 'hook' => $hook)));
-    			}
+                }
                 // preserve the transparency
                 // turns off transparency blending
                 imagealphablending($destimg, false);
@@ -596,22 +596,22 @@ class Files_Controller_User extends Zikula_Controller
                 imagefill($destimg, 0, 0, $color);
                 // turns on transparency blending
                 imagesavealpha($destimg, true);
-    			if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,ImageSX($srcimg),ImageSY($srcimg))) {
+                if (!imagecopyresampled($destimg,$srcimg,0,0,0,0,$newWidth,$newHeight,ImageSX($srcimg),ImageSY($srcimg))) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.'));
                     $folder = str_replace("/", "|", $folder);
                     return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                           array('folder' => $folder,
                                                                 'hook' => $hook)));
-    			}
-    		  	if (!imagepng($destimg,$imgDest)) {
+                }
+                if (!imagepng($destimg,$imgDest)) {
                     LogUtil::registerError($this->__('Error! Creating the thumbnail of the image.'));
                     $folder = str_replace("/", "|", $folder);
                     return System::redirect(ModUtil::url('Files', 'external', 'getFiles',
                                                           array('folder' => $folder,
                                                                 'hook' => $hook)));
-    		  	}
-    			break;
-    	}
+                }
+                break;
+        }
         // frees image from memory
         imagedestroy($destimg);
         // only if the image is not resizing via Ajax
@@ -623,12 +623,12 @@ class Files_Controller_User extends Zikula_Controller
                                               array('folder' => $folder,
                                                     'hook' => $hook)));
     }
-    
+
     /**
      * Edit a file.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	folder where the action have begined, file that must be edited, confirmation parameter
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  folder where the action have begined, file that must be edited, confirmation parameter
+     * @return: True if success and false if not
      */
     public function editFile($args)
     {
@@ -638,12 +638,12 @@ class Files_Controller_User extends Zikula_Controller
         $folder = str_replace("|", "/", $folder);
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
         $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'GETPOST');
-    
+
         // security check
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.'), 403);
         }
-    
+
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         // protection. User can not navigate out their root folder
         if ($folder == ".." || $folder == "." || strpos($folder, "..") !== false) {
@@ -651,7 +651,7 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('errorMsg', $errorMsg);
             return $this->view->fetch('Files_user_errorMsg.tpl');
         }
-    
+
         //checks if it is an editable file
         // set editable extensions
         $editableExtensions = ModUtil::getVar('Files', 'editableExtensions');
@@ -662,7 +662,7 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('errorMsg', $errorMsg);
             return $this->view->fetch('Files_user_errorMsg.tpl');
         }
-    
+
         // checks if file exists
         $file = $initFolderPath . '/' . $folder . '/' . $fileName;
         if (!file_exists($file)) {
@@ -670,7 +670,7 @@ class Files_Controller_User extends Zikula_Controller
             $this->view->assign('errorMsg', $errorMsg);
             return $this->view->fetch('Files_user_errorMsg.tpl');
         }
-    
+
         if (!$confirm) {
             // load the edit form
             // get file content
@@ -690,26 +690,26 @@ class Files_Controller_User extends Zikula_Controller
                 echo $content;
                 exit();
             } else {
-            	$this->view->assign('external', 0);
+                $this->view->assign('external', 0);
                 return $this->view->fetch('Files_user_editFile.tpl');
             }
         }
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
-    
+
         // confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
             return LogUtil::registerAuthidError(ModUtil::url('Files', $returnType, $returnFunc));
         }
-    
+
         // the file has been edited. Update its content
-    	if (!FileUtil::writeFile($file, $fileContent, true)) {
+        if (!FileUtil::writeFile($file, $fileContent, true)) {
             // error writing the file
             $errorMsg = $this->__f('Error! It has not been possible to write the content to the file %s.', $fileName);
             $this->view->assign('errorMsg', $errorMsg);
             return $this->view->fetch('Files_user_errorMsg.tpl');
-    	}
-    
+        }
+
         // update the number of bytes used by user
         ModUtil::apiFunc('Files', 'user', 'updateUsedSpace');
         LogUtil::registerStatus($this->__('File successfully edited'));
@@ -717,19 +717,19 @@ class Files_Controller_User extends Zikula_Controller
         return System::redirect(ModUtil::url('Files', $returnType, $returnFunc,
                                               array('folder' => $folder)));
     }
-    
+
     /**
      * Deletes a list of files and directories.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	folder where the action have begined, file that must be deleted or list of files, confirmation parameter
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  folder where the action have begined, file that must be deleted or list of files, confirmation parameter
+     * @return: True if success and false if not
      */
     public function deleteListFile($args)
     {
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
         //The following line disables function arguments for the confirm action. It only needs values of $_POST
         if ($confirm) $args = '';
-        
+
         $fileName = FormUtil::getPassedValue('fileName', isset($args['fileName']) ? $args['fileName'] : null, 'POST');
         $listFileName = FormUtil::getPassedValue('listFileName', isset($args['listFileName']) ? $args['listFileName'] : null, 'GETPOST');
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'GETPOST');
@@ -786,7 +786,7 @@ class Files_Controller_User extends Zikula_Controller
                 echo $content;
                 exit();
             } else {
-            	$this->view->assign('external', 0);
+                $this->view->assign('external', 0);
                 return $this->view->fetch('Files_user_deleteListFile.tpl');
             }
         }
@@ -830,12 +830,12 @@ class Files_Controller_User extends Zikula_Controller
                                               array('folder' => $folder,
                                                     'hook' => $hook)));
     }
-    
+
     /**
      * List the directories in server folder
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	the directory name where it is request the list of directories and subdirectories
-     * @return:	Array with the list of directories and subdirectories
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  the directory name where it is request the list of directories and subdirectories
+     * @return: Array with the list of directories and subdirectories
      */
     public function getListDirRecursive($args)
     {
@@ -867,12 +867,12 @@ class Files_Controller_User extends Zikula_Controller
         }
         return $array_items;
     }
-    
+
     /**
      * List the directories and files in server folder
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	args   Array with the folder name where list the files , directories and subdirectories
-     * @return:	Array with the list of files, directories and subdirectories
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  args   Array with the folder name where list the files , directories and subdirectories
+     * @return: Array with the list of files, directories and subdirectories
      */
     public function getListRecursive($args)
     {
@@ -906,12 +906,12 @@ class Files_Controller_User extends Zikula_Controller
         }
         return $array_items;
     }
-    
+
     /**
      * Renames a file or directory.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	Name of the file, folder where the action is made, confirmation parameter from the form and new name
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  Name of the file, folder where the action is made, confirmation parameter from the form and new name
+     * @return: True if success and false if not
      */
     public function renameFile($args)
     {
@@ -955,7 +955,7 @@ class Files_Controller_User extends Zikula_Controller
                 echo $content;
                 exit();
             } else {
-            	$this->view->assign('external', 0);
+                $this->view->assign('external', 0);
                 return $this->view->fetch('Files_user_renameFile.tpl');
             }
         }
@@ -969,8 +969,8 @@ class Files_Controller_User extends Zikula_Controller
         /*if (($fileName != $newName)&&(file_exists($initFolderPath . "/" . $folder . "/" . $newName))){
             LogUtil::registerError($this->__f('Failed to rename, there\'s a file with the same name in this folder.<br>Please, choose another name' ));
                 return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder)));
-        }*/ 
-        
+        }*/
+
         // check if the extension is allowed
         // get file extension
         $file_extension = FileUtil::getExtension($newName);
@@ -1012,14 +1012,14 @@ class Files_Controller_User extends Zikula_Controller
                                               array('folder' => $folder,
                                                     'hook'=> $hook)));
     }
-    
+
     /**
      * Create a new directory
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	folder where the directory must be created
-     * @param:	confirmation value
-     * @param:	Name of the new folder
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  folder where the directory must be created
+     * @param:  confirmation value
+     * @param:  Name of the new folder
+     * @return: True if success and false if not
      */
     public function createDir($args)
     {
@@ -1036,7 +1036,7 @@ class Files_Controller_User extends Zikula_Controller
         if (!SecurityUtil::confirmAuthKey()) {
             return LogUtil::registerAuthidError(ModUtil::url('Files', 'user', 'main'));
         }
-        
+
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
@@ -1066,12 +1066,12 @@ class Files_Controller_User extends Zikula_Controller
                                               array('folder' => $folder,
                                                     'hook' => $hook)));
     }
-    
+
     /**
      * Show the form needed to create a directory
-     * @author:	Albert Pérez Monfort
-     * @param:	folder name
-     * @return:	The form content
+     * @author: Albert Pérez Monfort
+     * @param:  folder name
+     * @return: The form content
      */
     public function createDirForm($args)
     {
@@ -1099,12 +1099,12 @@ class Files_Controller_User extends Zikula_Controller
         $this->view->assign('hook', $hook);
         return $this->view->fetch('Files_user_createDir.tpl');
     }
-    
+
     /**
      * Upload a file.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	folder name, confirmation parameter from the form and new file name
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  folder name, confirmation parameter from the form and new file name
+     * @return: True if success and false if not
      */
     public function uploadFile($args)
     {
@@ -1214,12 +1214,12 @@ class Files_Controller_User extends Zikula_Controller
                                               array('folder' => $folder,
                                                     'hook' => $hook)));
     }
-    
+
     /**
      * Show the form needed to create a directory
-     * @author:	Albert Pérez Monfort
-     * @param:	folder name
-     * @return:	The form content
+     * @author: Albert Pérez Monfort
+     * @param:  folder name
+     * @return: The form content
      */
     public function uploadFileForm($args)
     {
@@ -1248,12 +1248,12 @@ class Files_Controller_User extends Zikula_Controller
         $this->view->assign('func', $func);
         return $this->view->fetch('Files_user_uploadFile.tpl');
     }
-    
+
     /**
      * Select an action.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	folder name and action to do
-     * @return:	Redirect user to the function that do the action requested
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  folder name and action to do
+     * @return: Redirect user to the function that do the action requested
      */
     public function actionSelect($args)
     {
@@ -1321,12 +1321,12 @@ class Files_Controller_User extends Zikula_Controller
         return System::redirect(ModUtil::url('Files', $returnType, $returnFunc,
                                               array('folder' => $folder)));
     }
-    
+
     /**
      * Deletes a list of files and directories recursive.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	file name or folder name that must to be deleted
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  file name or folder name that must to be deleted
+     * @return: True if success and false if not
      */
     public function fullDeleteDir($args)
     {
@@ -1363,12 +1363,12 @@ class Files_Controller_User extends Zikula_Controller
         }
         return false;
     }
-    
+
     /**
      * Create file zip with files and directories
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	args
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  args
+     * @return: True if success and false if not
      */
     public function createZipListFile($args)
     {
@@ -1414,7 +1414,7 @@ class Files_Controller_User extends Zikula_Controller
                 echo $content;
                 exit();
             } else {
-            	$this->view->assign('external', 0);
+                $this->view->assign('external', 0);
                 return $this->view->fetch('Files_user_createZipListFile.tpl');
             }
         }
@@ -1454,12 +1454,12 @@ class Files_Controller_User extends Zikula_Controller
                                               array('folder' => $folder,
                                                     'hook' => $hook)));
     }
-    
+
     /**
      * Unzip a zip file.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	args
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  args
+     * @return: True if success and false if not
      */
     public function listContentZip($args)
     {
@@ -1501,16 +1501,16 @@ class Files_Controller_User extends Zikula_Controller
             echo $content;
             exit();
         } else {
-        	$this->view->assign('external', 0);
+            $this->view->assign('external', 0);
             return $this->view->fetch('Files_user_listContentZip.tpl');
         }
     }
-    
+
     /**
      * Move a list file
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	args 	Array with the list of files and the folder where it generates
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  args    Array with the list of files and the folder where it generates
+     * @return: True if success and false if not
      */
     public function moveListFile($args)
     {
@@ -1555,7 +1555,7 @@ class Files_Controller_User extends Zikula_Controller
                 echo $content;
                 exit();
             } else {
-            	$this->view->assign('external', 0);
+                $this->view->assign('external', 0);
                 return $this->view->fetch('Files_user_moveListFile.tpl');
             }
         }
@@ -1570,7 +1570,7 @@ class Files_Controller_User extends Zikula_Controller
         $url_old = ($folder != "") ? $initFolderPath . "/" . $folder . "/" : $initFolderPath . "/";
         $url_new = ($confirm != "root_inital_value") ? $initFolderPath . '/' . $confirm . '/' : $initFolderPath . '/';
         // move action
-        foreach ($listFileName as $file) { 
+        foreach ($listFileName as $file) {
             if (!rename($url_old . $file, $url_new . $file)) {
                 LogUtil::registerError($this->__('Error moving') . ': ' . $file);
                 $folder = str_replace("/", "|", $folder);
@@ -1580,7 +1580,7 @@ class Files_Controller_User extends Zikula_Controller
             }
             //check if the file is an image and move its thumbnail
             if((FileUtil::getExtension($file)==('jpg'||'gif'||'png'))&&file_exists($url_old . '.tbn/' . $file)){
-                if(!file_exists($url_new . '.tbn')) mkdir($url_new . '.tbn'); 
+                if(!file_exists($url_new . '.tbn')) mkdir($url_new . '.tbn');
                 if (!rename($url_old . '.tbn/' . $file, $url_new . '.tbn/' . $file)) {
                     LogUtil::registerError($this->__('Error moving') . ': ' . $file);
                     $folder = str_replace("/", "|", $folder);
@@ -1589,7 +1589,7 @@ class Files_Controller_User extends Zikula_Controller
                                                                 'hook' => $hook)));
                 }
             }
-            
+
         }
         // protect the folders with the .htaccess and .locked files
         ModUtil::func('Files', 'user', 'createProtectFiles',
@@ -1600,12 +1600,12 @@ class Files_Controller_User extends Zikula_Controller
                                               array('folder' => $folder,
                                                     'hook' => $hook)));
     }
-    
+
     /**
      * Unzip a zip file.
-     * @author:	Albert Pérez Monfort & Robert Barrera
-     * @param:	args
-     * @return:	True if success and false if not
+     * @author: Albert Pérez Monfort & Robert Barrera
+     * @param:  args
+     * @return: True if success and false if not
      */
     public function unzipFile($args)
     {
@@ -1690,7 +1690,7 @@ class Files_Controller_User extends Zikula_Controller
                                               array('folder' => $folder,
                                                     'hook' => $hook)));
     }
-    
+
     /**
      * Get the init folder path. For a multisites installation the folder path depends on the siteDNS.
      * For a not multiple installation the folder path is stored in a module variable.
@@ -1761,12 +1761,12 @@ class Files_Controller_User extends Zikula_Controller
         }
         return $initFolderPath;
     }
-    
+
     /**
      * gets the user disk quota depending on the groups where the user belong and the quota assigned to these groups
-     * @author:	Albert Pérez Monfort
-     * @param:	User identity
-     * @return:	The allowed disk quota for the user
+     * @author: Albert Pérez Monfort
+     * @param:  User identity
+     * @return: The allowed disk quota for the user
      */
     public function getUserQuota($args)
     {
@@ -1781,10 +1781,10 @@ class Files_Controller_User extends Zikula_Controller
         $groupsQuotas = unserialize($groupsQuotas);
         $groupsQuotasArray = array();
         if ($groupsQuotas) {
-	        foreach ($groupsQuotas as $quota) {
-	            $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'],
-	                                                      'quota' => $quota['quota']);
-	        }
+            foreach ($groupsQuotas as $quota) {
+                $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'],
+                                                          'quota' => $quota['quota']);
+            }
         }
         // get user groups
         $userGroups = ModUtil::apiFunc('Groups', 'user', 'getusergroups');
@@ -1804,12 +1804,12 @@ class Files_Controller_User extends Zikula_Controller
         }
         return $diskQuota;
     }
-    
+
     /**
      * Set a folder as public or not public
      * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	    folder name
-     * @return:	    True if success or false in other case
+     * @param:      folder name
+     * @return:     True if success or false in other case
      */
     public function setAsPublic($args)
     {
@@ -1864,12 +1864,12 @@ class Files_Controller_User extends Zikula_Controller
                                               array('folder' => $folder,
                                                     'hook' => $hook)));
     }
-    
+
     /**
      * create recursibily the .htaccess and .locked files in the folder because it is a public folder
-     * @author:	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	dir Folder Path
-     * @return:	Objects array of the files
+     * @author: Albert Pérez Monfort (aperezm@xtec.cat)
+     * @param:  dir Folder Path
+     * @return: Objects array of the files
      */
     public function createProtectFiles($args)
     {
@@ -1895,7 +1895,7 @@ class Files_Controller_User extends Zikula_Controller
         }
         return true;
     }
-    
+
     /**
      * get the list of information about file types based on extensions.
      * @return an array with the list of information about file types based on extensions
@@ -1904,149 +1904,149 @@ class Files_Controller_User extends Zikula_Controller
     {
         $extension = FormUtil::getPassedValue('extension', isset($args['extension']) ? $args['extension'] : null, 'POST');
         $mimeTypes = array('xxx' => array('type' => 'document/unknown', 'icon' => 'unknown.gif'),
-				           '3gp' => array('type' => 'video/quicktime', 'icon' => 'video.gif'),
-				           'ai' => array('type' => 'application/postscript', 'icon' => 'image.gif'),
-				           'aif' => array('type' => 'audio/x-aiff', 'icon' => 'audio.gif'),
-				           'aiff' => array('type' => 'audio/x-aiff', 'icon' => 'audio.gif'),
-				           'aifc' => array('type' => 'audio/x-aiff', 'icon' => 'audio.gif'),
-				           'applescript' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'asc' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'asm' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'au' => array('type' => 'audio/au', 'icon' => 'audio.gif'),
-				           'avi' => array('type' => 'video/x-ms-wm', 'icon' => 'avi.gif'),
-				           'bmp' => array('type' => 'image/bmp', 'icon' => 'image.gif'),
-				           'c' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-	                       'cct' => array('type' => 'shockwave/director', 'icon' => 'flash.gif'),
-			               'cpp' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'cs' => array('type' => 'application/x-csh', 'icon' => 'text.gif'),
-				           'css' => array('type' => 'text/css', 'icon' => 'text.gif'),
-				           'dv' => array('type' => 'video/x-dv', 'icon' => 'video.gif'),
-				           'dmg' => array('type' => 'application/octet-stream', 'icon' => 'dmg.gif'),
-				           'doc' => array('type' => 'application/msword', 'icon' => 'word.gif'),
-				           'docx' => array('type' => 'application/msword', 'icon' => 'docx.gif'),
-				           'docm' => array('type' => 'application/msword', 'icon' => 'docm.gif'),
-				           'dotx' => array('type' => 'application/msword', 'icon' => 'dotx.gif'),
-				           'dcr' => array('type' => 'application/x-director', 'icon' => 'flash.gif'),
-				           'dif' => array('type' => 'video/x-dv', 'icon' => 'video.gif'),
-				           'dir' => array('type' => 'application/x-director', 'icon' => 'flash.gif'),
-				           'dxr' => array('type' => 'application/x-director', 'icon' => 'flash.gif'),
-				           'eps' => array('type' => 'application/postscript', 'icon' => 'pdf.gif'),
-				           'fdf' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
-				           'flv' => array('type' => 'video/x-flv', 'icon' => 'video.gif'),
-				           'gif' => array('type' => 'image/gif', 'icon' => 'image.gif'),
-				           'gtar' => array('type' => 'application/x-gtar', 'icon' => 'zip.gif'),
-				           'tgz' => array('type' => 'application/g-zip', 'icon' => 'zip.gif'),
-				           'gz' => array('type' => 'application/g-zip', 'icon' => 'zip.gif'),
-				           'gzip' => array('type' => 'application/g-zip', 'icon' => 'zip.gif'),
-				           'h' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'hpp' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'hqx' => array('type' => 'application/mac-binhex40', 'icon' => 'zip.gif'),
-				           'htc' => array('type' => 'text/x-component', 'icon' => 'text.gif'),
-				           'html' => array('type' => 'text/html', 'icon' => 'html.gif'),
-				           'htm' => array('type' => 'text/html', 'icon' => 'html.gif'),
-				           'ico' => array('type' => 'image/vnd.microsoft.icon', 'icon' => 'image.gif'),
-				           'java' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'jcb' => array('type' => 'text/xml', 'icon' => 'jcb.gif'),
-				           'jcl' => array('type' => 'text/xml', 'icon' => 'jcl.gif'),
-				           'jcw' => array('type' => 'text/xml', 'icon' => 'jcw.gif'),
-				           'jmt' => array('type' => 'text/xml', 'icon' => 'jmt.gif'),
-				           'jmx' => array('type' => 'text/xml', 'icon' => 'jmx.gif'),
-				           'jpe' => array('type' => 'image/jpeg', 'icon' => 'image.gif'),
-				           'jpeg' => array('type' => 'image/jpeg', 'icon' => 'image.gif'),
-				           'jpg' => array('type' => 'image/jpeg', 'icon' => 'image.gif'),
-				           'jqz' => array('type' => 'text/xml', 'icon' => 'jqz.gif'),
-				           'js' => array('type' => 'application/x-javascript', 'icon' => 'text.gif'),
-				           'latex' => array('type' => 'application/x-latex', 'icon' => 'text.gif'),
-				           'm' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'mov' => array('type' => 'video/quicktime', 'icon' => 'video.gif'),
-				           'movie' => array('type' => 'video/x-sgi-movie', 'icon' => 'video.gif'),
-				           'm3u' => array('type' => 'audio/x-mpegurl', 'icon' => 'audio.gif'),
-				           'mp3' => array('type' => 'audio/mp3', 'icon' => 'audio.gif'),
-				           'mp4' => array('type' => 'video/mp4', 'icon' => 'video.gif'),
-				           'mpeg' => array('type' => 'video/mpeg', 'icon' => 'video.gif'),
-				           'mpe' => array('type' => 'video/mpeg', 'icon' => 'video.gif'),
-				           'mpg' => array('type' => 'video/mpeg', 'icon' => 'video.gif'),
-				           'odt' => array('type' => 'application/vnd.oasis.opendocument.text','icon' => 'odt.gif'),
-				           'ott' => array('type' => 'application/vnd.oasis.opendocument.text-template', 'icon' => 'odt.gif'),
-				           'oth' => array('type' => 'application/vnd.oasis.opendocument.text-web', 'icon' => 'odt.gif'),
-				           'odm' => array('type' => 'application/vnd.oasis.opendocument.text-master', 'icon' => 'odm.gif'),
-				           'odg' => array('type' => 'application/vnd.oasis.opendocument.graphics', 'icon' => 'odg.gif'),
-				           'otg' => array('type' => 'application/vnd.oasis.opendocument.graphics-template', 'icon' => 'odg.gif'),
-				           'odp' => array('type' => 'application/vnd.oasis.opendocument.presentation', 'icon' => 'odp.gif'),
-				           'otp' => array('type' => 'application/vnd.oasis.opendocument.presentation-template', 'icon' => 'odp.gif'),
-				           'ods' => array('type' => 'application/vnd.oasis.opendocument.spreadsheet', 'icon' => 'ods.gif'),
-				           'ots' => array('type' => 'application/vnd.oasis.opendocument.spreadsheet-template', 'icon' => 'ods.gif'),
-				           'odc' => array('type' => 'application/vnd.oasis.opendocument.chart', 'icon' => 'odc.gif'),
-				           'odf' => array('type' => 'application/vnd.oasis.opendocument.formula', 'icon' => 'odf.gif'),
-				           'odb' => array('type' => 'application/vnd.oasis.opendocument.database', 'icon' => 'odb.gif'),
-				           'odi' => array('type' => 'application/vnd.oasis.opendocument.image', 'icon' => 'odi.gif'),
-				           'pct' => array('type' => 'image/pict', 'icon' => 'image.gif'),
-				           'pdf' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
-				           'php' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'pic' => array('type' => 'image/pict', 'icon' => 'image.gif'),
-				           'pict' => array('type' => 'image/pict', 'icon' => 'image.gif'),
-				           'png' => array('type' => 'image/png', 'icon' => 'image.gif'),
-				           'pps' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'powerpoint.gif'),
-				           'ppt' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'powerpoint.gif'),
-				           'pptx' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'pptx.gif'),
-				           'pptm' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'pptm.gif'),
-				           'potx' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'potx.gif'),
-				           'potm' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'potm.gif'),
-				           'ppam' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'ppam.gif'),
-				           'ppsx' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'ppsx.gif'),
-				           'ppsm' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'ppsm.gif'),
-				           'ps' => array('type' => 'application/postscript', 'icon' => 'pdf.gif'),
-				           'qt' => array('type' => 'video/quicktime', 'icon' => 'video.gif'),
-				           'ra' => array('type' => 'audio/x-realaudio', 'icon' => 'audio.gif'),
-				           'ram' => array('type' => 'audio/x-pn-realaudio', 'icon' => 'audio.gif'),
-				           'rhb' => array('type' => 'text/xml', 'icon' => 'xml.gif'),
-				           'rm' => array('type' => 'audio/x-pn-realaudio', 'icon' => 'audio.gif'),
-				           'rtf' => array('type' => 'text/rtf', 'icon' => 'text.gif'),
-				           'rtx' => array('type' => 'text/richtext', 'icon' => 'text.gif'),
-				           'sh' => array('type' => 'application/x-sh', 'icon' => 'text.gif'),
-				           'sit' => array('type' => 'application/x-stuffit', 'icon' => 'zip.gif'),
-				           'smi' => array('type' => 'application/smil', 'icon' => 'text.gif'),
-				           'smil' => array('type' => 'application/smil', 'icon' => 'text.gif'),
-				           'sqt' => array('type' => 'text/xml', 'icon' => 'xml.gif'),
-				           'svg' => array('type' => 'image/svg+xml', 'icon' => 'image.gif'),
-				           'svgz' => array('type' => 'image/svg+xml', 'icon' => 'image.gif'),
-				           'swa' => array('type' => 'application/x-director', 'icon' => 'flash.gif'),
-				           'swf' => array('type' => 'application/x-shockwave-flash', 'icon' => 'flash.gif'),
-				           'swfl' => array('type' => 'application/x-shockwave-flash', 'icon' => 'flash.gif'),
-				           'sxw' => array('type' => 'application/vnd.sun.xml.writer', 'icon' => 'odt.gif'),
-				           'stw' => array('type' => 'application/vnd.sun.xml.writer.template', 'icon' => 'odt.gif'),
-				           'sxc' => array('type' => 'application/vnd.sun.xml.calc', 'icon' => 'odt.gif'),
-				           'stc' => array('type' => 'application/vnd.sun.xml.calc.template', 'icon' => 'odt.gif'),
-				           'sxd' => array('type' => 'application/vnd.sun.xml.draw', 'icon' => 'odt.gif'),
-				           'std' => array('type' => 'application/vnd.sun.xml.draw.template', 'icon' => 'odt.gif'),
-				           'sxi' => array('type' => 'application/vnd.sun.xml.impress', 'icon' => 'odt.gif'),
-				           'sti' => array('type' => 'application/vnd.sun.xml.impress.template', 'icon' => 'odt.gif'),
-				           'sxg' => array('type' => 'application/vnd.sun.xml.writer.global', 'icon' => 'odt.gif'),
-				           'sxm' => array('type' => 'application/vnd.sun.xml.math', 'icon' => 'odt.gif'),
-				           'tar' => array('type' => 'application/x-tar', 'icon' => 'zip.gif'),
-				           'tif' => array('type' => 'image/tiff', 'icon' => 'image.gif'),
-				           'tiff' => array('type' => 'image/tiff', 'icon' => 'image.gif'),
-				           'tex' => array('type' => 'application/x-tex', 'icon' => 'text.gif'),
-				           'texi' => array('type' => 'application/x-texinfo', 'icon' => 'text.gif'),
-				           'texinfo' => array('type' => 'application/x-texinfo', 'icon' => 'text.gif'),
-				           'tsv' => array('type' => 'text/tab-separated-values', 'icon' => 'text.gif'),
-				           'txt' => array('type' => 'text/plain', 'icon' => 'text.gif'),
-				           'wav' => array('type' => 'audio/wav', 'icon' => 'audio.gif'),
-				           'wmv' => array('type' => 'video/x-ms-wmv', 'icon' => 'avi.gif'),
-				           'asf' => array('type' => 'video/x-ms-asf', 'icon' => 'avi.gif'),
-				           'xdp' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
-				           'xfd' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
-				           'xfdf' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
-				           'xls' => array('type' => 'application/vnd.ms-excel', 'icon' => 'excel.gif'),
-				           'xlsx' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xlsx.gif'),
-				           'xlsm' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xlsm.gif'),
-				           'xltx' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xltx.gif'),
-				           'xltm' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xltm.gif'),
-				           'xlsb' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xlsb.gif'),
-				           'xlam' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xlam.gif'),
-				           'xml' => array('type' => 'application/xml', 'icon' => 'xml.gif'),
-				           'xsl' => array('type' => 'text/xml', 'icon' => 'xml.gif'),
-				           'zip' => array('type' => 'application/zip', 'icon' => 'zip.gif'));
+                           '3gp' => array('type' => 'video/quicktime', 'icon' => 'video.gif'),
+                           'ai' => array('type' => 'application/postscript', 'icon' => 'image.gif'),
+                           'aif' => array('type' => 'audio/x-aiff', 'icon' => 'audio.gif'),
+                           'aiff' => array('type' => 'audio/x-aiff', 'icon' => 'audio.gif'),
+                           'aifc' => array('type' => 'audio/x-aiff', 'icon' => 'audio.gif'),
+                           'applescript' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'asc' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'asm' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'au' => array('type' => 'audio/au', 'icon' => 'audio.gif'),
+                           'avi' => array('type' => 'video/x-ms-wm', 'icon' => 'avi.gif'),
+                           'bmp' => array('type' => 'image/bmp', 'icon' => 'image.gif'),
+                           'c' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'cct' => array('type' => 'shockwave/director', 'icon' => 'flash.gif'),
+                           'cpp' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'cs' => array('type' => 'application/x-csh', 'icon' => 'text.gif'),
+                           'css' => array('type' => 'text/css', 'icon' => 'text.gif'),
+                           'dv' => array('type' => 'video/x-dv', 'icon' => 'video.gif'),
+                           'dmg' => array('type' => 'application/octet-stream', 'icon' => 'dmg.gif'),
+                           'doc' => array('type' => 'application/msword', 'icon' => 'word.gif'),
+                           'docx' => array('type' => 'application/msword', 'icon' => 'docx.gif'),
+                           'docm' => array('type' => 'application/msword', 'icon' => 'docm.gif'),
+                           'dotx' => array('type' => 'application/msword', 'icon' => 'dotx.gif'),
+                           'dcr' => array('type' => 'application/x-director', 'icon' => 'flash.gif'),
+                           'dif' => array('type' => 'video/x-dv', 'icon' => 'video.gif'),
+                           'dir' => array('type' => 'application/x-director', 'icon' => 'flash.gif'),
+                           'dxr' => array('type' => 'application/x-director', 'icon' => 'flash.gif'),
+                           'eps' => array('type' => 'application/postscript', 'icon' => 'pdf.gif'),
+                           'fdf' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
+                           'flv' => array('type' => 'video/x-flv', 'icon' => 'video.gif'),
+                           'gif' => array('type' => 'image/gif', 'icon' => 'image.gif'),
+                           'gtar' => array('type' => 'application/x-gtar', 'icon' => 'zip.gif'),
+                           'tgz' => array('type' => 'application/g-zip', 'icon' => 'zip.gif'),
+                           'gz' => array('type' => 'application/g-zip', 'icon' => 'zip.gif'),
+                           'gzip' => array('type' => 'application/g-zip', 'icon' => 'zip.gif'),
+                           'h' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'hpp' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'hqx' => array('type' => 'application/mac-binhex40', 'icon' => 'zip.gif'),
+                           'htc' => array('type' => 'text/x-component', 'icon' => 'text.gif'),
+                           'html' => array('type' => 'text/html', 'icon' => 'html.gif'),
+                           'htm' => array('type' => 'text/html', 'icon' => 'html.gif'),
+                           'ico' => array('type' => 'image/vnd.microsoft.icon', 'icon' => 'image.gif'),
+                           'java' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'jcb' => array('type' => 'text/xml', 'icon' => 'jcb.gif'),
+                           'jcl' => array('type' => 'text/xml', 'icon' => 'jcl.gif'),
+                           'jcw' => array('type' => 'text/xml', 'icon' => 'jcw.gif'),
+                           'jmt' => array('type' => 'text/xml', 'icon' => 'jmt.gif'),
+                           'jmx' => array('type' => 'text/xml', 'icon' => 'jmx.gif'),
+                           'jpe' => array('type' => 'image/jpeg', 'icon' => 'image.gif'),
+                           'jpeg' => array('type' => 'image/jpeg', 'icon' => 'image.gif'),
+                           'jpg' => array('type' => 'image/jpeg', 'icon' => 'image.gif'),
+                           'jqz' => array('type' => 'text/xml', 'icon' => 'jqz.gif'),
+                           'js' => array('type' => 'application/x-javascript', 'icon' => 'text.gif'),
+                           'latex' => array('type' => 'application/x-latex', 'icon' => 'text.gif'),
+                           'm' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'mov' => array('type' => 'video/quicktime', 'icon' => 'video.gif'),
+                           'movie' => array('type' => 'video/x-sgi-movie', 'icon' => 'video.gif'),
+                           'm3u' => array('type' => 'audio/x-mpegurl', 'icon' => 'audio.gif'),
+                           'mp3' => array('type' => 'audio/mp3', 'icon' => 'audio.gif'),
+                           'mp4' => array('type' => 'video/mp4', 'icon' => 'video.gif'),
+                           'mpeg' => array('type' => 'video/mpeg', 'icon' => 'video.gif'),
+                           'mpe' => array('type' => 'video/mpeg', 'icon' => 'video.gif'),
+                           'mpg' => array('type' => 'video/mpeg', 'icon' => 'video.gif'),
+                           'odt' => array('type' => 'application/vnd.oasis.opendocument.text','icon' => 'odt.gif'),
+                           'ott' => array('type' => 'application/vnd.oasis.opendocument.text-template', 'icon' => 'odt.gif'),
+                           'oth' => array('type' => 'application/vnd.oasis.opendocument.text-web', 'icon' => 'odt.gif'),
+                           'odm' => array('type' => 'application/vnd.oasis.opendocument.text-master', 'icon' => 'odm.gif'),
+                           'odg' => array('type' => 'application/vnd.oasis.opendocument.graphics', 'icon' => 'odg.gif'),
+                           'otg' => array('type' => 'application/vnd.oasis.opendocument.graphics-template', 'icon' => 'odg.gif'),
+                           'odp' => array('type' => 'application/vnd.oasis.opendocument.presentation', 'icon' => 'odp.gif'),
+                           'otp' => array('type' => 'application/vnd.oasis.opendocument.presentation-template', 'icon' => 'odp.gif'),
+                           'ods' => array('type' => 'application/vnd.oasis.opendocument.spreadsheet', 'icon' => 'ods.gif'),
+                           'ots' => array('type' => 'application/vnd.oasis.opendocument.spreadsheet-template', 'icon' => 'ods.gif'),
+                           'odc' => array('type' => 'application/vnd.oasis.opendocument.chart', 'icon' => 'odc.gif'),
+                           'odf' => array('type' => 'application/vnd.oasis.opendocument.formula', 'icon' => 'odf.gif'),
+                           'odb' => array('type' => 'application/vnd.oasis.opendocument.database', 'icon' => 'odb.gif'),
+                           'odi' => array('type' => 'application/vnd.oasis.opendocument.image', 'icon' => 'odi.gif'),
+                           'pct' => array('type' => 'image/pict', 'icon' => 'image.gif'),
+                           'pdf' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
+                           'php' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'pic' => array('type' => 'image/pict', 'icon' => 'image.gif'),
+                           'pict' => array('type' => 'image/pict', 'icon' => 'image.gif'),
+                           'png' => array('type' => 'image/png', 'icon' => 'image.gif'),
+                           'pps' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'powerpoint.gif'),
+                           'ppt' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'powerpoint.gif'),
+                           'pptx' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'pptx.gif'),
+                           'pptm' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'pptm.gif'),
+                           'potx' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'potx.gif'),
+                           'potm' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'potm.gif'),
+                           'ppam' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'ppam.gif'),
+                           'ppsx' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'ppsx.gif'),
+                           'ppsm' => array('type' => 'application/vnd.ms-powerpoint', 'icon' => 'ppsm.gif'),
+                           'ps' => array('type' => 'application/postscript', 'icon' => 'pdf.gif'),
+                           'qt' => array('type' => 'video/quicktime', 'icon' => 'video.gif'),
+                           'ra' => array('type' => 'audio/x-realaudio', 'icon' => 'audio.gif'),
+                           'ram' => array('type' => 'audio/x-pn-realaudio', 'icon' => 'audio.gif'),
+                           'rhb' => array('type' => 'text/xml', 'icon' => 'xml.gif'),
+                           'rm' => array('type' => 'audio/x-pn-realaudio', 'icon' => 'audio.gif'),
+                           'rtf' => array('type' => 'text/rtf', 'icon' => 'text.gif'),
+                           'rtx' => array('type' => 'text/richtext', 'icon' => 'text.gif'),
+                           'sh' => array('type' => 'application/x-sh', 'icon' => 'text.gif'),
+                           'sit' => array('type' => 'application/x-stuffit', 'icon' => 'zip.gif'),
+                           'smi' => array('type' => 'application/smil', 'icon' => 'text.gif'),
+                           'smil' => array('type' => 'application/smil', 'icon' => 'text.gif'),
+                           'sqt' => array('type' => 'text/xml', 'icon' => 'xml.gif'),
+                           'svg' => array('type' => 'image/svg+xml', 'icon' => 'image.gif'),
+                           'svgz' => array('type' => 'image/svg+xml', 'icon' => 'image.gif'),
+                           'swa' => array('type' => 'application/x-director', 'icon' => 'flash.gif'),
+                           'swf' => array('type' => 'application/x-shockwave-flash', 'icon' => 'flash.gif'),
+                           'swfl' => array('type' => 'application/x-shockwave-flash', 'icon' => 'flash.gif'),
+                           'sxw' => array('type' => 'application/vnd.sun.xml.writer', 'icon' => 'odt.gif'),
+                           'stw' => array('type' => 'application/vnd.sun.xml.writer.template', 'icon' => 'odt.gif'),
+                           'sxc' => array('type' => 'application/vnd.sun.xml.calc', 'icon' => 'odt.gif'),
+                           'stc' => array('type' => 'application/vnd.sun.xml.calc.template', 'icon' => 'odt.gif'),
+                           'sxd' => array('type' => 'application/vnd.sun.xml.draw', 'icon' => 'odt.gif'),
+                           'std' => array('type' => 'application/vnd.sun.xml.draw.template', 'icon' => 'odt.gif'),
+                           'sxi' => array('type' => 'application/vnd.sun.xml.impress', 'icon' => 'odt.gif'),
+                           'sti' => array('type' => 'application/vnd.sun.xml.impress.template', 'icon' => 'odt.gif'),
+                           'sxg' => array('type' => 'application/vnd.sun.xml.writer.global', 'icon' => 'odt.gif'),
+                           'sxm' => array('type' => 'application/vnd.sun.xml.math', 'icon' => 'odt.gif'),
+                           'tar' => array('type' => 'application/x-tar', 'icon' => 'zip.gif'),
+                           'tif' => array('type' => 'image/tiff', 'icon' => 'image.gif'),
+                           'tiff' => array('type' => 'image/tiff', 'icon' => 'image.gif'),
+                           'tex' => array('type' => 'application/x-tex', 'icon' => 'text.gif'),
+                           'texi' => array('type' => 'application/x-texinfo', 'icon' => 'text.gif'),
+                           'texinfo' => array('type' => 'application/x-texinfo', 'icon' => 'text.gif'),
+                           'tsv' => array('type' => 'text/tab-separated-values', 'icon' => 'text.gif'),
+                           'txt' => array('type' => 'text/plain', 'icon' => 'text.gif'),
+                           'wav' => array('type' => 'audio/wav', 'icon' => 'audio.gif'),
+                           'wmv' => array('type' => 'video/x-ms-wmv', 'icon' => 'avi.gif'),
+                           'asf' => array('type' => 'video/x-ms-asf', 'icon' => 'avi.gif'),
+                           'xdp' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
+                           'xfd' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
+                           'xfdf' => array('type' => 'application/pdf', 'icon' => 'pdf.gif'),
+                           'xls' => array('type' => 'application/vnd.ms-excel', 'icon' => 'excel.gif'),
+                           'xlsx' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xlsx.gif'),
+                           'xlsm' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xlsm.gif'),
+                           'xltx' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xltx.gif'),
+                           'xltm' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xltm.gif'),
+                           'xlsb' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xlsb.gif'),
+                           'xlam' => array('type' => 'application/vnd.ms-excel', 'icon' => 'xlam.gif'),
+                           'xml' => array('type' => 'application/xml', 'icon' => 'xml.gif'),
+                           'xsl' => array('type' => 'text/xml', 'icon' => 'xml.gif'),
+                           'zip' => array('type' => 'application/zip', 'icon' => 'zip.gif'));
         $return = (isset($mimeTypes[$extension])) ? $mimeTypes[$extension] : $mimeTypes['xxx'];
         return $return;
     }

@@ -11,13 +11,13 @@
  * @package    Utilities
  * @subpackage Files
  */
-class Files_Api_User extends Zikula_Api
+class Files_Api_User extends Zikula_AbstractApi
 {
     /**
      * Get an user files information
      * @author:    Albert Pérez Monfort
      * @param:     UserId
-     * @return:	   And array with the users
+     * @return:    And array with the users
     */
     public function get($args)
     {
@@ -26,18 +26,18 @@ class Files_Api_User extends Zikula_Api
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
-        $item = DBUtil::selectObjectByID('Files', $userId, 'userId');    
-    	// error message and return
-    	if ($item === false) {
-    		return LogUtil::registerError ($this->__('Error! Could not load items.'));
-    	}
+        $item = DBUtil::selectObjectByID('Files', $userId, 'userId');
+        // error message and return
+        if ($item === false) {
+            return LogUtil::registerError ($this->__('Error! Could not load items.'));
+        }
         return $item;
     }
-    
+
     /**
      * Create user files info
      * @author:    Albert Pérez Monfort
-     * @return:	   And a new row to table for the user
+     * @return:    And a new row to table for the user
     */
     public function createUserFilesInfo()
     {
@@ -59,11 +59,11 @@ class Files_Api_User extends Zikula_Api
         }
         return true;
     }
-    
+
     /**
      * update the used disk for the user
      * @author:    Albert Pérez Monfort
-     * @return:	   True if success and false otherwise
+     * @return:    True if success and false otherwise
     */
     public function updateUsedSpace()
     {
@@ -75,49 +75,49 @@ class Files_Api_User extends Zikula_Api
         $usedSpace = ModUtil::apiFunc('Files', 'user', 'get');
         if(!$usedSpace){
             // user row doesn't exists and it is created
-            ModUtil::apiFunc('Files', 'user', 'createUserFilesInfo');        
+            ModUtil::apiFunc('Files', 'user', 'createUserFilesInfo');
         }
-        
+
         $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
         $spaceUsed = ModUtil::apiFunc('Files', 'user', 'calcUsedSpace', array('folderToCalc' => $initFolderPath));
         $item = array('diskUse' => DataUtil::formatForStore($spaceUsed));
-    	$pntable =& DBUtil::getTables();
-    	$c = $pntable['Files_column'];
-    	$where = "$c[userId]=" . UserUtil::getVar('uid');
-    	if (!DBUtil::updateObject($item, 'Files', $where, 'fileId')) {
-    		return LogUtil::registerError ($this->__('Error! Could not update the used disk.'));
-    	}
+        $pntable =& DBUtil::getTables();
+        $c = $pntable['Files_column'];
+        $where = "$c[userId]=" . UserUtil::getVar('uid');
+        if (!DBUtil::updateObject($item, 'Files', $where, 'fileId')) {
+            return LogUtil::registerError ($this->__('Error! Could not update the used disk.'));
+        }
         // Let the calling process know that we have finished successfully
-    	return true;
+        return true;
     }
-    
+
     /**
      * calc the bytes that the user has used
      * @author:    Albert Pérez Monfort
      * @param:     directory where it is necessary to begin the calc
-     * @return:	   The number of used bytes
+     * @return:    The number of used bytes
     */
     public function calcUsedSpace($args)
     {
-    	$folderToCalc = FormUtil::getPassedValue('folderToCalc', isset($args['folderToCalc']) ? $args['folderToCalc'] : null, 'POST');
-    	if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
-    		return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-    	}
-    	if ($handle = opendir($folderToCalc)) {
-    		while (false !== ($file = readdir($handle))) {
-    			if ($file != "." && $file != "..") {				
-    				if ($dir. "/" . $file) {
-    					$array_items +=  filesize($folderToCalc . "/" . $file);	
-    					$file = $folderToCalc . "/" . $file;
-    					$array_items = $array_items + ModUtil::apiFunc('Files', 'user', 'calcUsedSpace', array('folderToCalc' => $file));
-    				}
-    			}
+        $folderToCalc = FormUtil::getPassedValue('folderToCalc', isset($args['folderToCalc']) ? $args['folderToCalc'] : null, 'POST');
+        if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
+            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
+        }
+        if ($handle = opendir($folderToCalc)) {
+            while (false !== ($file = readdir($handle))) {
+                if ($file != "." && $file != "..") {
+                    if ($dir. "/" . $file) {
+                        $array_items +=  filesize($folderToCalc . "/" . $file);
+                        $file = $folderToCalc . "/" . $file;
+                        $array_items = $array_items + ModUtil::apiFunc('Files', 'user', 'calcUsedSpace', array('folderToCalc' => $file));
+                    }
+                }
                 if($array_items > 209715200) {
                     break;
                 }
-    		}
-    		closedir($handle);
-    	}
-    	return $array_items;
+            }
+            closedir($handle);
+        }
+        return $array_items;
     }
 }

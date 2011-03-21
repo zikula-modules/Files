@@ -12,7 +12,7 @@
  * @subpackage Files
  */
 
-class Files_Controller_Admin extends Zikula_Controller
+class Files_Controller_Admin extends Zikula_AbstractController
 {
     public function postInitialize()
     {
@@ -38,13 +38,13 @@ class Files_Controller_Admin extends Zikula_Controller
             $folderPath = ModUtil::getVar('Files', 'folderPath');
         }
         $moduleVars = array('usersFolder' => ModUtil::getVar('Files', 'usersFolder'),
-			                'allowedExtensions' => ModUtil::getVar('Files', 'allowedExtensions'),
-			                'defaultQuota' => ModUtil::getVar('Files', 'defaultQuota'),
-			                'filesMaxSize' => ModUtil::getVar('Files', 'filesMaxSize'),
-			                'maxWidth' => ModUtil::getVar('Files', 'maxWidth'),
-			                'maxHeight' => ModUtil::getVar('Files', 'maxHeight'),
-			                'showHideFiles' => ModUtil::getVar('Files', 'showHideFiles'),
-			                'editableExtensions' => ModUtil::getVar('Files', 'editableExtensions'));
+                            'allowedExtensions' => ModUtil::getVar('Files', 'allowedExtensions'),
+                            'defaultQuota' => ModUtil::getVar('Files', 'defaultQuota'),
+                            'filesMaxSize' => ModUtil::getVar('Files', 'filesMaxSize'),
+                            'maxWidth' => ModUtil::getVar('Files', 'maxWidth'),
+                            'maxHeight' => ModUtil::getVar('Files', 'maxHeight'),
+                            'showHideFiles' => ModUtil::getVar('Files', 'showHideFiles'),
+                            'editableExtensions' => ModUtil::getVar('Files', 'editableExtensions'));
         // check if file file.php exists in folder modules/Files
         $fileFileInModule = (file_exists('modules/Files/file.php')) ? true : false;
         // check if file file.php exists in folder modules/Files
@@ -67,7 +67,7 @@ class Files_Controller_Admin extends Zikula_Controller
     /**
      * Update the module configuration
      * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @return:	True if success or false in other case
+     * @return: True if success or false in other case
      */
     public function updateconfig($args)
     {
@@ -90,12 +90,12 @@ class Files_Controller_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError (ModUtil::url('Files', 'admin', 'main'));
         }
         $moduleVars = array('showHideFiles' => $showHideFiles,
-			                'allowedExtensions' => $allowedExtensions,
-			                'defaultQuota' => $defaultQuota,
-			                'filesMaxSize' => $filesMaxSize,
-			                'maxWidth' => $maxWidth,
-			                'maxHeight' => $maxHeight,
-			                'editableExtensions' => $editableExtensions);
+                            'allowedExtensions' => $allowedExtensions,
+                            'defaultQuota' => $defaultQuota,
+                            'filesMaxSize' => $filesMaxSize,
+                            'maxWidth' => $maxWidth,
+                            'maxHeight' => $maxHeight,
+                            'editableExtensions' => $editableExtensions);
         if ($GLOBALS['PNConfig']['Multisites']['multi'] != 1) {
             if (!file_exists($folderPath)) {
                 ModUtil::setVars('Files', $moduleVars);
@@ -138,9 +138,9 @@ class Files_Controller_Admin extends Zikula_Controller
         $groupsArray = array();
         $groupsQuotasArray = array();
         if ($groupsQuotas) {
-	        foreach ($groupsQuotas as $quota) {
-	            $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'],
-	                                                      'quota' => $quota['quota']);
+            foreach ($groupsQuotas as $quota) {
+                $groupsQuotasArray[$quota['gid']] = array('gid' => $quota['gid'],
+                                                          'quota' => $quota['quota']);
             }
         }
         foreach ($groups as $group) {
@@ -169,21 +169,21 @@ class Files_Controller_Admin extends Zikula_Controller
         $groupsQuotas = unserialize($groupsQuotas);
         $i = 0;
         if ($groupsQuotas) {
-	        foreach ($groupsQuotas as $group) {
-	            if ($group['gid'] > 0) {
-	                // get group name
-	                $grupValues = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $group['gid']));
-	                $groupsQuotas[$i]['name'] = $grupValues['name'];
-	                $i++;
-	            }
-	        }
-	        // sort the array using the field name
-	        foreach ($groupsQuotas as $key => $row) {
-	            $name[$key] = $row['name'];
-	        }
+            foreach ($groupsQuotas as $group) {
+                if ($group['gid'] > 0) {
+                    // get group name
+                    $grupValues = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $group['gid']));
+                    $groupsQuotas[$i]['name'] = $grupValues['name'];
+                    $i++;
+                }
+            }
+            // sort the array using the field name
+            foreach ($groupsQuotas as $key => $row) {
+                $name[$key] = $row['name'];
+            }
             array_multisort($name, SORT_ASC, $groupsQuotas);
         } else {
-        	$groupsQuotas = array();
+            $groupsQuotas = array();
         }
         $noMoreGroups = (count(ModUtil::apiFunc('Groups', 'user', 'getall')) == $i) ? true : false;
         $this->view->assign('groupsQuotas', $groupsQuotas);

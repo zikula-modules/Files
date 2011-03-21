@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
+class Files_Controller_Interactiveinstaller extends Zikula_AbstractInteractiveInstaller
 {
     public function postInitialize()
     {
@@ -26,13 +26,13 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
      */
     public function install()
     {
-    	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
-    		return LogUtil::registerPermissionError();
-    	}
+        if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
         $this->view->assign('step', 'info');
         return $this->view->fetch('Files_init.tpl');
     }
-    
+
     public function form($args)
     {
         $file1 = FormUtil::getPassedValue('file1', isset($args['file1']) ? $args['file1'] : null, 'GET');
@@ -44,7 +44,7 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
             $filesRealPath = 'files';
             $createdFilesFolder = true;
         } else {
-    	    // get server file root
+            // get server file root
             if($file1 == null) {
                 $filesRoot = $_SERVER['DOCUMENT_ROOT'];
                 $filesRealPath = substr($filesRoot, 0 ,  strrpos($filesRoot, '/')) . '/filesFolder';
@@ -59,7 +59,7 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
         $this->view->assign('step', 'form');
         return $this->view->fetch('Files_init.tpl');
     }
-    
+
     /**
      * Step 1 - Check if the needed files exists and if they are writeable
      * @author Albert Pérez Monfort (aperezm@xtec.cat)
@@ -69,20 +69,20 @@ class Files_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
     {
         $filesRealPath = FormUtil::getPassedValue('filesRealPath', isset($args['filesRealPath']) ? $args['filesRealPath'] : null, 'POST');
         $usersFolder = FormUtil::getPassedValue('usersFolder', isset($args['usersFolder']) ? $args['usersFolder'] : null, 'POST');
-    	if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
-    		return LogUtil::registerPermissionError();
-    	}
-    	$multisites = false;
-    	if(isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
-    		// create the needed folders for the site
-    		$siteDNS = (isset($_GET['siteDNS']) ? DataUtil::formatForOS($_GET['siteDNS']) : null);
-    		$filesRealPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
-    		if(!FileUtil::mkdirs($filesRealPath . '/' . $usersFolder, 0777, true)) {
+        if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
+        $multisites = false;
+        if(isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
+            // create the needed folders for the site
+            $siteDNS = (isset($_GET['siteDNS']) ? DataUtil::formatForOS($_GET['siteDNS']) : null);
+            $filesRealPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
+            if(!FileUtil::mkdirs($filesRealPath . '/' . $usersFolder, 0777, true)) {
                 LogUtil::registerError($this->__('Directory creation error') . ': ' . $usersFolder);
                 return false;
-    		}
-    		$multisites = true;
-    	}
+            }
+            $multisites = true;
+        }
         // check if the needed files are located in the correct places and they are writeable
         $file1 = false;
         $file2 = false;

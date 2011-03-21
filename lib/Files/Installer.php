@@ -11,10 +11,10 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Files_Installer extends Zikula_Installer
+class Files_Installer extends Zikula_AbstractInstaller
 {
     public function install()
-	{
+    {
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
@@ -43,7 +43,7 @@ class Files_Installer extends Zikula_Installer
         ModUtil::setVar('Files', 'editableExtensions', 'php,htm,html,htaccess,css,js,tpl');
         // Set up module hook
         ModUtil::registerHook('item', 'display', 'GUI', 'Files', 'user', 'Files');
-	    return true;
+        return true;
     }
 
     /**
@@ -55,7 +55,7 @@ class Files_Installer extends Zikula_Installer
     {
         // Delete module table
         DBUtil::dropTable('Files');
-    	//Delete module vars
+        //Delete module vars
         $this->delVar('folderPath');
         $this->delVar('usersFolder');
         $this->delVar('showHideFiles');

@@ -1,5 +1,5 @@
 <?php
-class Files_Controller_External extends Zikula_Controller
+class Files_Controller_External extends Zikula_AbstractController
 {
     public function postInitialize()
     {
@@ -7,14 +7,14 @@ class Files_Controller_External extends Zikula_Controller
     }
     /**
      * List the files in server folder
-     * @author:	Albert Pérez Monfort
-     * @param:	args   the folder name where to list the files and subfolders
-     * @return:	The list of files and folders
+     * @author: Albert Pérez Monfort
+     * @param:  args   the folder name where to list the files and subfolders
+     * @return: The list of files and folders
      */
     public function getFiles($args)
     {
         $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : 0, 'GET');
-    	PageUtil::AddVar('javascript', 'modules/Files/javascript/getFiles.js');
+        PageUtil::AddVar('javascript', 'modules/Files/javascript/getFiles.js');
         // get arguments
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
         $folder = str_replace("|", "/", $folder);
@@ -83,7 +83,7 @@ class Files_Controller_External extends Zikula_Controller
         $fileList = ModUtil::func('Files', 'user', 'dir_list',
                                    array('folder' => $folder,
                                          'external' => 1,
-                               		     'hook' => $hook));
+                                         'hook' => $hook));
         sort($fileList['dir']);
         sort($fileList['file']);
         $notwriteable = (!is_writable($folder)) ? true : false;

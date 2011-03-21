@@ -11,7 +11,7 @@
  * @package    Utilities
  * @subpackage Files
  */
-class Files_Api_Admin extends Zikula_Api
+class Files_Api_Admin extends Zikula_AbstractApi
 {
     // get available admin panel links
     public function getlinks()

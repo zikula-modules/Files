@@ -18,7 +18,7 @@
  * @author      Albert Pérez Monfort (aperezm@xtec.cat)
  * @return      The version information
  */
-class Files_Version extends Zikula_Version
+class Files_Version extends Zikula_AbstractVersion
 {
     public function getMetaData()
     {
