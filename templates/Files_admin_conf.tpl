@@ -1,6 +1,6 @@
 {include file="Files_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='package_settings.png' set='icons/large'}</div>
+    <div class="z-adminpageicon">{img modname='core' src='configure.png' set='icons/large'}</div>
     <h2>{gt text="Modify configuration"}</h2>
     {if $fileFileInModule OR $fileFileNotInRoot}
     <div id="z-securityanalyzer">

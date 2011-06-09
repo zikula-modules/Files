@@ -258,7 +258,7 @@ class Files_Controller_User extends Zikula_AbstractController {
                                 'fileName' => $object,
                                 'folder' => $folderName,
                                 'external' => $external)),
-                            'image' => 'inline_image.png',
+                            'image' => 'servicemanager2.png',
                             'title' => $this->__('Create Thumbnail'),
                             'hook' => $hook);
                     }
