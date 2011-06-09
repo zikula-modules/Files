@@ -1,9 +1,9 @@
-<form class="z-form" id="createDir" action="{modurl modname="Files" func="createDir"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" id="createDir" action="{modurl modname='Files' type='user' func='createDir'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
-        <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Files"}"/>
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="folder" value="{$folder}" />
         <input type="hidden" name="external" value="{$external}" />
-		<input type="hidden" name="hook" value="{$hook}" />
+        <input type="hidden" name="hook" value="{$hook}" />
         <fieldset>
             <legend>{gt text="Create folder"}</legend>
             <div class="z-formrow">
@@ -11,8 +11,12 @@
                 <input type="text" name="newFolder" id="newFolder" />
             </div>
             <div class="z-formbuttons">
-                <a href="javascript:submitCreateDir();">{img modname='core' src='button_ok.gif' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}</a>
-                <a href="{modurl modname="Files" type=$type func=$func folder=$folder|replace:'/':'|' hook=$hook}">{img modname='core' src='button_cancel.gif' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}</a>
+                <a href="javascript:submitCreateDir();">
+                    {img modname='core' src='button_ok.png' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}
+                </a>
+                <a href="{modurl modname='Files' type=$type func=$func folder=$folder|replace:'/':'|' hook=$hook}">
+                    {img modname='core' src='button_cancel.png' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}
+                </a>
             </div>
         </fieldset>
     </div>

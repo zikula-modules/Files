@@ -14,10 +14,10 @@
 		<meta http-equiv="X-UA-Compatible" content="chrome=1" />
         <script type="text/javascript">
         	document.location.entrypoint="{{homepage}}";
-			document.location.pnbaseURL="{{getbaseurl}}";
+			document.location.pnbaseURL="{{$baseurl}}";
 			document.location.ajaxtimeout=5000;
 			if (typeof(Zikula) == 'undefined') {Zikula = {};}
-            Zikula.Config = {"entrypoint":"index.php","baseURL":"{{getbaseurl}}","baseURI":"{{getbaseuri}}","ajaxtimeout":"5000","lang":"en"}
+            Zikula.Config = {"entrypoint":"index.php","baseURL":"{{$baseurl}}","baseURI":"{{getbaseuri}}","ajaxtimeout":"5000","lang":"en"}
         </script>
         <script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
 		<script type="text/javascript" src="javascript/helpers/Zikula.js"></script>

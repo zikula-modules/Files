@@ -9,7 +9,7 @@
     <input type="text" size="3" name="quotaValue" /> {gt text="Mb"}
     
     <a href="javascript:createGroupQuota();">
-        {img modname='core' src='button_ok.gif' set='icons/extrasmall' __alt="Save the changes" __title="Save the changes"}
+        {img modname='core' src='button_ok.png' set='icons/extrasmall' __alt="Save the changes" __title="Save the changes"}
     </a>
     
     <div class="z-informationmsg">

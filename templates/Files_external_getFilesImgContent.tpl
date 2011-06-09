@@ -15,15 +15,17 @@
             <a href="javascript:modifySize('{$folderName}','{$file.name}','{$file.factor}','increase');">
                 {img modname='Files' src='increase.gif' set='images' __alt="Increase size" __title="Increase size"}
             </a>
-            <a href="{modurl modname="Files" external="1" func="action" do="delete" fileName=$file.name folder=$folderName|replace:'/':'|' thumb=1 hook=$hook}">{img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete thumbnail" __title="Delete thumbnail"}</a>
+            <a href="{modurl modname='Files' type='user' external='1' func='action' do='delete' fileName=$file.name folder=$folderName|replace:'/':'|' thumb=1 hook=$hook}">
+                {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete thumbnail" __title="Delete thumbnail"}
+            </a>
             {if $hook neq 1}
-                <a href="" onclick="__dlg_close('file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}.tbn/{$file.name}','tt');" title="Insert" >
-                	{img modname='core' set='icons/extrasmall' src='inbox.gif' __title="Insert" __alt="Insert"}
-				</a> 
+            <a href="" onclick="__dlg_close('file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}.tbn/{$file.name}','tt');" title="Insert" >
+                {img modname='core' set='icons/extrasmall' src='inbox.png' __title="Insert" __alt="Insert"}
+            </a> 
             {else}
-				<a href="" onclick="insertAndClose('file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}.tbn/{$file.name}');" title="Insert" >
-					{img modname='core' set='icons/extrasmall' src='inbox.gif' __title="Insert" __alt="Insert"}
-				</a> 
+            <a href="" onclick="insertAndClose('file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}.tbn/{$file.name}');" title="Insert" >
+                {img modname='core' set='icons/extrasmall' src='inbox.png' __title="Insert" __alt="Insert"}
+            </a> 
             {/if}
         </div>
     </div>

@@ -1,25 +1,25 @@
 {include file="Files_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='package_settings.gif' set='icons/large'}</div>
+    <div class="z-adminpageicon">{img modname='core' src='package_settings.png' set='icons/large'}</div>
     <h2>{gt text="Modify configuration"}</h2>
     {if $fileFileInModule OR $fileFileNotInRoot}
-        <div id="z-securityanalyzer">
-            {if $fileFileNotInRoot}
-            <div>
-                {gt text="You should move the file file.php from modules/Files to the zikula root directory"}
-            </div>
-            {else}
-                {if $fileFileInModule}
-                <div>
-                    {gt text="You should remove the file file.php from modules/Files"}
-                </div>
-                {/if}
-            {/if}
-        </div>
-    {/if}
-    <form class="z-form" enctype="application/x-www-form-urlencoded" method="post" id="conf" action="{modurl modname="Files" type="admin" func="updateconfig"}">
+    <div id="z-securityanalyzer">
+        {if $fileFileNotInRoot}
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Files"}" />
+            {gt text="You should move the file file.php from modules/Files to the zikula root directory"}
+        </div>
+        {else}
+        {if $fileFileInModule}
+        <div>
+            {gt text="You should remove the file file.php from modules/Files"}
+        </div>
+        {/if}
+        {/if}
+    </div>
+    {/if}
+    <form class="z-form" enctype="application/x-www-form-urlencoded" method="post" id="conf" action="{modurl modname='Files' type='admin' func='updateconfig'}">
+        <div>
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Settings"}</legend>
                 {if !$multisites}
@@ -84,7 +84,7 @@
                 </div>
             </fieldset>
             <div class="z-formbuttons">
-                {button src='button_ok.gif' set='icons/small' __alt="Save the changes" __title="Save the changes"}
+                {button src='button_ok.png' set='icons/small' __alt="Save the changes" __title="Save the changes"}
             </div>
         </div>
     </form>

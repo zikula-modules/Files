@@ -4,7 +4,7 @@
 
 <div class="files_container z-form">
     <div class="z-clearfix">
-        <div class="userpageicon">{img modname='core' src='edit.gif' set='icons/large'}</div>
+        <div class="userpageicon">{img modname='core' src='edit.png' set='icons/large'}</div>
         <h2>{gt text="The list of the archive content"} {$folder}</h2>
     </div>
     <div class="z-fieldset">
@@ -14,9 +14,13 @@
     </div>
     <div class="z-formbuttons">
         {if $external eq 1}
-        <a href="{modurl modname="Files" fqurl="true" type="external" func="getFiles" folder=$folder|replace:'/':'|' hook=$hook}">{img modname='core' src='button_ok.gif' set='icons/small' __alt="Accept" __title="Accept"}</a>
+        <a href="{modurl modname='Files' fqurl='true' type='external' func='getFiles' folder=$folder|replace:'/':'|' hook=$hook}">
+            {img modname='core' src='button_ok.png' set='icons/small' __alt="Accept" __title="Accept"}
+        </a>
         {else}
-        <a href="{modurl modname="Files" func="main" folder=$folder|replace:'/':'|'}">{img modname='core' src='button_ok.gif' set='icons/small' __alt="Accept" __title="Accept"}</a>
+        <a href="{modurl modname='Files' type='user' func='main' folder=$folder|replace:'/':'|'}">
+            {img modname='core' src='button_ok.png' set='icons/small' __alt="Accept" __title="Accept"}
+        </a>
         {/if}
     </div>
 </div>

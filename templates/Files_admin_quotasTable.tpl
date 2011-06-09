@@ -14,7 +14,7 @@
             <td>{$group.quota}</td>
             <td>
                 <a href="javascript:deleteGroupQuota({$group.gid})">
-                    {img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete disk quota" __title="Delete disk quota"}
+                    {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete disk quota" __title="Delete disk quota"}
                 </a>
             </td>
         </tr>
