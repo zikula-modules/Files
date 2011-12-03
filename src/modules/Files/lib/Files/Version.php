@@ -27,6 +27,8 @@ class Files_Version extends Zikula_AbstractVersion
         $meta['description'] = $this->__('File manager for Zikula sites.');
         $meta['displayname'] = $this->__('File Manager');
         $meta['url'] = $this->__('files');
+        $meta['core_min'] = '1.3.0';
+        $meta['core_max'] = '1.3.99';
 
         $meta['securityschema'] = array('Files::' => '::');
         return $meta;
