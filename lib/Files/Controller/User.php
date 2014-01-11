@@ -1671,10 +1671,10 @@ class Files_Controller_User extends Zikula_AbstractController {
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD) || !UserUtil::isLoggedIn()) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.'), 403);
         }
-        if (isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
+        if (isset($GLOBALS['ZConfig']['Multisites']['multi']) && $GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
             $siteDNS = FormUtil::getPassedValue('siteDNS', '', 'GET');
             // if siteDNS is the main site the root is the initial folder. If not it is the initial folder by the site
-            $rootFolderPath = ($siteDNS == $GLOBALS['PNConfig']['Multisites']['mainSiteURL']) ? $GLOBALS['PNConfig']['Multisites']['filesRealPath'] : $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
+            $rootFolderPath = ($siteDNS == $GLOBALS['ZConfig']['Multisites']['mainSiteURL']) ? $GLOBALS['ZConfig']['Multisites']['filesRealPath'] : $GLOBALS['ZConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['ZConfig']['Multisites']['siteFilesFolder'];
         } else {
             $rootFolderPath = ModUtil::getVar('Files', 'folderPath');
         }
