@@ -1,7 +1,20 @@
 <?php
+/**
+ * Zikula Application Framework
+ *
+ * @copyright  (c) Zikula Development Team
+ * @link       http://www.zikula.org
+ * @version    $Id: file.php 202 2009-12-09 20:28:11Z aperezm $
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @author     Albert Pérez Monfort <aperezm@xtec.cat>
+ * @category   Zikula_Extension
+ * @package    Utilities
+ * @subpackage Files
+ */
 
-
-include_once ('config/config.php');
+// init zikula engine
+include 'lib/bootstrap.php';
+$core->init();
 // this file gets the files from the public directories of the users.
 $fileNameGet = (isset($_GET['file'])) ? $_GET['file'] : null;
 // security check to avoid the access to not allowed directories
@@ -13,9 +26,6 @@ $pos = strrpos($fileNameGet, '/');
 if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
     $folderPath = $GLOBALS['ZConfig']['Multisites']['filesRealPath'] . '/' . $GLOBALS['ZConfig']['Multisites']['siteFilesFolder'] . '/';
 } else {
-    // init zikula engine
-    include 'lib/bootstrap.php';
-    $core->init();
     $folderPath = ModUtil::getVar('Files', 'folderPath') . '/';
 }
 
@@ -25,10 +35,7 @@ $accessFile = $folderPath . $filePath . '/.locked';
 // check if the file .locked and the requested file exist.
 // if the requested file do not exist or the .locked file exists the function returns false.
 if (!file_exists($fileName) || file_exists($accessFile)) {
-    //XTEC ************ AFEGIT 
-    //2013.09.18 @jmeler          
-    echo "<p>Heu de fer p&uacute;blic el directori on est&agrave; el fitxer. <a href=https://sites.google.com/a/xtec.cat/projecte-intraweb/creacio-de-continguts/els-fitxers-del-lloc/gestio-de-fitxers-i-directoris>M&eacute;s informaci&oacute;</p>";   
-   //************ FI
+    System::redirect(ModUtil::url('Files', 'user', 'notPublicFile',array('fileName' => $_GET['file'])));
     return false;
 }
 // get file extension

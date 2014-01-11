@@ -2010,5 +2010,18 @@ class Files_Controller_User extends Zikula_AbstractController {
         $return = (isset($mimeTypes[$extension])) ? $mimeTypes[$extension] : $mimeTypes['xxx'];
         return $return;
     }
+/**
+    * Show info for notPublicFile request by file.php
+    * @author: Joan Guillén Pelegay
+    * @param:  
+    * @return: template with info about not public files
+    */
+    public function notPublicFile($args) {
+        //LogUtil::registerError($this->__('Fitxer no públic'));
+        //return system::redirect(System::getHomepageUrl());
+	$fileName =  FormUtil::getPassedValue('fileName', null, 'GET');
+	$this->view->assign('fileName', $fileName);
+        return $this->view->fetch('Files_user_notPublicFile.tpl');
+    }
 
 }

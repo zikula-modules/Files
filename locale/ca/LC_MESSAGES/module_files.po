@@ -3,15 +3,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-26 14:24+0100\n"
-"PO-Revision-Date: 2013-09-23 13:08+0100\n"
-"Last-Translator: Xavi Meler <jmeler@xtec.cat>\n"
+"PO-Revision-Date: 2014-01-11 03:29+0100\n"
+"Last-Translator: Joan Guillén Pelegay <jguille2@xtec.cat>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.1\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: pnuserapi.php:32
 msgid "Error! Could not load items."
@@ -29,9 +29,7 @@ msgstr "Error! No és possible actualitzar l'espai de disc ocupat"
 msgid "Sorry! No authorization to access this module."
 msgstr "No teniu autorització per accedir a aquest mòdul"
 
-#: pninit.php:114
-#: pnuser.php:1637
-#: pnuser.php:1650
+#: pninit.php:114 pnuser.php:1637 pnuser.php:1650
 msgid "Directory creation error"
 msgstr "S'ha produït un error en la creació del directori"
 
@@ -39,38 +37,17 @@ msgstr "S'ha produït un error en la creació del directori"
 msgid "The server directory does not exist."
 msgstr "El directori servidor no existeix."
 
-#: pnuser.php:47
-#: pnuser.php:63
-#: pnuser.php:154
-#: pnuser.php:190
-#: pnuser.php:199
-#: pnuser.php:326
-#: pnuser.php:379
-#: pnuser.php:460
-#: pnuser.php:614
-#: pnuser.php:722
-#: pnuser.php:808
-#: pnuser.php:847
-#: pnuser.php:892
-#: pnuser.php:997
-#: pnuser.php:1034
-#: pnuser.php:1071
-#: pnuser.php:1167
-#: pnuser.php:1205
-#: pnuser.php:1276
-#: pnuser.php:1325
-#: pnuser.php:1408
-#: pnuser.php:1456
-#: pnuser.php:1542
-#: pnuser.php:1730
-#: pnuser.php:1785
-#: pnexternal/getFiles.php:39
+#: pnuser.php:47 pnuser.php:63 pnuser.php:154 pnuser.php:190 pnuser.php:199
+#: pnuser.php:326 pnuser.php:379 pnuser.php:460 pnuser.php:614 pnuser.php:722
+#: pnuser.php:808 pnuser.php:847 pnuser.php:892 pnuser.php:997 pnuser.php:1034
+#: pnuser.php:1071 pnuser.php:1167 pnuser.php:1205 pnuser.php:1276
+#: pnuser.php:1325 pnuser.php:1408 pnuser.php:1456 pnuser.php:1542
+#: pnuser.php:1730 pnuser.php:1785 pnexternal/getFiles.php:39
 #: pnexternal/getFiles.php:57
 msgid "Invalid folder"
 msgstr "Directori incorrecte"
 
-#: pnuser.php:56
-#: pnexternal/getFiles.php:50
+#: pnuser.php:56 pnexternal/getFiles.php:50
 msgid "It is not possible to browse this folder"
 msgstr "No ha estat possible seleccionar aquesta carpeta"
 
@@ -105,8 +82,7 @@ msgstr "Continguts del fitxer"
 msgid "Download file"
 msgstr "Descarrega l'arxiu"
 
-#: pnuser.php:260
-#: pntemplates/Files_user_editFile.htm:9
+#: pnuser.php:260 pntemplates/Files_user_editFile.htm:9
 msgid "Edit file"
 msgstr "Edita el fitxer"
 
@@ -126,33 +102,15 @@ msgstr "Canvia el nom"
 msgid "Delete File"
 msgstr "Esborra fitxer"
 
-#: pnuser.php:319
-#: pnuser.php:374
-#: pnuser.php:453
-#: pnuser.php:607
-#: pnuser.php:705
-#: pnuser.php:802
-#: pnuser.php:841
-#: pnuser.php:886
-#: pnuser.php:985
-#: pnuser.php:1029
-#: pnuser.php:1066
-#: pnuser.php:1162
-#: pnuser.php:1200
-#: pnuser.php:1270
-#: pnuser.php:1319
-#: pnuser.php:1400
-#: pnuser.php:1450
-#: pnuser.php:1534
-#: pnuser.php:1605
-#: pnuser.php:1681
-#: pnuser.php:1725
-#: pnuser.php:1779
+#: pnuser.php:319 pnuser.php:374 pnuser.php:453 pnuser.php:607 pnuser.php:705
+#: pnuser.php:802 pnuser.php:841 pnuser.php:886 pnuser.php:985 pnuser.php:1029
+#: pnuser.php:1066 pnuser.php:1162 pnuser.php:1200 pnuser.php:1270
+#: pnuser.php:1319 pnuser.php:1400 pnuser.php:1450 pnuser.php:1534
+#: pnuser.php:1605 pnuser.php:1681 pnuser.php:1725 pnuser.php:1779
 msgid "Error! You are not authorized to access this module."
 msgstr "Error! No esteu atoritzats a accedir a aquest mòdul"
 
-#: pnuser.php:332
-#: pnuser.php:900
+#: pnuser.php:332 pnuser.php:900
 msgid "File not found"
 msgstr "Fitxer no trobat"
 
@@ -168,15 +126,8 @@ msgstr "Error! No ha estat possible llegir aquest fitxer"
 msgid "Error! Saving the image in memory."
 msgstr "Error! Guardant la imatge en memòria"
 
-#: pnuser.php:519
-#: pnuser.php:535
-#: pnuser.php:539
-#: pnuser.php:545
-#: pnuser.php:549
-#: pnuser.php:553
-#: pnuser.php:559
-#: pnuser.php:572
-#: pnuser.php:576
+#: pnuser.php:519 pnuser.php:535 pnuser.php:539 pnuser.php:545 pnuser.php:549
+#: pnuser.php:553 pnuser.php:559 pnuser.php:572 pnuser.php:576
 msgid "Error! Creating the thumbnail of the image."
 msgstr "Error! Creant la miniatura de la imatge"
 
@@ -226,8 +177,12 @@ msgstr "Fitxer eliminat correctament"
 
 #: pnuser.php:938
 #, php-format
-msgid "The extension <strong>%s</strong> is not allowed.  The allowed extensions are: <strong>%s</strong>."
-msgstr "L'extensió <strong>%s</strong> no està permesa. Les extensions permeses són: <strong>%s</strong>."
+msgid ""
+"The extension <strong>%s</strong> is not allowed.  The allowed extensions "
+"are: <strong>%s</strong>."
+msgstr ""
+"L'extensió <strong>%s</strong> no està permesa. Les extensions permeses són: "
+"<strong>%s</strong>."
 
 #: pnuser.php:946
 msgid "Failed to rename"
@@ -245,16 +200,19 @@ msgstr "Error en la creació del directori"
 msgid "Directory created"
 msgstr "S'ha creat el directori"
 
-#: pnuser.php:1088
-#: pnadmin.php:109
+#: pnuser.php:1088 pnadmin.php:109
 #, php-format
 msgid "The directory <strong>%s</strong> does not exist"
 msgstr "El directori <strong>%s</strong> no existeix"
 
 #: pnuser.php:1096
 #, php-format
-msgid "The extension <strong>%s</strong> is not allowed. The allowed extensions are: <strong>%s</strong>."
-msgstr "L'extensió <strong>%s</strong> no està permesa. Les extensions permeses són: <strong>%s</strong>."
+msgid ""
+"The extension <strong>%s</strong> is not allowed. The allowed extensions "
+"are: <strong>%s</strong>."
+msgstr ""
+"L'extensió <strong>%s</strong> no està permesa. Les extensions permeses són: "
+"<strong>%s</strong>."
 
 #: pnuser.php:1105
 #, php-format
@@ -293,13 +251,11 @@ msgstr "S'ha produït un error al crear el fitxer ZIP"
 msgid "Successfully zipped"
 msgstr "La compressió ha tingut èxit"
 
-#: pnuser.php:1416
-#: pnuser.php:1550
+#: pnuser.php:1416 pnuser.php:1550
 msgid "Failed to list content zip file."
 msgstr "No s'ha pogut llistar el contingut de l'arxiu zip."
 
-#: pnuser.php:1500
-#: pnuser.php:1507
+#: pnuser.php:1500 pnuser.php:1507
 msgid "Error moving"
 msgstr "S'ha produït un error al moure"
 
@@ -309,13 +265,22 @@ msgstr "S'ha mogut amb èxit!"
 
 #: pnuser.php:1564
 #, php-format
-msgid "The zip file contains at least one file with the extension <strong>%s</strong> which is not allowed. The allowed extensions are: <strong>%s</strong>."
-msgstr "El fitxer zip conté com a mínim un fitxer amb l'extensió <strong>%s</strong>, la qual no està permesa. Les extensions permeses són: <strong>%s<strong>."
+msgid ""
+"The zip file contains at least one file with the extension <strong>%s</"
+"strong> which is not allowed. The allowed extensions are: <strong>%s</"
+"strong>."
+msgstr ""
+"El fitxer zip conté com a mínim un fitxer amb l'extensió <strong>%s</"
+"strong>, la qual no està permesa. Les extensions permeses són: <strong>"
+"%s<strong>."
 
 #: pnuser.php:1579
 #, php-format
-msgid "You have not enough disk space to unzip the file. You need %s extra bytes."
-msgstr "No disosa de suficient espai de disc per carregar el fitxer. Necessita %s bytes adicionals"
+msgid ""
+"You have not enough disk space to unzip the file. You need %s extra bytes."
+msgstr ""
+"No disosa de suficient espai de disc per carregar el fitxer. Necessita %s "
+"bytes adicionals"
 
 #: pnuser.php:1583
 msgid "Failed to unzip"
@@ -325,23 +290,22 @@ msgstr "La descompresió ha fallat"
 msgid "Successfully unzipped"
 msgstr "Descompressió amb èxit"
 
-#: pnuser.php:1617
-#: pntemplates/Files_init.htm:46
+#: pnuser.php:1617 pntemplates/Files_init.htm:46
 #, php-format
 msgid "The folder <strong>%s</strong> has not been found."
 msgstr "No s'ha trobat el directori <strong>%s</strong>"
 
 #: pnuser.php:1628
 msgid "Directory creation error. Please contact with the administrator"
-msgstr "Error en la creació del directori. Si us plau contecteu amb l'administrador"
+msgstr ""
+"Error en la creació del directori. Si us plau contecteu amb l'administrador"
 
 #: pnuser.php:1662
 #, php-format
 msgid "The \"%s\" directory does not exist or is not writable."
 msgstr "El directori \"%s\" no existeix o bé no té permisos d'escriptura"
 
-#: pnaccountapi.php:28
-#: pnversion.php:25
+#: pnaccountapi.php:28 pnversion.php:25
 msgid "File Manager"
 msgstr "Gestor de fitxers"
 
@@ -350,8 +314,12 @@ msgid "Sorry! You have not been granted access to this page."
 msgstr "No teniu accés a aquesta pàgina."
 
 #: pnexternal/getFiles.php:30
-msgid "The server directory does not exist. Contact with the website administrator to solve this problem."
-msgstr "El directori servidor no existeix. Contacti amb l'administrador del lloc web per tal de resoldre el problema"
+msgid ""
+"The server directory does not exist. Contact with the website administrator "
+"to solve this problem."
+msgstr ""
+"El directori servidor no existeix. Contacti amb l'administrador del lloc web "
+"per tal de resoldre el problema"
 
 #: pntemplates/plugins/function.filesmenulinks.php:22
 msgid "Manage Files"
@@ -361,14 +329,11 @@ msgstr "Gestiona els fitxers"
 msgid "Module configuration"
 msgstr "Configura el mòdul"
 
-#: pnajax.php:29
-#: pnajax.php:51
-#: pnajax.php:154
+#: pnajax.php:29 pnajax.php:51 pnajax.php:154
 msgid "No folder defined."
 msgstr "No s'ha especificat el directori"
 
-#: pnajax.php:86
-#: pnajax.php:121
+#: pnajax.php:86 pnajax.php:121
 msgid "no group found"
 msgstr "no s'ha trobat el grup"
 
@@ -419,8 +384,7 @@ msgstr "Extensions permeses (separades per comes)"
 #: pntemplates/Files_user_uploadFile.htm:16
 #: pntemplates/Files_user_listContentZip.htm:18
 #: pntemplates/Files_user_listContentZip.htm:20
-#: pntemplates/Files_user_editFile.htm:25
-#: pntemplates/Files_init.htm:35
+#: pntemplates/Files_user_editFile.htm:25 pntemplates/Files_init.htm:35
 #: pntemplates/Files_user_createZipListFile.htm:33
 #: pntemplates/Files_user_createDir.htm:15
 #: pntemplates/Files_user_renameFile.htm:27
@@ -470,7 +434,9 @@ msgstr "Llista de fitxers en el directori"
 #: pntemplates/Files_external_getFiles.htm:16
 #: pntemplates/Files_user_filesList.htm:12
 msgid "It is not possible to write in this directory. Make it writable."
-msgstr "No ha estat possible escriure al directori. Habiliti els permissos d'escriptura"
+msgstr ""
+"No ha estat possible escriure al directori. Habiliti els permissos "
+"d'escriptura"
 
 #: pntemplates/Files_external_getFiles.htm:20
 #: pntemplates/Files_user_filesList.htm:16
@@ -499,15 +465,25 @@ msgid "%s%% - %s of %s"
 msgstr "%s%% - %s of %s"
 
 msgid "The files in root directory aren't accessible directly."
-msgstr "Directori arrel. Els fitxers no són accessibles públicament. Si vols compartir una imatge o un fitxer, penja el fitxer en un subdirectori públic."
+msgstr ""
+"Directori arrel. Els fitxers no són accessibles públicament. Si vols "
+"compartir una imatge o un fitxer, penja el fitxer en un subdirectori públic."
 
-msgid "The files in this directory no are accessible directly. Set directory as Public."
-msgstr "Directori PRIVAT. Si vols compartir l'enllaç d'aquests fitxers, estableix el directori com a públic"
+msgid ""
+"The files in this directory no are accessible directly. Set directory as "
+"Public."
+msgstr ""
+"Directori PRIVAT. Si vols compartir l'enllaç d'aquests fitxers, estableix el "
+"directori com a públic"
 
 #: pntemplates/Files_external_getFiles.htm:43
 #: pntemplates/Files_user_filesList.htm:39
-msgid "The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL:"
-msgstr "Directori PÚBLIC. Pots copiar l'enllaç de la imatge o fitxer amb   Botó dret->Copia l'adreça de l'enllaç"
+msgid ""
+"The files in this directory are accessible directly from the navigator. "
+"Anybody can access to them with the URL:"
+msgstr ""
+"Directori PÚBLIC. Pots copiar l'enllaç de la imatge o fitxer amb   Botó dret-"
+">Copia l'adreça de l'enllaç"
 
 #: pntemplates/Files_external_getFiles.htm:44
 #: pntemplates/Files_user_filesList.htm:40
@@ -570,8 +546,17 @@ msgid "Create a zip file with them"
 msgstr "Crear un fitxer zip"
 
 #: pntemplates/Files_external_getFiles.htm:150
-msgid "The values displayed in each image are its real size \"width x height\" and the factor of the modification of its size (value). The value 1 means that the image is in its natural size. A value upper than 1 means that the image has been reduced and a value lower than 1 means that the image has been increased."
-msgstr "Es mostra la mida real de la imatge \"amplada x alçada\" i el factor de redimensionament. El valor 1 significa que la imatge es troba en el seva mida original. Amb un valor superior a 1 la imatge es reduirà i amb un valor inferior a 1 la imatge s'ampliarà."
+msgid ""
+"The values displayed in each image are its real size \"width x height\" and "
+"the factor of the modification of its size (value). The value 1 means that "
+"the image is in its natural size. A value upper than 1 means that the image "
+"has been reduced and a value lower than 1 means that the image has been "
+"increased."
+msgstr ""
+"Es mostra la mida real de la imatge \"amplada x alçada\" i el factor de "
+"redimensionament. El valor 1 significa que la imatge es troba en el seva "
+"mida original. Amb un valor superior a 1 la imatge es reduirà i amb un valor "
+"inferior a 1 la imatge s'ampliarà."
 
 #: pntemplates/Files_user_listContentZip.htm:9
 msgid "The list of the archive content"
@@ -645,16 +630,30 @@ msgid "Welcome to Files module"
 msgstr "Benvingut al mòdul Fitxers"
 
 #: pntemplates/Files_init.htm:8
-msgid "This module allow user to manage their own files.<br />Each user has a folder for his/her files.<br />This module needs two writable folders that have to be created."
-msgstr "Aquest mòdul permet a l'usuari gestionar els seus fitxers.<br />Cada usuari disposa d'una capreta amb els seus fitxers.<br />Aquest mòdul necessita que es creïn dos directoris amb permissos d'escriptura"
+msgid ""
+"This module allow user to manage their own files.<br />Each user has a "
+"folder for his/her files.<br />This module needs two writable folders that "
+"have to be created."
+msgstr ""
+"Aquest mòdul permet a l'usuari gestionar els seus fitxers.<br />Cada usuari "
+"disposa d'una capreta amb els seus fitxers.<br />Aquest mòdul necessita que "
+"es creïn dos directoris amb permissos d'escriptura"
 
 #: pntemplates/Files_init.htm:10
 msgid "Proceed with the installation"
 msgstr "Continua amb l'instal·lació"
 
 #: pntemplates/Files_init.htm:14
-msgid "Check if the files folders in the server have been created and define them using the form below.<br />These folders will be used to save the files of the site and the users' files.<br />We recommend to locate them out of the public HTTP."
-msgstr "Comprovi que els directoris per a fitxers han estat creats i especifiqui les seves característiques en el següent formulari. Aquests directoris s'utilitzaran per guardar els fitxers del lloc i dels usuaris.<br />Es recomana allotjar-los fora de l'espai públic HTTP."
+msgid ""
+"Check if the files folders in the server have been created and define them "
+"using the form below.<br />These folders will be used to save the files of "
+"the site and the users' files.<br />We recommend to locate them out of the "
+"public HTTP."
+msgstr ""
+"Comprovi que els directoris per a fitxers han estat creats i especifiqui les "
+"seves característiques en el següent formulari. Aquests directoris "
+"s'utilitzaran per guardar els fitxers del lloc i dels usuaris.<br />Es "
+"recomana allotjar-los fora de l'espai públic HTTP."
 
 #: pntemplates/Files_init.htm:19
 msgid "Defining the files folders"
@@ -670,22 +669,23 @@ msgstr "Escriu el nom de la carpeta d'usuari"
 
 #: pntemplates/Files_init.htm:40
 msgid "Checking if the files folders exist and they are writable"
-msgstr "Comprovant si els directoris per a fitxers existeixen i tenen permissos d'escriptura"
+msgstr ""
+"Comprovant si els directoris per a fitxers existeixen i tenen permissos "
+"d'escriptura"
 
-#: pntemplates/Files_init.htm:51
-#: pntemplates/Files_init.htm:77
+#: pntemplates/Files_init.htm:51 pntemplates/Files_init.htm:77
 #, php-format
 msgid "The folder <strong>%s</strong> is located in the correct place."
 msgstr "La localització del directori <strong>%s</strong> es correcte"
 
-#: pntemplates/Files_init.htm:56
-#: pntemplates/Files_init.htm:86
+#: pntemplates/Files_init.htm:56 pntemplates/Files_init.htm:86
 #, php-format
 msgid "The folder <strong>%s</strong> is not writable and it should be."
-msgstr "El directori <strong>%s</strong> no té permisos d'escriptura i hauria de tenir-ne"
+msgstr ""
+"El directori <strong>%s</strong> no té permisos d'escriptura i hauria de "
+"tenir-ne"
 
-#: pntemplates/Files_init.htm:61
-#: pntemplates/Files_init.htm:95
+#: pntemplates/Files_init.htm:61 pntemplates/Files_init.htm:95
 #, php-format
 msgid "The folder <strong>%s</strong> is writable."
 msgstr "El directori <strong>%s</strong> té permissos d'escriptura"
@@ -703,7 +703,9 @@ msgstr "La localització del directori <strong>%s/%s</strong> es correcte"
 #: pntemplates/Files_init.htm:84
 #, php-format
 msgid "The folder <strong>%s/%s</strong> is not writable and it should be."
-msgstr "El directori <strong>%s/%s</strong> no té permisos d'escriptura i hauria de tenir-ne"
+msgstr ""
+"El directori <strong>%s/%s</strong> no té permisos d'escriptura i hauria de "
+"tenir-ne"
 
 #: pntemplates/Files_init.htm:93
 #, php-format
@@ -711,8 +713,12 @@ msgid "The folder <strong>%s/%s</strong> is writable."
 msgstr "El directori <strong>%s/%s</strong> té permissos d'escriptura"
 
 #: pntemplates/Files_init.htm:104
-msgid "Define folders again. Remember that you have to create the folders after define them."
-msgstr "Especifiqui els directoris altra vegada. Recordi que s'han de crear del directoris dessorés de definir-los."
+msgid ""
+"Define folders again. Remember that you have to create the folders after "
+"define them."
+msgstr ""
+"Especifiqui els directoris altra vegada. Recordi que s'han de crear del "
+"directoris dessorés de definir-los."
 
 #: pntemplates/Files_init.htm:107
 msgid "Make the folders writable and try again."
@@ -780,8 +786,11 @@ msgid "Modify configuration"
 msgstr "Modifica la configuració"
 
 #: pntemplates/Files_admin_conf.htm:10
-msgid "You should move the file file.php from modules/Files to the zikula root directory"
-msgstr "Mogui el fitxer fitxer.php de moduls/Fitxers al directori arrel de Zikula"
+msgid ""
+"You should move the file file.php from modules/Files to the zikula root "
+"directory"
+msgstr ""
+"Mogui el fitxer fitxer.php de moduls/Fitxers al directori arrel de Zikula"
 
 #: pntemplates/Files_admin_conf.htm:15
 msgid "You should remove the file file.php from modules/Files"
@@ -795,8 +804,7 @@ msgstr "Paràmetres"
 msgid "Files system physical path"
 msgstr "Ruta al sistema de fitxers físic"
 
-#: pntemplates/Files_admin_conf.htm:31
-#: pntemplates/Files_admin_conf.htm:39
+#: pntemplates/Files_admin_conf.htm:31 pntemplates/Files_admin_conf.htm:39
 msgid "The folder does not exist or it is not writable"
 msgstr "La carpeta no existeix o no s'hi pot escriure"
 
@@ -836,8 +844,7 @@ msgstr "bytes"
 msgid "Default width for images in editor"
 msgstr "Amplada per defecte per a les imatges a l'editor"
 
-#: pntemplates/Files_admin_conf.htm:69
-#: pntemplates/Files_admin_conf.htm:76
+#: pntemplates/Files_admin_conf.htm:69 pntemplates/Files_admin_conf.htm:76
 msgid "pixel"
 msgstr "pixel"
 
@@ -853,3 +860,32 @@ msgstr "Quota de disc per defecte"
 msgid "Disk quotas for groups"
 msgstr "Quota de disc per a grups"
 
+#: templates/Files_user_notPublicFile.tpl:1
+msgid "File not available"
+msgstr "Arxiu no disponible"
+
+#: templates/Files_user_notPublicFile.tpl:2
+msgid "The requested file does not exist or is private."
+msgstr "L'arxiu demanat no existeix o és privat."
+
+#: templates/Files_user_notPublicFile.tpl:4
+msgid "The requested <b><i>%s</i></b> is not available."
+msgstr "L'arxiu <b><i>%s</i></b> no està disponible"
+
+#: templates/Files_user_notPublicFile.tpl:5
+msgid "This file does not exist or is private."
+msgstr "Aquest arxiu no existeix o és privat."
+
+#: templates/Files_user_notPublicFile.tpl:6
+msgid "Ask the file owner or the site admin for this file."
+msgstr ""
+"Heu de contactar amb el propietari de l'arxiu o amb l'administrador del lloc."
+
+#: templates/Files_user_notPublicFile.tpl:7
+msgid "The file folder must be public in Files module."
+msgstr ""
+"La carpeta que conté l'arxiu s'ha de fer pública des del mòdul 'Files'."
+
+#: templates/Files_user_notPublicFile.tpl:9
+msgid "Go to homepage"
+msgstr "Vés a la pàgina inicial"

@@ -1079,3 +1079,31 @@ msgstr ""
 #: pntemplates/Files_admin_conf.htm:94
 msgid "Disk quotas for groups"
 msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:1
+msgid "File not available"
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:2
+msgid "The requested file does not exist or is private."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:4
+msgid "The requested <b><i>%s</i></b> is not available."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:5
+msgid "This file does not exist or is private."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:6
+msgid "Ask the file owner or the site admin for this file."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:7
+msgid "The file folder must be public in Files module."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:9
+msgid "Go to homepage"
+msgstr ""
