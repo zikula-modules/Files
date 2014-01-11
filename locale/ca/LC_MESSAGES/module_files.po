@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-26 14:24+0100\n"
-"PO-Revision-Date: 2014-01-11 03:29+0100\n"
+"PO-Revision-Date: 2014-01-11 18:37+0100\n"
 "Last-Translator: Joan Guillén Pelegay <jguille2@xtec.cat>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -787,14 +787,15 @@ msgstr "Modifica la configuració"
 
 #: pntemplates/Files_admin_conf.htm:10
 msgid ""
-"You should move the file file.php from modules/Files to the zikula root "
-"directory"
+"You should move the file file.php from modules/Files/Resources/extras to the "
+"zikula rootdirectory"
 msgstr ""
-"Mogui el fitxer fitxer.php de moduls/Fitxers al directori arrel de Zikula"
+"Cal moure el fitxer file.php de modules/Files/Resources/extras al directori "
+"arrel de Zikula"
 
 #: pntemplates/Files_admin_conf.htm:15
-msgid "You should remove the file file.php from modules/Files"
-msgstr "Elimina el fitxer fitxer.php de moduls/Fitxers"
+msgid "You should remove the file file.php from modules/Files/Resources/extras"
+msgstr "Cal eliminar el fitxer file.php de modules/Files/Resources/extras"
 
 #: pntemplates/Files_admin_conf.htm:25
 msgid "Settings"

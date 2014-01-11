@@ -45,7 +45,7 @@ class Files_Controller_Admin extends Zikula_AbstractController {
             'showHideFiles' => ModUtil::getVar('Files', 'showHideFiles'),
             'editableExtensions' => ModUtil::getVar('Files', 'editableExtensions'));
         // check if file file.php exists in folder modules/Files
-        $fileFileInModule = (file_exists('modules/Files/file.php')) ? true : false;
+        $fileFileInModule = (file_exists('modules/Files/Resources/extras/file.php')) ? true : false;
         // check if file file.php exists in folder modules/Files
         $fileFileNotInRoot = (!file_exists('file.php')) ? true : false;
         $folderPathProblem = (!is_writable($folderPath) || !file_exists($folderPath)) ? true : false;

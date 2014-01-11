@@ -1008,12 +1008,12 @@ msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:10
 msgid ""
-"You should move the file file.php from modules/Files to the zikula root "
+"You should move the file file.php from modules/Files/Resources/extras to the zikula root"
 "directory"
 msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:15
-msgid "You should remove the file file.php from modules/Files"
+msgid "You should remove the file file.php from modules/Files/Resources/extras"
 msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:25

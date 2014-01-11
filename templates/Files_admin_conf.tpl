@@ -6,12 +6,12 @@
     <div id="z-securityanalyzer">
         {if $fileFileNotInRoot}
         <div>
-            {gt text="You should move the file file.php from modules/Files to the zikula root directory"}
+            {gt text="You should move the file file.php from modules/Files/Resources/extras to the zikula root directory"}
         </div>
         {else}
         {if $fileFileInModule}
         <div>
-            {gt text="You should remove the file file.php from modules/Files"}
+            {gt text="You should remove the file file.php from modules/Files/Resources/extras"}
         </div>
         {/if}
         {/if}
