@@ -55,22 +55,22 @@ msgid "It is not possible to browse this folder"
 msgstr ""
 
 #: pnuser.php:119
-msgid "More than 200 Mb"
+msgid "More than 200 MB"
 msgstr ""
 
 #: pnuser.php:121
 #, php-format
-msgid "%s Mb"
+msgid "%s MB"
 msgstr ""
 
 #: pnuser.php:123
 #, php-format
-msgid "%s Kb"
+msgid "%s KB"
 msgstr ""
 
 #: pnuser.php:125
 #, php-format
-msgid "%s bytes"
+msgid "%s Bytes"
 msgstr ""
 
 #: pnuser.php:239
@@ -1008,8 +1008,7 @@ msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:10
 msgid ""
-"You should move the file file.php from modules/Files/Resources/extras to the zikula root"
-"directory"
+"You should move the file file.php from modules/Files/Resources/extras to the zikula root directory"
 msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:15

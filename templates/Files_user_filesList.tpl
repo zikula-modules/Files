@@ -176,9 +176,10 @@
                     <option value="delete">{gt text="Delete them"}</option>
                     <option value="zip">{gt text="Create a zip file with them"}</option>
                 </select>
+	     {if $multisites}
              <span style="color:grey;float:right;">{gt text="Disk use:"} {$usedSpace.usedDiskSpace} de {$diskSpace} ({$percentatgeUs}%)</span>
-           
-            </fieldset>
+             {/if}
+             </fieldset>
             
         </form>
     

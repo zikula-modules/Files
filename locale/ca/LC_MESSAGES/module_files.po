@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-26 14:24+0100\n"
-"PO-Revision-Date: 2014-01-11 18:37+0100\n"
+"PO-Revision-Date: 2014-01-11 22:22+0100\n"
 "Last-Translator: Joan Guillén Pelegay <jguille2@xtec.cat>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -52,23 +52,23 @@ msgid "It is not possible to browse this folder"
 msgstr "No ha estat possible seleccionar aquesta carpeta"
 
 #: pnuser.php:119
-msgid "More than 200 Mb"
-msgstr "Més de 200 Mb"
+msgid "More than 200 MB"
+msgstr "Més de 200 MB"
 
 #: pnuser.php:121
 #, php-format
-msgid "%s Mb"
-msgstr "%s Mb"
+msgid "%s MB"
+msgstr "%s MB"
 
 #: pnuser.php:123
 #, php-format
-msgid "%s Kb"
-msgstr "%s Kb"
+msgid "%s KB"
+msgstr "%s KB"
 
 #: pnuser.php:125
 #, php-format
-msgid "%s bytes"
-msgstr "%s bytes"
+msgid "%s Bytes"
+msgstr "%s Bytes"
 
 #: pnuser.php:239
 msgid "Unzip file"
@@ -572,8 +572,8 @@ msgid "Group"
 msgstr "Grup"
 
 #: pntemplates/Files_admin_quotasTable.htm:6
-msgid "Quota (Mb)"
-msgstr "Quota (Mb)"
+msgid "Quota (MB)"
+msgstr "Quota (MB)"
 
 #: pntemplates/Files_admin_quotasTable.htm:7
 msgid "Delete"
@@ -609,8 +609,8 @@ msgstr "Tria un grup..."
 
 #: pntemplates/Files_admin_newQuotaForm.htm:10
 #: pntemplates/Files_admin_conf.htm:83
-msgid "Mb"
-msgstr "Mb"
+msgid "MB"
+msgstr "MB"
 
 #: pntemplates/Files_admin_newQuotaForm.htm:13
 #: pntemplates/Files_admin_conf.htm:88
@@ -788,7 +788,7 @@ msgstr "Modifica la configuració"
 #: pntemplates/Files_admin_conf.htm:10
 msgid ""
 "You should move the file file.php from modules/Files/Resources/extras to the "
-"zikula rootdirectory"
+"zikula root directory"
 msgstr ""
 "Cal moure el fitxer file.php de modules/Files/Resources/extras al directori "
 "arrel de Zikula"
@@ -836,10 +836,6 @@ msgstr "Extensions editables (separades per comes)"
 #: pntemplates/Files_admin_conf.htm:59
 msgid "Maximum file size"
 msgstr "Mida màxima del fitxer"
-
-#: pntemplates/Files_admin_conf.htm:62
-msgid "bytes"
-msgstr "bytes"
 
 #: pntemplates/Files_admin_conf.htm:66
 msgid "Default width for images in editor"

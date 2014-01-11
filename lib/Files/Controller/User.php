@@ -90,16 +90,15 @@ class Files_Controller_User extends Zikula_AbstractController {
             'percentage' => $percentage,
             'usedDiskSpace' => ModUtil::func('Files', 'user', 'diskUseFormat', array('value' => $usedSpace)),
             'widthUsage' => $widthUsage);
-        
-        // XTEC ************ MODIFICAT - Default storage and percentage of use
-	// 2013.09.25 @jmeler
-        global $ZConfig;
-        $centre=$ZConfig["centre"]["nomPropi"];
-        $diskInfo = getDiskInfo($centre, 'intranet');        
-        $diskSpace = $diskInfo['diskSpace']. " MB"; // Global Quota in MB
-        $percentatgeUs=round(($usedSpaceArray["usedDiskSpace"]*100)/$diskSpace);
-        // ************ FI
-               
+	$multisites = (isset($GLOBALS['ZConfig']['Multisites']['multi']) && $GLOBALS['ZConfig']['Multisites']['multi'] == 1) ? true : false;
+	if ($multisites) {
+            global $ZConfig;
+            $centre=$ZConfig["centre"]["nomPropi"];
+            $diskInfo = getDiskInfo($centre, 'intranet');        
+            $diskSpace = $diskInfo['diskSpace']. " MB"; // Global Quota in MB
+            $percentatgeUs=round(($usedSpaceArray["usedDiskSpace"]*100)/$diskSpace);
+        }
+             
         // create output object
         // get folder files and subfolders
         $fileList = $this->dir_list(array('folder' => $folder));
@@ -125,11 +124,11 @@ class Files_Controller_User extends Zikula_AbstractController {
         
         $this->view->assign('usedSpace', $usedSpaceArray);
 
-	// XTEC ************ MODIFICAT  
-	// 2013.09.25 @jmeler
-        $this->view->assign('diskSpace', $diskSpace);
-        $this->view->assign('percentatgeUs', $percentatgeUs);
-	// ************ FI
+	$this->view->assign('multisites', $multisites);  
+	if ($multisites) {
+            $this->view->assign('diskSpace', $diskSpace);
+            $this->view->assign('percentatgeUs', $percentatgeUs);
+	}
         
         $this->view->assign('notwriteable', $notwriteable);
        
@@ -343,11 +342,12 @@ class Files_Controller_User extends Zikula_AbstractController {
                         'title' => $this->__('Delete File'),
                         'hook' => $hook);
                     
+		    $base = log(filesize($filename)) / log(1024);
+		    $suffixes = array('', 'k', 'M', 'G', 'T');
+		    $size = round(pow(1024, $base - floor($base)), 0) . $suffixes[floor($base)];
+
                     $file_object = array('name' => DataUtil::formatForDisplay($object),
-			//XTEC ************ MODIFICAT - add formatBytes (human readable K,M,G)
-    			//2013.09.18 @jmeler 
-                        'size' => formatBytes(filesize($filename),0),
-			//************ FI
+                        'size' => $size,
                         'type' => filetype($filename),
                         'time' => date("j F Y, H:i", filemtime($filename)),
                         'fileIcon' => $fileIcon,
