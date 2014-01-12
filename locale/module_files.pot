@@ -55,22 +55,22 @@ msgid "It is not possible to browse this folder"
 msgstr ""
 
 #: pnuser.php:119
-msgid "More than 200 Mb"
+msgid "More than 200 MB"
 msgstr ""
 
 #: pnuser.php:121
 #, php-format
-msgid "%s Mb"
+msgid "%s MB"
 msgstr ""
 
 #: pnuser.php:123
 #, php-format
-msgid "%s Kb"
+msgid "%s KB"
 msgstr ""
 
 #: pnuser.php:125
 #, php-format
-msgid "%s bytes"
+msgid "%s Bytes"
 msgstr ""
 
 #: pnuser.php:239
@@ -1008,12 +1008,11 @@ msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:10
 msgid ""
-"You should move the file file.php from modules/Files to the zikula root "
-"directory"
+"You should move the file file.php from modules/Files/Resources/extras to the zikula root directory"
 msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:15
-msgid "You should remove the file file.php from modules/Files"
+msgid "You should remove the file file.php from modules/Files/Resources/extras"
 msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:25
@@ -1078,4 +1077,32 @@ msgstr ""
 
 #: pntemplates/Files_admin_conf.htm:94
 msgid "Disk quotas for groups"
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:1
+msgid "File not available"
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:2
+msgid "The requested file does not exist or is private."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:4
+msgid "The requested <b><i>%s</i></b> is not available."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:5
+msgid "This file does not exist or is private."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:6
+msgid "Ask the file owner or the site admin for this file."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:7
+msgid "The file folder must be public in Files module."
+msgstr ""
+
+#: templates/Files_user_notPublicFile.tpl:9
+msgid "Go to homepage"
 msgstr ""

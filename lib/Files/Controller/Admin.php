@@ -28,13 +28,14 @@ class Files_Controller_Admin extends Zikula_AbstractController {
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-        $multisites = (isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) ? true : false;
+        $multisites = (isset($GLOBALS['ZConfig']['Multisites']['multi']) && $GLOBALS['ZConfig']['Multisites']['multi'] == 1) ? true : false;
         if ($multisites) {
             $siteDNS = FormUtil::getPassedValue('siteDNS', '', 'GET');
-            $folderPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
+            $folderPath = $GLOBALS['ZConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['ZConfig']['Multisites']['siteFilesFolder'];
         } else {
             $folderPath = ModUtil::getVar('Files', 'folderPath');
         }
+        
         $moduleVars = array('usersFolder' => ModUtil::getVar('Files', 'usersFolder'),
             'allowedExtensions' => ModUtil::getVar('Files', 'allowedExtensions'),
             'defaultQuota' => ModUtil::getVar('Files', 'defaultQuota'),
@@ -44,7 +45,7 @@ class Files_Controller_Admin extends Zikula_AbstractController {
             'showHideFiles' => ModUtil::getVar('Files', 'showHideFiles'),
             'editableExtensions' => ModUtil::getVar('Files', 'editableExtensions'));
         // check if file file.php exists in folder modules/Files
-        $fileFileInModule = (file_exists('modules/Files/file.php')) ? true : false;
+        $fileFileInModule = (file_exists('modules/Files/Resources/extras/file.php')) ? true : false;
         // check if file file.php exists in folder modules/Files
         $fileFileNotInRoot = (!file_exists('file.php')) ? true : false;
         $folderPathProblem = (!is_writable($folderPath) || !file_exists($folderPath)) ? true : false;
@@ -92,7 +93,7 @@ class Files_Controller_Admin extends Zikula_AbstractController {
             'maxWidth' => $maxWidth,
             'maxHeight' => $maxHeight,
             'editableExtensions' => $editableExtensions);
-        if ($GLOBALS['PNConfig']['Multisites']['multi'] != 1) {
+        if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1) {
             if (!file_exists($folderPath)) {
                 ModUtil::setVars('Files', $moduleVars);
                 LogUtil::registerError($this->__f('The directory <strong>%s</strong> does not exist', $folderPath));

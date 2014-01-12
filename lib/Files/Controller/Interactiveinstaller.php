@@ -37,7 +37,7 @@ class Files_Controller_Interactiveinstaller extends Zikula_Controller_AbstractIn
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-        if (isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
+        if (isset($GLOBALS['ZConfig']['Multisites']['multi']) && $GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
             $filesRealPath = 'files';
             $createdFilesFolder = true;
         } else {
@@ -68,10 +68,10 @@ class Files_Controller_Interactiveinstaller extends Zikula_Controller_AbstractIn
             return LogUtil::registerPermissionError();
         }
         $multisites = false;
-        if (isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) {
+        if (isset($GLOBALS['ZConfig']['Multisites']['multi']) && $GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
             // create the needed folders for the site
             $siteDNS = (isset($_GET['siteDNS']) ? DataUtil::formatForOS($_GET['siteDNS']) : null);
-            $filesRealPath = $GLOBALS['PNConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['PNConfig']['Multisites']['siteFilesFolder'];
+            $filesRealPath = $GLOBALS['ZConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['ZConfig']['Multisites']['siteFilesFolder'];
             if (!FileUtil::mkdirs($filesRealPath . '/' . $usersFolder, 0777, true)) {
                 LogUtil::registerError($this->__('Directory creation error') . ': ' . $usersFolder);
                 return false;

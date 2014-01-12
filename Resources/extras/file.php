@@ -12,39 +12,30 @@
  * @subpackage Files
  */
 
-include_once ('config/config.php');
+// init zikula engine
+include 'lib/bootstrap.php';
+$core->init();
 // this file gets the files from the public directories of the users.
 $fileNameGet = (isset($_GET['file'])) ? $_GET['file'] : null;
 // security check to avoid the access to not allowed directories
 if (strpos($fileNameGet, "..") !== false || $fileNameGet == null) {
     return false;
 }
+
 $pos = strrpos($fileNameGet, '/');
-if($GLOBALS['ZConfig']['Multizk']['multi'] == 1){
-    $folderPath = $GLOBALS['ZConfig']['Multizk']['filesRealPath'] . '/' . $_GET['siteDNS'] . $GLOBALS['ZConfig']['Multizk']['siteFilesFolder'] . '/';
+if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
+    $folderPath = $GLOBALS['ZConfig']['Multisites']['filesRealPath'] . '/' . $GLOBALS['ZConfig']['Multisites']['siteFilesFolder'] . '/';
 } else {
-    // it is necessary to load zikula engine to get the folderPath
-    // you can avoid it writting the fisical path here instead of get it from zikula database
-    // in this case you should delete the include of the file pnAPI.php and the call to the function pnInit
-    // if you decide to do it you have to delete the call to System::shutdown(); too below in this code
-    // init zikula engine
-    include 'lib/ZLoader.php';
-    ZLoader::register();
-    $core = new Zikula_Core();
-    $core->boot();
-    $eventManager = $core->getEventManager();
-    $serviceManager = $core->getServiceManager();
-    require 'config/config.php';
-    $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
-    $core->init(System::STAGES_ALL & ~System::STAGES_THEME & ~System::STAGES_MODS & ~System::STAGES_LANGS & ~System::STAGES_DECODEURLS & ~System::STAGES_SESSIONS);
     $folderPath = ModUtil::getVar('Files', 'folderPath') . '/';
 }
+
 $fileName = $folderPath . $fileNameGet;
 $filePath = substr($fileNameGet, 0, $pos);
 $accessFile = $folderPath . $filePath . '/.locked';
 // check if the file .locked and the requested file exist.
 // if the requested file do not exist or the .locked file exists the function returns false.
 if (!file_exists($fileName) || file_exists($accessFile)) {
+    System::redirect(ModUtil::url('Files', 'user', 'notPublicFile',array('fileName' => $_GET['file'])));
     return false;
 }
 // get file extension
@@ -72,7 +63,7 @@ while (!feof($handle)) {
     }
 }
 $status = fclose($handle);
-if($GLOBALS['ZConfig']['Multizk']['multi'] != 1){
+if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1) {
     System::shutdown();
 }
 
@@ -80,8 +71,7 @@ if($GLOBALS['ZConfig']['Multizk']['multi'] != 1){
  * get the list of information about file types based on extensions.
  * @return an array with the list of information about file types based on extensions
  */
-function getMimetype($extension)
-{
+function getMimetype($extension) {
     $mimeTypes = array(
         'xxx' => array('type' => 'document/unknown', 'icon' => 'unknown.gif'),
         '3gp' => array('type' => 'video/quicktime', 'icon' => 'video.gif'),
