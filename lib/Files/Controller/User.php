@@ -31,6 +31,11 @@ class Files_Controller_User extends Zikula_AbstractController {
      */
     public function main($args) {
         
+        $check = ModUtil::func('Files', 'user', 'checkingModule');
+        if ($check['status'] != 'ok') {
+	    $this->view->assign('check', $check);
+            return $this->view->fetch('Files_user_failedConf.tpl');
+        }
         $minimal = FormUtil::getPassedValue('minimal', isset($args['minimal']) ? $args['minimal'] : null, 'REQUEST');
         
         // get arguments
@@ -2022,6 +2027,62 @@ class Files_Controller_User extends Zikula_AbstractController {
 	$fileName =  FormUtil::getPassedValue('fileName', null, 'GET');
 	$this->view->assign('fileName', $fileName);
         return $this->view->fetch('Files_user_notPublicFile.tpl');
+    }
+    /**
+    * Check the configuration (module folders)
+    * @author: Joan Guillén Pelegay
+    * @param:  
+    * @return: array with check results
+    */
+    public function checkingModule() {
+        // security check
+        if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
+            throw new Zikula_Exception_Forbidden();
+        }
+        // loading conf
+        $check = array();
+        $check['status'] = 'ok';
+	global $ZConfig;
+	// get folderPath
+        if (isset($ZConfig['Multisites']['multi']) && $ZConfig['Multisites']['multi'] == 1) {
+            $folderPath = $ZConfig['Multisites']['filesRealPath'] . '/' . $ZConfig['Multisites']['siteFilesFolder'];
+            $check['config'] = 'multisites';
+        } elseif (isset($ZConfig['FilesModule']['folderPath'])) {
+            $folderPath = $ZConfig['FilesModule']['folderPath'];
+	    $check['config'] = 'config_site';
+        } else {
+            $folderPath = $ZConfig['System']['datadir'];
+            $check['config'] = 'default_site';
+        }
+        $check['folderPath'] = $folderPath;
+	// get usersFiles
+	if (isset($ZConfig['FilesModule']['usersFiles'])) {
+	    $usersFiles = $ZConfig['FilesModule']['usersFiles'];
+	} else {
+	    $usersFiles = 'usersFiles';
+	}
+	$check['usersFiles'] = $usersFiles;
+        // checking folderPath
+	if (file_exists($folderPath)) {
+	    if (is_writeable($folderPath)){
+                if (!FileUtil::mkdirs($folderPath . '/' . $usersFiles, 0777, true)) {
+                    $check['status'] = 'ko';
+                    $check['warning'] = "no_usersFiles";
+                }
+            } else {
+                $check['status'] = 'ko';
+                $check['warning'] = "noWriteable_folderPath";            
+            }
+        } else {
+            $check['status'] = 'ko';
+            $check['warning'] = "no_folderPath";
+        }
+        // Failed checks call to warning templates
+        /*if ($check['status'] != 'ok') {
+            $this->view->assign('check', $check);
+            $this->view->fetch('Files_user_failedConf.tpl');
+        }*/
+        return $check;         
     }
 
 }
