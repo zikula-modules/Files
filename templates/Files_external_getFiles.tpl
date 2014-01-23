@@ -1,6 +1,6 @@
 {include file="Files_external_header.tpl"}
 
-<script src="modules/scribite/pnincludes/xinha/popups/popup.js" type="text/javascript"></script>
+<script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>
 <script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
 
 <div class="files_container">
@@ -156,21 +156,37 @@
                     </tbody>
                 </table>
 
-                <fieldset>
                     <select id="menuaction" name="menuaction" onchange="javascript:getElementById('form1').submit()">
                         <option value="">{gt text="-- Selected files --"}</option>
                         <option value="move">{gt text="Move them to another folder"}</option>
                         <option value="delete">{gt text="Delete them"}</option>
                         <option value="zip">{gt text="Create a zip file with them"}</option>
                     </select>
-                </fieldset>
             </div>
         </form>
 
-        {if $publicFolder AND  $imagesArray|count gt 0}
-        {foreach item=file from=$imagesArray}
-        {include file="Files_external_getFilesImgContent.tpl"}
-        {/foreach}
+        {if $publicFolder AND  $imagesArray|@count gt 0}
+            <div class="z-form">
+               <fieldset class="z-fieldset">
+                   <legend>{gt text="Thumbnails"}</legend>
+                   <table class="z-datatable">
+                       <thead>
+                           <tr>
+                               <th align="center"></th>
+                               <th>{gt text="Size(factor)"}</th>
+                               <th>{gt text="Actions"}</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                   {foreach item=file from=$imagesArray}
+                      {* <tr class="{cycle values="z-odd,z-even"}">*}
+                           {include file="Files_external_getFilesImgContent.tpl"}
+                      {* </tr> *}
+                   {/foreach}
+                       </tbody>
+                   </table>
+               </fieldset>
+            </div>
         <div style="clear: both;"></div>
         <div class="z-informationmsg">
             {gt text="The values displayed in each image are its real size \"width x height\" and the factor of the modification of its size (value). The value 1 means that the image is in its natural size. A value upper than 1 means that the image has been reduced and a value lower than 1 means that the image has been increased."}

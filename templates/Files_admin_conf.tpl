@@ -22,24 +22,28 @@
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Settings"}</legend>
-                {if !$multisites}
+                <fieldset>
                 <div class="z-formrow">
-                    <label for="folderPath">{gt text="Files system physical path"}</label>
-                    <input type="text" id="folderPath" name="folderPath" size="30" value="{$folderPath}" />
-                    {if $folderPathProblem}
-                    <p class="z-formnote z-errormsg">{gt text="The folder does not exist or it is not writable"}</p>
+                    {if $check.config eq multisites}
+                        <p class="z-formnote">{gt text="Files system physical path"}: {gt text="Defined in multisites configuration"}</p>
+                    {else}
+                        <p class="z-formnote">{gt text="Files system physical path"}: <b>{$check.folderPath}</b>.
+                        {if $check.config eq config_site}
+                            {gt text="Defined in config file."}</p>
+                        {else}
+                            {gt text="Default configuration."}</p>
+                        {/if}
                     {/if}
                 </div>
-                {else}
-                    <input type="hidden" id="folderPath" name="folderPath" value="{$folderPath}" />
-                {/if}
                 <div class="z-formrow">
-                    <label for="usersFolder">{gt text="Users' folder"}</label>
-                    <input type="text" id="usersFolder" name="usersFolder" size="30" value="{$moduleVars.usersFolder}" />
-                    {if $usersFolderProblem}
-                    <p class="z-formnote z-errormsg">{gt text="The folder does not exist or it is not writable"}</p>
+                    <p class="z-formnote">{gt text="Users' folder"}: <b>{$check.usersFiles}</b>. 
+                    {if $check.usersFiles eq usersFiles}
+                        {gt text="Default configuration."}</p>
+                    {else}
+                        {gt text="Defined in config file."}</p>
                     {/if}
                 </div>
+            </fieldset>
                 <div class="z-formrow">
                     <label for="showHideFiles">{gt text="Show hidden files"}</label>
                     <select id="showHideFiles" name="showHideFiles">
@@ -90,7 +94,10 @@
             </div>
         </div>
     </form>
+    <div class="z-form">
+        <fieldset>
+            <legend>{gt text="Disk quotas for groups"}</legend>
+            <div id="quotaTable">{$quotasTable}</div>
+        </fieldset>
+    </div>
 </div>
-
-<h3>{gt text="Disk quotas for groups"}</h3>
-<div id="quotaTable">{$quotasTable}</div>

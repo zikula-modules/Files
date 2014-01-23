@@ -28,7 +28,13 @@ class Files_Controller_External extends Zikula_AbstractController
         }
         $oFolder = $folder;
         // gets root folder for the user
-        $initFolderPath = ModUtil::func('Files', 'user', 'getInitFolderPath');
+        $check = ModUtil::func('Files', 'user', 'checkingModule');
+        if ($check['status'] != 'ok') {
+	    $this->view->assign('check', $check);
+            return $this->view->fetch('Files_user_failedConf.tpl');
+        }
+        $initFolderPath = $check['initFolderPath'];
+
         // check if the root folder exists
         if(!file_exists($initFolderPath)){
             $errorMsg = $this->__('The server directory does not exist. Contact with the website administrator to solve this problem.');

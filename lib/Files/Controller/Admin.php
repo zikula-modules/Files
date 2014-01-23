@@ -28,15 +28,15 @@ class Files_Controller_Admin extends Zikula_AbstractController {
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-        $multisites = (isset($GLOBALS['ZConfig']['Multisites']['multi']) && $GLOBALS['ZConfig']['Multisites']['multi'] == 1) ? true : false;
-        if ($multisites) {
-            $siteDNS = FormUtil::getPassedValue('siteDNS', '', 'GET');
-            $folderPath = $GLOBALS['ZConfig']['Multisites']['filesRealPath'] . '/' . $siteDNS . $GLOBALS['ZConfig']['Multisites']['siteFilesFolder'];
-        } else {
-            $folderPath = ModUtil::getVar('Files', 'folderPath');
+        $check = ModUtil::func('Files', 'user', 'checkingModule');
+        if ($check['status'] != 'ok') {
+	    $this->view->assign('check', $check);
+            return $this->view->fetch('Files_user_failedConf.tpl');
         }
-        
-        $moduleVars = array('usersFolder' => ModUtil::getVar('Files', 'usersFolder'),
+        $folderPath = $check['folderPath'];
+        $multisites = ($check['config'] == 'multisites') ? true : false;
+        $usersFolder = $check['usersFiles'];
+        $moduleVars = array('usersFolder' => $usersFolder,
             'allowedExtensions' => ModUtil::getVar('Files', 'allowedExtensions'),
             'defaultQuota' => ModUtil::getVar('Files', 'defaultQuota'),
             'filesMaxSize' => ModUtil::getVar('Files', 'filesMaxSize'),
@@ -51,6 +51,7 @@ class Files_Controller_Admin extends Zikula_AbstractController {
         $folderPathProblem = (!is_writable($folderPath) || !file_exists($folderPath)) ? true : false;
         $usersFolderProblem = (!is_writable($folderPath . '/' . $moduleVars['usersFolder']) || !file_exists($folderPath . '/' . $moduleVars['usersFolder']) || $moduleVars['usersFolder'] == '') ? true : false;
         $quotasTable = ModUtil::func('Files', 'admin', 'getQuotasTable');
+        $this->view->assign('check', $check);
         $this->view->assign('folderPath', $folderPath);
         $this->view->assign('multisites', $multisites);
         $this->view->assign('quotasTable', $quotasTable);

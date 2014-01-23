@@ -14,8 +14,8 @@ The module needs also a file named **file.php**, which must be located in the **
 Working on 1.0.1 version (**branch dev**)
 =========================================
 
-Goals
-=====
+Changes
+=======
   - Remove *InteractiveInstall* functions (deprecated on zk 1.3.6).
       - Firs idea was move this functions to a *Controller-Admin-config* functions. Unnecesary after 1.0.1 goals.
       - Remove also *Files_init.tpl*.
@@ -27,8 +27,7 @@ Goals
         - If global *$ZConfig['FilesModule']['folderPath']* use this like folderPath. It checks if this folder exist and is writable.
         - If globar var not exist, use *$ZConfig['System']['datadir']* like folderPath. It checks if this folder exist (and if not, it create it) and if is writeable (and if not, it change acces permissions).
       - **usersFiles**:
-        - If global *$ZConfig['FilesModule']['usersFiles']* use this like usersFiles. If not, it will be 'usersFiles'.
-        - Then, Folder for users files will be *folderPath/usersFiles*.
+        - ~~If global *$ZConfig['FilesModule']['usersFiles']* use this like usersFiles.~~ Files folder keeps managing like a module_var (*usersFolder*). Default value is 'usersFiles'.
         - Function checks if this folder exists (or creates it) and if it's wirteable (or changes permissions).
       - Failed checks report a warning template.
       - Overcome checks return all config vars: folderPath, usersFiles, multisites.
@@ -37,8 +36,26 @@ Goals
       - With global $ZConfig, files folder is known in every case.
       - Remove also Controller-User-notPublicFile function, Files_user_notPublicFile.tpl and lang strings
 
-  - Add Xinha plugin resource
+  - Add Xinha plugin resource to repo
+
+  - Update file.php request. Return to Controller-External functions and templates.
+      - Fix ajax problems in thumbnail functions.
+      - Fix insert problems
+      - Remove Controller-User request and fix popup creation problems.
+
+Pending
+=======
+
+  - Fix problems win zip/unzip functions
+     -No zip hidden files (.htaccess) of recursive folders.
+
+  - Changes in extenal templates.
+      - New option to insert pictures (not only thumbnails).
+      - File links in file names for public folders.
+      - Update warnings and templates messages.
 
   - Update module
-      - Remove vars and alert about necessary changes in ZConfig.
+      - Remake catalan translation (many changes).
+      - Update installer.
+      - Upgrade removing vars and alerting about necessary changes in ZConfig.
       - Version number: 1.0.1
