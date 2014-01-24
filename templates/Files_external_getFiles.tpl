@@ -145,9 +145,17 @@
                          </td>
                          <td align="right">
                              {foreach item=option from=$file.options}
-                             <a href="{$option.url|safetext}">
-                                 {img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}
-                             </a>
+                                 {if $option.imgopt}
+                                     {if $publicFolder}
+                                         <a href="" onclick="__dlg_close('file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}{$file.name}','tt');" title="Insert" >
+                                             {img modname='core' set='icons/extrasmall' src='inbox.png' __title="Insert" __alt="Insert"}
+                                         </a>
+                                     {/if}
+                                 {elseif !($option.needpublic && !$publicFolder)}
+                                     <a href="{$option.url|safetext}">
+                                        {img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}
+                                     </a>
+                                 {/if}
                              {/foreach}
                          </td>
                      </tr>

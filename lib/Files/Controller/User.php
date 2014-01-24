@@ -284,13 +284,10 @@ class Files_Controller_User extends Zikula_AbstractController {
                 $fileIcon = $ctypeArray['icon'];
                 $options = array();
                 
-		//XTEC ************ MODIFICAT - Clear code presentation
-    		//2013.09.25 @jmeler 
                 if (substr($filename, strrpos($filename, '/') + 1, 1) != '.' 
                     || ModUtil::getVar('Files', 'showHideFiles') == 1 
                     || (ModUtil::getVar('Files', 'showHideFiles') == 2 
                     && SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN))) {
-		// ************ FI
 
                     if (strtolower($fileExtension) == 'zip') {
                         $options[] = array('url' => ModUtil::url('Files', 'user', 'action', array('do' => 'unzip',
@@ -333,9 +330,15 @@ class Files_Controller_User extends Zikula_AbstractController {
                                 'external' => $external)),
                             'image' => 'servicemanager2.png',
                             'title' => $this->__('Create Thumbnail'),
-                            'hook' => $hook);
+                            'hook' => $hook,
+                            'needpublic' => true);
                     }
                     
+                     if ($thumbnailable && $external == 1) {
+                        $options[] = array('imgopt' => true);
+                    
+                     }
+                     
                     $options[] = array('url' => ModUtil::url('Files', 'user', 'action', array('do' => 'rename',
                             'fileName' => $object,
                             'folder' => $folderName,

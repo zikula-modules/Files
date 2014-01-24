@@ -47,11 +47,12 @@ Changes
      - No zip *.htaccess*, *.locked* and *.tbn* folders.
      - Update PclZib lib to 2.8.2 and add callback function to skip these files
 
+  - Changes in extenal templates I
+      - New option to insert pictures (not only thumbnails). Only in public folders, add option to thumbnail img, insert img and inset thumbnails.
 Pending
 =======
 
-  - Changes in extenal templates.
-      - New option to insert pictures (not only thumbnails).
+  - Changes in extenal templates II
       - File links in file names for public folders.
       - Update warnings and templates messages.
 
