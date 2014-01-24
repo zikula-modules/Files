@@ -1487,7 +1487,17 @@ class Files_Controller_User extends Zikula_AbstractController {
             return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder,
                         'hook' => $hook)));
         }
+        //load PclZip lib and create a callback function
         require_once ('modules/Files/includes/pclzip.lib.php');
+        function skipFilesOnPclzip($p_event, &$p_header){
+            $filename = $p_header['filename'];
+            // ----- skip .htaccess and .locked files
+            if (substr($filename,-9) == '.htaccess' || substr($filename,-7) == '.locked' || (preg_match("/\.tbn/", $filename))){
+                return 0;
+            }else {
+                return 1;
+            }
+        }
         $zipFileName = ($folder != "") ? $initFolderPath . "/" . $folder . "/" . $name . ".zip" : $initFolderPath . "/" . $name . ".zip";
         $listZipFile = array();
         foreach ($listFileName as $file) {
@@ -1495,7 +1505,9 @@ class Files_Controller_User extends Zikula_AbstractController {
             $listZipFile[] = $filePath;
         }
         $archive = new PclZip($zipFileName);
-        if (!$archive->create(implode(',', $listZipFile), PCLZIP_OPT_REMOVE_PATH, ($initFolderPath . "/" . $folder))) {
+        if (!$archive->add(implode(',', $listZipFile),
+                PCLZIP_OPT_REMOVE_PATH, $initFolderPath . "/" . $folder,
+                PCLZIP_CB_PRE_ADD, 'skipFilesOnPclzip')) {
             LogUtil::registerError($this->__('Error creating ZIP file') . ': ' . $file);
             $folder = str_replace("/", "|", $folder);
             return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder,

@@ -43,11 +43,12 @@ Changes
       - Fix insert problems
       - Remove Controller-User request and fix popup creation problems.
 
+  - Fix problems win zip/unzip functions
+     - No zip *.htaccess*, *.locked* and *.tbn* folders.
+     - Update PclZib lib to 2.8.2 and add callback function to skip these files
+
 Pending
 =======
-
-  - Fix problems win zip/unzip functions
-     -No zip hidden files (.htaccess) of recursive folders.
 
   - Changes in extenal templates.
       - New option to insert pictures (not only thumbnails).
