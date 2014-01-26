@@ -53,17 +53,17 @@
                 <thead>
                     <tr>
                         <th align="center"></th>
-                        <th>{gt text="Name"}</th>
-                        <th>{gt text="Size"}</th>
-                        <th>{gt text="Modified"}</th>
-                        <th>{gt text="Action"}</th>
+                        <th align="left">{gt text="Name"}</th>
+                        <th align="right">{gt text="Size"}</th>
+                        <th align="right">{gt text="Modified"}</th>
+                        <th align="right">{gt text="Action"}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {if $folderName neq ""}
                     <tr class="{cycle values="z-odd,z-even"}">
                         <td>&nbsp;</td>
-                         <td>
+                         <td align="left">
                              <a class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' hook=$hook folder=''}">
                                  .
                              </a>
@@ -74,7 +74,7 @@
                      </tr>
                      <tr class="{cycle values="z-odd,z-even"}">
                          <td>&nbsp;</td>
-                         <td>
+                         <td align="left">
                              <a class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' hook=$hook folder=$folderPrev}">
                                  ..
                              </a>
@@ -124,17 +124,20 @@
                          </td>
                          <td align="left">
                              {if $publicFolder}
-                             {if $hook eq 1}
-                             <a class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="{modurl modname='Files' type='user' func='downloadFile' folder=$folderName|replace:'/':'|' fileName=$file.name hook=$hook}">
-                                 {$file.name}
-                             </a>
+                                 {if $hook eq 1}
+                                     <a class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
+                                         {$file.name}
+                                     </a>
+                                  {else}
+                                      <script>document.write("<p>This window's name is: " + window.name + "</p>");</script>
+                                      <a onclick="javascript:window.open('{$baseurl}file.php?file={$folderPath}{if $folderPath neq ''}{if $folderPath|substr:-1 neq '/'}/{/if}{/if}{$file.name}')" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="">
+                                          {$file.name}
+                                      </a>
+                                  {/if}
                              {else}
-                             <a class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
-                                 {$file.name}
-                             </a>
-                             {/if}
-                             {else}
-                             {$file.name}
+                                 <a title="{gt text="Move the file to a public directory to get an access URL"}" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
+                                     {$file.name}
+                                 </a>
                              {/if}
                          </td>
                          <td align="right">
@@ -147,7 +150,7 @@
                              {foreach item=option from=$file.options}
                                  {if $option.imgopt}
                                      {if $publicFolder}
-                                         <a href="" onclick="__dlg_close('file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}{$file.name}','tt');" title="Insert" >
+                                         <a href="" onclick="javascript:returnEditor('insertImg',false)" title="Insert" >
                                              {img modname='core' set='icons/extrasmall' src='inbox.png' __title="Insert" __alt="Insert"}
                                          </a>
                                      {/if}
@@ -203,3 +206,13 @@
     </div>
 
     {include file="Files_external_footer.tpl"}
+    <script>
+        function returnEditor(opt,thumb) {
+            if (thumb == true) {
+                var val=new Array(opt,'file.php?file={{$folderPath}}{{if $folderPath|substr:-1 neq '/'}}/{{/if}}/.tbn/{{$file.name}}');
+            }else {
+                var val=new Array(opt,'file.php?file={{$folderPath}}{{if $folderPath|substr:-1 neq '/'}}/{{/if}}{{$file.name}}');
+            }
+            __dlg_close(val,'tt');
+        }
+    </script>

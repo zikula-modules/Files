@@ -1,6 +1,21 @@
 	
 function FilesFindItemXinha(editor, maURL) {
-    editor._popupDialog(maURL , function(value){editor.insertHTML('<img src="'+ value + '" alt="' + getFileName(value) + '" title="' + getFileName(value) + '"/>')});
+    editor._popupDialog(maURL ,
+        function(val){
+            value = val[1];
+            opt = val[0];
+            fileName = getFileName(value);
+            if (opt == 'insertImg') {
+                editor.insertHTML('<img src="'+ value + '" alt="' + getFileName(value) + '" title="' + getFileName(value) + '"/>');
+            }else if (opt == 'insertLink') {
+                editor.insertHTML('<a href="' + value + '" alt="' + fileName + '" title="' + fileName + '">' + fileName + '</a>');
+            }else if (opt == 'copyURL') {
+                editor.insertHTML(value);
+            }else if (opt == 'gotoURL') {
+                window.open(Zikula.Config.baseURL+value);
+             }
+            
+        });
 }
 
 function getFileName (value) {

@@ -32,21 +32,17 @@
     
     <div id="actionForm" class="actionForm">
 
-            <!--  ************ ELIMINAT - Moved to another position 
-	    //2013.09.25 @jmeler
-
+ 
 	    {gt text="Disk use:"}
             {if $usedSpace.maxDiskSpace neq -1048576} 
             <div style="width:{$usedSpace.widthUsage}px; background:url({$baseurl}modules/Files/images/usage.gif);">&nbsp;</div>
             {gt text="%s%% - %s of %s" tag1=$usedSpace.percentage tag2=$usedSpace.usedDiskSpace tag3=$usedSpace.maxDiskSpace}
             {else}
             <div class="diskSpace">{$usedSpace.usedDiskSpace}</div>
-            {/if} ************ FI -->
+            {/if}
 
     </div>
     
-   <!--  ************ MODIFICAT - Only text of warning 
-   2013.09.25 @jmeler -->
 
     {if $publicFolder}
         <p class="z-warningmsg">
@@ -58,7 +54,6 @@
             <p class="z-informationmsg">
             {gt text="The files in root directory aren't accessible directly."} 
     {/if}
-   <!--************ FI -->
 	
 
     <form class="z-form" method="post" action="{modurl modname='Files' type='user' func='actionSelect' folder=$folderName|replace:'/':'|'}" id="form1">
@@ -66,10 +61,10 @@
             <thead>
                 <tr>
                     <th align="center">{*}<input type="checkbox" onclick="toggleCheckAll(this);" id="checkall" />{*}</th>
-                    <th>{gt text="Name"}</th>
-                    <th>{gt text="Size"}</th>
-                    <th>{gt text="Modified"}</th>
-                    <th>{gt text="Action"}</th>
+                    <th align="left">{gt text="Name"}</th>
+                    <th align="right">{gt text="Size"}</th>
+                    <th align="right">{gt text="Modified"}</th>
+                    <th align="right">{gt text="Action"}</th>
                 </tr>
             </thead>
             <tbody>
@@ -138,17 +133,15 @@
                          <input type="checkbox" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)"/>
                      </td>
                      <td align="left">
-
-                         <!--XTEC ************ MODIFICAT 
-			 2013.09.18 @jmeler -->
-
-                         <a class="fi_image" 
-                          style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" 
-                          href="{$baseurl}file.php?file={$folderPath}{if $folderPath neq ''}{if $folderPath|substr:-1 neq '/'}/{/if}{/if}{$file.name}">{$file.name}
-                         </a>
-
-                         <!-- *********************FI -->
-
+                         {if $publicFolder}
+                             <a target="_blank" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="{$baseurl}file.php?file={$folderPath}{if $folderPath neq ''}{if $folderPath|substr:-1 neq '/'}/{/if}{/if}{$file.name}">
+                                 {$file.name}
+                             </a>
+                         {else}
+                             <a title="{gt text="Move the file to a public directory to get an access URL"}" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
+                                 {$file.name}
+                             </a>
+                         {/if}
                      </td>
                      <td align="right">
                          {$file.size} {gt text="Bytes"}

@@ -15,7 +15,7 @@
                 {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete thumbnail" __title="Delete thumbnail"}
             </a>
             {if $hook neq 1}
-            <a href="" onclick="__dlg_close('file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}.tbn/{$file.name}','tt');" title="Insert" >
+            <a href="" onclick="javascript:returnEditor('insertImg',true)" title="Insert" >
                 {img modname='core' set='icons/extrasmall' src='inbox.png' __title="Insert" __alt="Insert"}
             </a> 
             {else}

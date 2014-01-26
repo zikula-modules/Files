@@ -49,12 +49,21 @@ Changes
 
   - Changes in extenal templates I
       - New option to insert pictures (not only thumbnails). Only in public folders, add option to thumbnail img, insert img and inset thumbnails.
+      - Update file links: url for public folders and *title* message for no-public.
+      - Add new functions to editor.response: *insertImg*, *insertLink*, *copyURL* and *gotoURL*.
 Pending
 =======
 
   - Changes in extenal templates II
-      - File links in file names for public folders.
+      - Add jquery_toggle_divs with the new response options.
       - Update warnings and templates messages.
+      - Add *select all* feature.
+
+  - No-public init folders. Check this feature for admin and users (and the relationship behavior).
+
+  - Check possible last Agora dependences (and add, if necessary, config var and its checks)
+
+  - Fix problems with editor plugin, when focus is in the editor but cursor is not in the textarea.
 
   - Update module
       - Remake catalan translation (many changes).
