@@ -46,7 +46,7 @@
 
     {if $publicFolder}
         <p class="z-warningmsg">
-        {gt text="The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL:"} 
+        {gt text="The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL"} 
     {elseif $folderName neq '' }
             <p class="z-informationmsg">
             {gt text="The files in this directory no are accessible directly. Set directory as Public."} 
@@ -138,7 +138,7 @@
                                  {$file.name}
                              </a>
                          {else}
-                             <a title="{gt text="Move the file to a public directory to get an access URL"}" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
+                             <a href="" onclick="javascript:alert('{gt text="Move the file to a public directory to get an access URL"}')" title="{gt text="Move the file to a public directory to get an access URL"}" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
                                  {$file.name}
                              </a>
                          {/if}

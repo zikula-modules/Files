@@ -10,7 +10,7 @@ function FilesFindItemXinha(editor, maURL) {
             }else if (opt == 'insertLink') {
                 editor.insertHTML('<a href="' + value + '" alt="' + fileName + '" title="' + fileName + '">' + fileName + '</a>');
             }else if (opt == 'copyURL') {
-                editor.insertHTML(value);
+                editor.insertHTML(Zikula.Config.baseURL+value);
             }else if (opt == 'gotoURL') {
                 window.open(Zikula.Config.baseURL+value);
              }

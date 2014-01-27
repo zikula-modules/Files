@@ -306,13 +306,6 @@ class Files_Controller_User extends Zikula_AbstractController {
                             'hook' => $hook);
                     }
                     
-                    $options[] = array('url' => ModUtil::url('Files', 'user', 'downloadFile', array('fileName' => $object,
-                            'folder' => $folderName)),
-                        'image' => 'agt_update_misc.png',
-                        'title' => $this->__('Download file'),
-                        'external' => $external,
-                        'hook' => $hook);
-                    
                     if ($editable) {
                         $options[] = array('url' => ModUtil::url('Files', 'user', 'action', array('do' => 'edit',
                                 'fileName' => $object,
@@ -334,11 +327,13 @@ class Files_Controller_User extends Zikula_AbstractController {
                             'needpublic' => true);
                     }
                     
-                     if ($thumbnailable && $external == 1) {
-                        $options[] = array('imgopt' => true);
+                    $options[] = array('url' => ModUtil::url('Files', 'user', 'downloadFile', array('fileName' => $object,
+                            'folder' => $folderName)),
+                        'image' => 'agt_update_misc.png',
+                        'title' => $this->__('Download file'),
+                        'external' => $external,
+                        'hook' => $hook);
                     
-                     }
-                     
                     $options[] = array('url' => ModUtil::url('Files', 'user', 'action', array('do' => 'rename',
                             'fileName' => $object,
                             'folder' => $folderName,
@@ -364,7 +359,8 @@ class Files_Controller_User extends Zikula_AbstractController {
                         'type' => filetype($filename),
                         'time' => date("j F Y, H:i", filemtime($filename)),
                         'fileIcon' => $fileIcon,
-                        'options' => $options);
+                        'options' => $options,
+                        'img'=> $thumbnailable);
 
                     if (is_dir($filename)) {
                         $dir_objects['dir'][] = $file_object;

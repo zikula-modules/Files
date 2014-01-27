@@ -16,11 +16,11 @@ Working on 1.0.1 version (**branch dev**)
 
 Changes
 =======
-  - Remove *InteractiveInstall* functions (deprecated on zk 1.3.6).
+  - Removed *InteractiveInstall* functions (deprecated on zk 1.3.6).
       - Firs idea was move this functions to a *Controller-Admin-config* functions. Unnecesary after 1.0.1 goals.
-      - Remove also *Files_init.tpl*.
+      - Removed also *Files_init.tpl*.
 
-  - Create function *checkingModule* in *Controller/User*.
+  - Created function *checkingModule* in *Controller/User*.
       - Every controller function will call it to check module configuration.
       - **folderPath**:
         - For multisites (*$ZConfig['Multisites']['multi']* = 1) folderPath will be *$ZConfig['Multisites']['filesRealPath'] . '/' . $ZConfig['Multisites']['siteFilesFolder'];*.
@@ -30,40 +30,42 @@ Changes
         - ~~If global *$ZConfig['FilesModule']['usersFiles']* use this like usersFiles.~~ Files folder keeps managing like a module_var (*usersFolder*). Default value is 'usersFiles'.
         - Function checks if this folder exists (or creates it) and if it's wirteable (or changes permissions).
       - Failed checks report a warning template.
-      - Overcome checks return all config vars: folderPath, usersFiles, multisites.
+      - Overcame checks return all config vars: folderPath, usersFiles, multisites.
 
-  - Change file.php not to start *Zikula engine* in any case.
+  - Changed file.php not to start *Zikula engine* in any case.
       - With global $ZConfig, files folder is known in every case.
-      - Remove also Controller-User-notPublicFile function, Files_user_notPublicFile.tpl and lang strings
+      - Removed also Controller-User-notPublicFile function, Files_user_notPublicFile.tpl and lang strings
 
-  - Add Xinha plugin resource to repo
+  - Added Xinha plugin resource to repo
 
-  - Update file.php request. Return to Controller-External functions and templates.
-      - Fix ajax problems in thumbnail functions.
-      - Fix insert problems
-      - Remove Controller-User request and fix popup creation problems.
+  - Updated file.php request. Return to Controller-External functions and templates.
+      - Fixed ajax problems in thumbnail functions.
+      - Fixed insert problems
+      - Removed Controller-User request and fix popup creation problems.
 
-  - Fix problems win zip/unzip functions
+  - Fixed problems win zip/unzip functions
      - No zip *.htaccess*, *.locked* and *.tbn* folders.
-     - Update PclZib lib to 2.8.2 and add callback function to skip these files
+     - Updated PclZib lib to 2.8.2 and add callback function to skip these files
 
   - Changes in extenal templates I
       - New option to insert pictures (not only thumbnails). Only in public folders, add option to thumbnail img, insert img and inset thumbnails.
-      - Update file links: url for public folders and *title* message for no-public.
-      - Add new functions to editor.response: *insertImg*, *insertLink*, *copyURL* and *gotoURL*.
+      - Updated file links: url for public folders and *title* message for no-public.
+      - Added new functions to editor.response: *insertImg*, *insertLink*, *copyURL* and *gotoURL*.
+      - Added jquery_toogle menu with the new editor.responses.
+      - Added alert message to no-public files links.
+      - Updated warnings and template messages.
+
 Pending
 =======
 
   - Changes in extenal templates II
-      - Add jquery_toggle_divs with the new response options.
-      - Update warnings and templates messages.
       - Add *select all* feature.
 
   - No-public init folders. Check this feature for admin and users (and the relationship behavior).
 
   - Check possible last Agora dependences (and add, if necessary, config var and its checks)
 
-  - Fix problems with editor plugin, when focus is in the editor but cursor is not in the textarea.
+  - ?Fix problems with editor plugin, when focus is in the editor but cursor is not in the textarea. Really is a Xinha plugin issue.
 
   - Update module
       - Remake catalan translation (many changes).

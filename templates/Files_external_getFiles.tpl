@@ -1,7 +1,29 @@
 {include file="Files_external_header.tpl"}
-
+<style>
+    .menuTriggered {
+        display:none;
+        background-color: #FFFFFF;
+        //background-image: url("contextMenuBackground.gif");
+        //background-position: left center;
+        //background-repeat: repeat-y;
+        border: 1px solid #777777;
+        border: 1px solid rgba(0, 0, 0, 0);
+        cursor: pointer;
+        padding: 1px;
+        //vertical-align: middle;
+    }
+    li.separator {
+        border-top: 1px solid #000000;
+        height: 1px;
+        line-height: 0;
+        margin: 0;
+        padding: 0;
+    }
+</style>
 <script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>
 <script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
+<script src="javascript/jquery/jquery-1.8.3.js"></script>
+<script type="text/javascript"> var $jq=jQuery.noConflict(true);</script>
 
 <div class="files_container">
     <div class="z-clearfix">
@@ -40,10 +62,14 @@
     </div>
 
     {if $publicFolder}
-    <p class="z-informationmsg">
-        {gt text="The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL:"}
-        <strong>{$baseurl}file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}{gt text="file_name"}</strong>
-    </p>
+        <p class="z-warningmsg">
+        {gt text="The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL"} 
+    {elseif $folderName neq '' }
+            <p class="z-informationmsg">
+            {gt text="The files in this directory no are accessible directly. Set directory as Public."} 
+    {else}
+            <p class="z-informationmsg">
+            {gt text="The files in root directory aren't accessible directly."} 
     {/if}
 
     <form class="z-form" method="post" action="{modurl modname='Files' type='user' func='actionSelect' folder=$folderName|replace:'/':'|' hook=$hook}"  id="form1">
@@ -129,16 +155,17 @@
                                          {$file.name}
                                      </a>
                                   {else}
-                                      <script>document.write("<p>This window's name is: " + window.name + "</p>");</script>
-                                      <a onclick="javascript:window.open('{$baseurl}file.php?file={$folderPath}{if $folderPath neq ''}{if $folderPath|substr:-1 neq '/'}/{/if}{/if}{$file.name}')" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="">
+                                      <a id="t_{$file.name}" onclick="menuOptions('{$file.name}')" class="fi_image menuTrigger" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="javascript:void(0)">
                                           {$file.name}
                                       </a>
+                                     
                                   {/if}
                              {else}
-                                 <a title="{gt text="Move the file to a public directory to get an access URL"}" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
+                                 <a href="" onclick="javascript:alert('{gt text="Move the file to a public directory to get an access URL"}')" title="{gt text="Move the file to a public directory to get an access URL"}" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
                                      {$file.name}
                                  </a>
                              {/if}
+ 
                          </td>
                          <td align="right">
                              {$file.size} {gt text="Bytes"}
@@ -148,20 +175,44 @@
                          </td>
                          <td align="right">
                              {foreach item=option from=$file.options}
-                                 {if $option.imgopt}
-                                     {if $publicFolder}
-                                         <a href="" onclick="javascript:returnEditor('insertImg',false)" title="Insert" >
-                                             {img modname='core' set='icons/extrasmall' src='inbox.png' __title="Insert" __alt="Insert"}
-                                         </a>
-                                     {/if}
-                                 {elseif !($option.needpublic && !$publicFolder)}
+                                 {if !($option.needpublic && !$publicFolder)}
                                      <a href="{$option.url|safetext}">
                                         {img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}
                                      </a>
                                  {/if}
                              {/foreach}
                          </td>
-                     </tr>
+                      </tr>
+                     
+                         <tr>
+                             <td colspan="5">
+                                 <div id="menu_{$file.name}" class="menuTriggered">
+                                     {if $file.img}
+                                         <a href="" onclick="javascript:returnEditor('insertImg',false)" title="Insert image" >
+                                             {img modname='Files' set="fileIcons" src='ed_image.gif' __title="Insert image" __alt="Insert image"}
+                                             {gt text="Insert image"}
+                                         </a>
+                                         <span style="margin:0px 5px;">-</span>
+                                     {/if}
+                                     <a href="" onclick="javascript:returnEditor('insertLink',false)" title="Insert link" >
+                                         {img modname='Files' set="fileIcons" src='ed_link.gif' __title="Insert link" __alt="Insert link"}
+                                         {gt text="Insert link"}
+                                     </a>
+                                     <span style="margin:0px 10px;">--</span>
+                                     <a href="" onclick="javascript:returnEditor('copyURL',false)" title="Copy URL" >
+                                         {img modname='Files' set="fileIcons" src='text.gif' __title="Copy URL" __alt="Copy URL"}
+                                         {gt text="Copy URL"}
+                                     </a>
+                                     <span style="margin:0px 5px;">-</span>
+                                     <a href="" onclick="javascript:returnEditor('gotoURL',false)" title="Go to URL" >
+                                         {img modname='Files' set="fileIcons" src='web.gif' __title="Go to URL" __alt="Go to URL"}
+                                         {gt text="Go to URL"}
+                                     </a>
+                                 </div>
+                             </td>
+                         </tr>
+                     
+
                      {/if}
                      {/foreach}
                     </tbody>
@@ -215,4 +266,17 @@
             }
             __dlg_close(val,'tt');
         }
+        function menuOptions(file) {
+            file = file.split('.');
+            file = file.join('\\.');
+            var index = "#menu_"+file;
+            var newTarget = $jq(index);
+            $jq('.menuTriggered').not(newTarget).slideUp('slow');
+            newTarget.slideToggle('slow');
+            //var possLeft = $jq('#t_'+file).offset().left+10, possTop = $jq('#t_'+file).offset().top+5;
+            //$jq(index).css({left:possLeft,top:possTop});
+            
+          
+        }
     </script>
+    
