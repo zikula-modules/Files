@@ -2,7 +2,7 @@
 <style>
     .menuTriggered {
         display:none;
-        background-color: #FFFFFF;
+        background-color: #FEEFB3;
         //background-image: url("contextMenuBackground.gif");
         //background-position: left center;
         //background-repeat: repeat-y;
@@ -20,10 +20,9 @@
         padding: 0;
     }
 </style>
+
 <script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>
 <script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
-<script src="javascript/jquery/jquery-1.8.3.js"></script>
-<script type="text/javascript"> var $jq=jQuery.noConflict(true);</script>
 
 <div class="files_container">
     <div class="z-clearfix">
@@ -78,7 +77,7 @@
             <table class="z-datatable" summary="table files">
                 <thead>
                     <tr>
-                        <th align="center"></th>
+                        <th align="center"><input type="checkbox" onclick="selectAll(this);" id="selectall" value="Select all" title="{gt text="Select all"}"/></th>
                         <th align="left">{gt text="Name"}</th>
                         <th align="right">{gt text="Size"}</th>
                         <th align="right">{gt text="Modified"}</th>
@@ -115,7 +114,7 @@
                      {if $file.name neq '.tbn'}
                      <tr class="{cycle values="z-odd,z-even"}">
                          <td align="center">
-                             <input type="checkbox" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)" />
+                             <input type="checkbox" class="cbList" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)" />
                          </td>
                          <td align="left">
                              {if $folderName eq ''}
@@ -146,7 +145,7 @@
                      {if $file.name|substr:0:1 neq '.'}
                      <tr class="{cycle values="z-odd,z-even"}">
                          <td align="center">
-                             <input type="checkbox" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)" />
+                             <input type="checkbox" class="cbList" name="list_{$file.name|replace:'.':'$$$$$'}"/>
                          </td>
                          <td align="left">
                              {if $publicFolder}
@@ -184,8 +183,8 @@
                          </td>
                       </tr>
                      
-                         <tr>
-                             <td colspan="5">
+                         <tr style="height:0px;padding:0px;margin:0px;">
+                             <td colspan="5" style="height:0px;padding:0px;margin:0px;">
                                  <div id="menu_{$file.name}" class="menuTriggered">
                                      {if $file.img}
                                          <a href="" onclick="javascript:returnEditor('insertImg',false)" title="Insert image" >
@@ -270,13 +269,14 @@
             file = file.split('.');
             file = file.join('\\.');
             var index = "#menu_"+file;
-            var newTarget = $jq(index);
-            $jq('.menuTriggered').not(newTarget).slideUp('slow');
-            newTarget.slideToggle('slow');
-            //var possLeft = $jq('#t_'+file).offset().left+10, possTop = $jq('#t_'+file).offset().top+5;
-            //$jq(index).css({left:possLeft,top:possTop});
+            var newTarget = jQuery(index);
+            jQuery('.menuTriggered').not(newTarget).slideUp('fast');
+            newTarget.slideToggle('fast');
             
           
+        }
+        function selectAll(obj){
+            jQuery('.cbList').attr('checked', obj.checked);
         }
     </script>
     

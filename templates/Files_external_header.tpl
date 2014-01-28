@@ -5,7 +5,7 @@
         <title>{title}</title>
         <meta name="description" content="{slogan}" />
         <meta name="keywords" content="{keywords}" />
-        <link rel="stylesheet" type="text/css" href="styles/core.css" media="print,projection,screen" />
+        <link rel="stylesheet" type="text/css" href="style/core.css" media="print,projection,screen" />
         {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" />{/browserhack}
         <link rel="stylesheet" type="text/css" href="{$stylepath}/style.css" media="print,projection,screen" />
         <link rel="stylesheet" type="text/css" href="{$stylepath}/print.css" media="print" />
@@ -20,7 +20,10 @@
             Zikula.Config = {"entrypoint":"index.php","baseURL":"{{$baseurl}}","baseURI":"{{getbaseuri}}","ajaxtimeout":"5000","lang":"en"}
         </script>
         <script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
-		<script type="text/javascript" src="javascript/helpers/Zikula.js"></script>
-		<script type="text/javascript" src="modules/Files/javascript/files.js"></script>
+	<script type="text/javascript" src="javascript/helpers/Zikula.js"></script>
+	<script type="text/javascript" src="modules/Files/javascript/files.js"></script>
+        {if $jquery}
+            <script type="text/javascript" src="{$jquery}"></script>
+        {/if}
 	</head>
     <body>

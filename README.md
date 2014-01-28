@@ -54,12 +54,11 @@ Changes
       - Added jquery_toogle menu with the new editor.responses.
       - Added alert message to no-public files links.
       - Updated warnings and template messages.
+      - Added *select all* feature (also in user template).
+      - Added core.css style to external template, and also *referential* jquery lib loading.
 
 Pending
 =======
-
-  - Changes in extenal templates II
-      - Add *select all* feature.
 
   - No-public init folders. Check this feature for admin and users (and the relationship behavior).
 
@@ -72,3 +71,5 @@ Pending
       - Update installer.
       - Upgrade removing vars and alerting about necessary changes in ZConfig.
       - Version number: 1.0.1
+
+  - Add documentation

@@ -126,6 +126,11 @@ class Files_Controller_External extends Zikula_AbstractController
         $this->view->assign('imagesArray', DataUtil::formatForDisplay($imagesArray));
         $this->view->assign('usedSpace',  $usedSpaceArray);
         $this->view->assign('notwriteable', $notwriteable);
+        //path to zk jquery lib
+        $js =new JCSSUtil;
+        $scripts = $js->scriptsMap();
+        $jquery = $scripts['jquery']['path'];
+        $this->view->assign('jquery',$jquery);
         return $this->view->display('Files_external_getFiles.tpl');
     }
 }

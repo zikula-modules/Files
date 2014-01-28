@@ -1,4 +1,4 @@
-
+{pageaddvar name="javascript" value="jquery"}
 {ajaxheader modname=Files filename=files.js}
 
 <div class="files_container">
@@ -60,7 +60,7 @@
         <table class="z-datatable" summary="table files">
             <thead>
                 <tr>
-                    <th align="center">{*}<input type="checkbox" onclick="toggleCheckAll(this);" id="checkall" />{*}</th>
+                    <th align="center"><input type="checkbox" onclick="selectAll(this)" id="selectall" value="Select all" title="{gt text="Select all"}"/></th>
                     <th align="left">{gt text="Name"}</th>
                     <th align="right">{gt text="Size"}</th>
                     <th align="right">{gt text="Modified"}</th>
@@ -98,7 +98,7 @@
                  {if $file.name neq '.tbn'}
                  <tr class="{cycle values="z-odd,z-even"}">
                      <td align="center">
-                         <input type="checkbox" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)" />
+                         <input type="checkbox" class="cbList" name="list_{$file.name|replace:'.':'$$$$$'}"/>
                      </td>
                      <td align="left">
                          {if $folderName eq ''}
@@ -130,7 +130,7 @@
                  {foreach item=file from=$fileList.file}
                  <tr class="{cycle values="z-odd,z-even"}">
                      <td align="center">
-                         <input type="checkbox" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)"/>
+                         <input type="checkbox" class="cbList" name="list_{$file.name|replace:'.':'$$$$$'}"/>
                      </td>
                      <td align="left">
                          {if $publicFolder}
@@ -179,3 +179,8 @@
  
             
  </div>
+<script>
+    function selectAll(obj){
+        jQuery('.cbList').attr('checked', obj.checked);
+    }
+</script>
