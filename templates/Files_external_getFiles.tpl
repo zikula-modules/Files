@@ -21,8 +21,6 @@
     }
 </style>
 
-<script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>
-<script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
 
 <div class="files_container">
     <div class="z-clearfix">

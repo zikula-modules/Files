@@ -1,5 +1,3 @@
-<script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>
-<script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
 <tr id=image_{$file.name} name="image_{$file.name}">
 {*<span id="image_{$file.name}" name="image_{$file.name}">*}
     {*<div class="imageBoxContent">*}

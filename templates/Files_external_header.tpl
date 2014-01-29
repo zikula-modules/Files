@@ -13,17 +13,20 @@
         <link rel="stylesheet" href="modules/Files/style/style.css" type="text/css" />
 		<meta http-equiv="X-UA-Compatible" content="chrome=1" />
         <script type="text/javascript">
-        	document.location.entrypoint="{{homepage}}";
-			document.location.pnbaseURL="{{$baseurl}}";
-			document.location.ajaxtimeout=5000;
-			if (typeof(Zikula) == 'undefined') {Zikula = {};}
+            document.location.entrypoint="{{homepage}}";
+	    document.location.pnbaseURL="{{$baseurl}}";
+	    document.location.ajaxtimeout=5000;
+	    if (typeof(Zikula) == 'undefined') {Zikula = {};}
             Zikula.Config = {"entrypoint":"index.php","baseURL":"{{$baseurl}}","baseURI":"{{getbaseuri}}","ajaxtimeout":"5000","lang":"en"}
         </script>
         <script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
 	<script type="text/javascript" src="javascript/helpers/Zikula.js"></script>
 	<script type="text/javascript" src="modules/Files/javascript/files.js"></script>
+        <script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
+        <script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>
         {if $jquery}
             <script type="text/javascript" src="{$jquery}"></script>
+            <script type="text/javascript" src="javascript/jquery/noconflict.js"></script>
         {/if}
 	</head>
     <body>
