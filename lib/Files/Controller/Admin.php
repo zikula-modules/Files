@@ -35,6 +35,7 @@ class Files_Controller_Admin extends Zikula_AbstractController {
         }
         $folderPath = $check['folderPath'];
         $multisites = ($check['config'] == 'multisites') ? true : false;
+        $agora = $check['agora'];
         $usersFolder = $check['usersFiles'];
         $moduleVars = array('usersFolder' => $usersFolder,
             'allowedExtensions' => ModUtil::getVar('Files', 'allowedExtensions'),
@@ -54,6 +55,7 @@ class Files_Controller_Admin extends Zikula_AbstractController {
         $this->view->assign('check', $check);
         $this->view->assign('folderPath', $folderPath);
         $this->view->assign('multisites', $multisites);
+        $this->view->assign('agora', $agora);
         $this->view->assign('quotasTable', $quotasTable);
         $this->view->assign('moduleVars', $moduleVars);
         $this->view->assign('fileFileInModule', $fileFileInModule);
@@ -70,9 +72,15 @@ class Files_Controller_Admin extends Zikula_AbstractController {
      * @return: True if success or false in other case
      */
     public function updateconfig($args) {
+        
+        $check = ModUtil::func('Files', 'user', 'checkingModule');
+        if ($check['status'] != 'ok') {
+	    $this->view->assign('check', $check);
+            return $this->view->fetch('Files_user_failedConf.tpl');
+        }
+        $folderPath = $check['folderPath'];
         // Get parameters from whatever input we need.
         $showHideFiles = FormUtil::getPassedValue('showHideFiles', isset($args['showHideFiles']) ? $args['showHideFiles'] : 0, 'POST');
-        $folderPath = FormUtil::getPassedValue('folderPath', isset($args['folderPath']) ? $args['folderPath'] : null, 'POST');
         $usersFolder = FormUtil::getPassedValue('usersFolder', isset($args['usersFolder']) ? $args['usersFolder'] : null, 'POST');
         $allowedExtensions = FormUtil::getPassedValue('allowedExtensions', isset($args['allowedExtensions']) ? $args['allowedExtensions'] : null, 'POST');
         $defaultQuota = FormUtil::getPassedValue('defaultQuota', isset($args['defaultQuota']) ? $args['defaultQuota'] : null, 'POST');
@@ -94,18 +102,8 @@ class Files_Controller_Admin extends Zikula_AbstractController {
             'maxWidth' => $maxWidth,
             'maxHeight' => $maxHeight,
             'editableExtensions' => $editableExtensions);
-        if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1) {
-            if (!file_exists($folderPath)) {
-                ModUtil::setVars('Files', $moduleVars);
-                LogUtil::registerError($this->__f('The directory <strong>%s</strong> does not exist', $folderPath));
-                return System::redirect(ModUtil::url('Files', 'admin', 'main'));
-            }
-            $folderPath = (substr($folderPath, -1) == '/') ? substr($folderPath, 0, strlen($folderPath) - 1) : $folderPath;
-            $moduleVars['folderPath'] = $folderPath;
-        }
-        if (!file_exists($folderPath . '/' . $usersFolder) || $usersFolder == '' || $usersFolder == null) {
-            ModUtil::setVars('Files', $moduleVars);
-            LogUtil::registerError($this->__f('The directory <strong>%s</strong> for users does not exist', $usersFolder));
+        if ($usersFolder == '' || $usersFolder == null) {
+            LogUtil::registerError($this->__("Users folder can't be empty"));
             return System::redirect(ModUtil::url('Files', 'admin', 'main'));
         }
         $usersFolder = (substr($usersFolder, -1) == '/') ? substr($usersFolder, 0, strlen($usersFolder) - 1) : $usersFolder;

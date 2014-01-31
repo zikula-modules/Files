@@ -26,9 +26,11 @@ Changes
         - For multisites (*$ZConfig['Multisites']['multi']* = 1) folderPath will be *$ZConfig['Multisites']['filesRealPath'] . '/' . $ZConfig['Multisites']['siteFilesFolder'];*.
         - If global *$ZConfig['FilesModule']['folderPath']* use this like folderPath. It checks if this folder exist and is writable.
         - If globar var not exist, use *$ZConfig['System']['datadir']* like folderPath. It checks if this folder exist (and if not, it create it) and if is writeable (and if not, it change acces permissions).
+
       - **usersFiles**:
         - ~~If global *$ZConfig['FilesModule']['usersFiles']* use this like usersFiles.~~ Files folder keeps managing like a module_var (*usersFolder*). Default value is 'usersFiles'.
         - Function checks if this folder exists (or creates it) and if it's wirteable (or changes permissions).
+
       - Failed checks report a warning template.
       - Overcame checks return all config vars: folderPath, usersFiles, multisites.
 
@@ -47,7 +49,7 @@ Changes
      - No zip *.htaccess*, *.locked* and *.tbn* folders.
      - Updated PclZib lib to 2.8.2 and add callback function to skip these files
 
-  - Changes in extenal templates I
+  - Changes in extenal templates 
       - New option to insert pictures (not only thumbnails). Only in public folders, add option to thumbnail img, insert img and inset thumbnails.
       - Updated file links: url for public folders and *title* message for no-public.
       - Added new functions to editor.response: *insertImg*, *insertLink*, *copyURL* and *gotoURL*.
@@ -57,19 +59,15 @@ Changes
       - Added *select all* feature (also in user template).
       - Added core.css style to external template, and also *referential* jquery lib loading.
 
+  - Agora implementation. If  *$ZConfig['agora']* is *true*, module use *Àgora* functions (actually use *getDiskInfo* function and *$ZConfig["centre"]["nomPropi"]* var.
+
+  - Update module: version number (1.0.1), installer and upgrade function.
+
 Pending
 =======
 
-  - No-public init folders. Check this feature for admin and users (and the relationship behavior).
+  - Note: Problems with editor plugin, when focus is in the editor but cursor is not in the textarea. Really is a Xinha plugin issue.
 
-  - Check possible last Agora dependences (and add, if necessary, config var and its checks)
-
-  - ?Fix problems with editor plugin, when focus is in the editor but cursor is not in the textarea. Really is a Xinha plugin issue.
-
-  - Update module
-      - Remake catalan translation (many changes).
-      - Update installer.
-      - Upgrade removing vars and alerting about necessary changes in ZConfig.
-      - Version number: 1.0.1
-
+  - Remake catalan translation (many changes).
+  
   - Add documentation

@@ -16,9 +16,6 @@
 {if $check.warning eq 'noWriteable_folderPath'}
 <li>{gt text="Folder <i>%s</i> is no writeable." tag1=$check.folderPath}</li>
 {/if}
-{if $check.warning eq 'no_usersFiles'}
-<li>{gt text="Can't create <i>usersFiles</i> in <i>%s</i>." tag1=$check.folderPath}</li>
-{/if}
 <li>{gt text="Contact site admin and report this problem."}</li>
 </ul><br>
 <a href='index.php'>{gt text="Go to homepage"}</a>

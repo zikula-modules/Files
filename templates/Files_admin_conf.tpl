@@ -3,19 +3,13 @@
     <div class="z-adminpageicon">{img modname='core' src='configure.png' set='icons/large'}</div>
     <h2>{gt text="Modify configuration"}</h2>
     {if $fileFileInModule OR $fileFileNotInRoot}
-    <div id="z-securityanalyzer">
         {if $fileFileNotInRoot}
-        <div>
-            {gt text="You should move the file file.php from modules/Files/Resources/extras to the zikula root directory"}
-        </div>
+            <p class="z-warningmsg">{gt text="You should move the file file.php from modules/Files/Resources/extras to the zikula root directory"}</p>
         {else}
-        {if $fileFileInModule}
-        <div>
-            {gt text="You should remove the file file.php from modules/Files/Resources/extras"}
-        </div>
+            {if $fileFileInModule}
+                <p class="z-warningmsg">{gt text="You should remove the file file.php from modules/Files/Resources/extras"}</p>
+            {/if}
         {/if}
-        {/if}
-    </div>
     {/if}
     <form class="z-form" enctype="application/x-www-form-urlencoded" method="post" id="conf" action="{modurl modname='Files' type='admin' func='updateconfig'}">
         <div>
@@ -25,7 +19,7 @@
                 <fieldset>
                 <div class="z-formrow">
                     {if $check.config eq multisites}
-                        <p class="z-formnote">{gt text="Files system physical path"}: {gt text="Defined in multisites configuration"}</p>
+                        <p class="z-formnote">{gt text="Files system physical path"}: {gt text="Defined in multisites configuration"}{if $agora}{gt text=" and implemends agora functions"}{/if}.</p>
                     {else}
                         <p class="z-formnote">{gt text="Files system physical path"}: <b>{$check.folderPath}</b>.
                         {if $check.config eq config_site}
@@ -35,15 +29,15 @@
                         {/if}
                     {/if}
                 </div>
+                </fieldset>
                 <div class="z-formrow">
-                    <p class="z-formnote">{gt text="Users' folder"}: <b>{$check.usersFiles}</b>. 
-                    {if $check.usersFiles eq usersFiles}
-                        {gt text="Default configuration."}</p>
-                    {else}
-                        {gt text="Defined in config file."}</p>
-                    {/if}
+                    <label for="usersFolder">{gt text="Users folder"}</label>
+                <input type="text" id="usersFolder" name="usersFolder" size="30" value="{$moduleVars.usersFolder}" />
+                {if $usersFolderProblem}
+                    <p class="z-formnote z-errormsg">{gt text="The folder does not exist or it is not writable"}</p>
+                {/if}
                 </div>
-            </fieldset>
+            
                 <div class="z-formrow">
                     <label for="showHideFiles">{gt text="Show hidden files"}</label>
                     <select id="showHideFiles" name="showHideFiles">

@@ -9,7 +9,7 @@
     </div>
 
     <dl class="z-warningmsg">
-        <dt>{gt text="Confirm deletion of:"}</dt>
+        <dt>{if $thumb eq 1}{gt text="Confirm deletion of the thumbnail of:"}{else}{gt text="Confirm deletion of:"}{/if}</dt>
         {foreach item=fileName from=$list_show}
         <dd><strong>{$fileName}</strong></dd>
         {/foreach}
