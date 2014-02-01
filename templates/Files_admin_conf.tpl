@@ -79,7 +79,7 @@
                     <label for="defaultQuota">{gt text="Default disk quota"}</label>
                     <span>
                         <input type="text" id="defaultQuota" name="defaultQuota" size="10" value="{$moduleVars.defaultQuota}" />
-                        {gt text="Mb"}
+                        {gt text="MB"}
                     </span>
                 </div>
             </fieldset>

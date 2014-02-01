@@ -105,10 +105,10 @@ class Files_Controller_User extends Zikula_AbstractController {
         $notwriteable = (!is_writable($folder)) ? true : false;
         // check if it is a public directori
         $is_public = (!file_exists($folder . '/.locked')) ? true : false;
-        
+        $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0 , 1)) . '/' . UserUtil::getVar('uname') . '/' .$folderName;
         $this->view->assign('publicFolder', $is_public);
         $this->view->assign('folderPrev', DataUtil::formatForDisplay(substr($folderName, 0, strrpos($folderName, '/'))));
-        $this->view->assign('folderPath', $folder);
+        $this->view->assign('folderPath', $folderPath);
         $this->view->assign('folderName', DataUtil::formatForDisplay($folderName));
         $this->view->assign('fileList', $fileList);
         $this->view->assign('usedSpace', $usedSpaceArray);

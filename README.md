@@ -63,11 +63,11 @@ Changes
 
   - Update module: version number (1.0.1), installer and upgrade function.
 
+  - Remake catalan translation.
+
 Pending
 =======
 
   - Note: Problems with editor plugin, when focus is in the editor but cursor is not in the textarea. Really is a Xinha plugin issue.
 
-  - Remake catalan translation (many changes).
-  
   - Add documentation
