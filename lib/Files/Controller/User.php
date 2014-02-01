@@ -2123,7 +2123,7 @@ class Files_Controller_User extends Zikula_AbstractController {
             $check['status'] = 'ko';
             $check['warning'] = "no_folderPath";
         }
-        $check['agora'] = isset($ZConfig['agora']) ? $ZConfig['agora'] : false;
+        $check['agora'] = isset($ZConfig['iwmodules']['agora']) ? $ZConfig['iwmodules']['agora'] : false;
         return $check;         
     }
 

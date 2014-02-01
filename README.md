@@ -1,73 +1,71 @@
 Files module
 ============
-Files module 1.0.0 **for Zikula 1.3.0-6**
+Files module 1.0.1 **for Zikula 1.3.x**
 
-  - The module Files **allow users to manage their own files**. They can upload, rename, delete, zip and unzip files and folders. The users can decide if a folder is **public or private**. If a folder is set as public files stored in it are accessible trough the file file.php.
-  - The administrators can set different **quotas** for different groups of users.
+  - The module Files **allow users to manage their own files**. They can upload, rename, delete, zip and unzip files and folders. The users can decide if a folder is **public or private**. If a folder is set as public files stored in it are accessible trough the file *file.php*.
+  - Administrators can set different **quotas** for different groups of users.
   - The module needs a folder where to store the users' files. In preference this folder must be located out of the public HTML. This folder (may be the same zkdata folder). Files folder contains the users folders and other content (if it is zkdata, all the files of other modules).
   - **Administrators also can manage the entire Files folder**.
+  - Module has a **xinha plugin** to easily **insert links and images** from the public folders.
 
-Install notes
+Installing Files
+================
+
+Copying files
 -------------
-The module needs also a file named **file.php**, which must be located in the **root of the Zikula** installation. This file is needed to get the files from the public directories of the users. You can find this file in **Files/Resources/extras**, so you have to move it during the installation.
 
-Working on 1.0.1 version (**branch dev**)
-=========================================
+  1. Download the repo form [github](https://github.com/zikula-modules/Files/archive/master.zip).
+  2. Extract files and copy them to *path_to_Zikula_root/modules/Files*
+  3. Copy *path_to_Zikula_root/modules/Files/Resources/extras/file.php* to *path_to_Zikula_root/file.php*
+  4. If you use Scribite and you want the xinha plugin, copy *path_to_Zikula_root/modules/Files/Resources/xinhaPlugin/Files* to  *path_to_Zikula_root/modules/Scribite/includes/xinha/plugins/Files*
+  5. Delete *path_to_Zikula_root/modules/Files/Resources* folder
 
-Changes
-=======
-  - Removed *InteractiveInstall* functions (deprecated on zk 1.3.6).
-      - Firs idea was move this functions to a *Controller-Admin-config* functions. Unnecesary after 1.0.1 goals.
-      - Removed also *Files_init.tpl*.
+Note: (1) For scribite 5.0.0, it will be *path_to_Zikula_root/Scribite/plugins/Xinha/vendor/xinha/plugins/Files*
 
-  - Created function *checkingModule* in *Controller/User*.
-      - Every controller function will call it to check module configuration.
-      - **folderPath**:
-        - For multisites (*$ZConfig['Multisites']['multi']* = 1) folderPath will be *$ZConfig['Multisites']['filesRealPath'] . '/' . $ZConfig['Multisites']['siteFilesFolder'];*.
-        - If global *$ZConfig['FilesModule']['folderPath']* use this like folderPath. It checks if this folder exist and is writable.
-        - If globar var not exist, use *$ZConfig['System']['datadir']* like folderPath. It checks if this folder exist (and if not, it create it) and if is writeable (and if not, it change acces permissions).
+Module configuration
+--------------------
 
-      - **usersFiles**:
-        - ~~If global *$ZConfig['FilesModule']['usersFiles']* use this like usersFiles.~~ Files folder keeps managing like a module_var (*usersFolder*). Default value is 'usersFiles'.
-        - Function checks if this folder exists (or creates it) and if it's wirteable (or changes permissions).
+  1. Simply install the module and run it.
+  2. Default configuration use *zikulaDataFolder* to store files. Then module creates *usersFiles* (into *zikulaDataFolder*) to store users files. There will be one folder for each user (for example *zikulaDataFolder/usersFiles/a/admin*)
+  3. The users folder (*usersFiles*) is easily changeable from module administration.
+  4. You can change the main folder (default value *zikulaDataFolder*) in *config.php*
+      - You can define *$ZConfig['FilesModule']['folderPath']* with an alternative route (the path needs an real and writeable folder)
+      - For multisites (*$ZConfig['Multisites']['multi']* = 1) you need a more complex configuration. Then you must define two more vars. The path will be *$ZConfig['Multisites']['filesRealPath'] . '/' . $ZConfig['Multisites']['siteFilesFolder']*
+  5. If you use [Àgora project](https://github.com/projectestac/agora), you must define *$ZConfig['iwmodules']['agora'] = true* to use agora functions
 
-      - Failed checks report a warning template.
-      - Overcame checks return all config vars: folderPath, usersFiles, multisites.
+Xinha Files plugin
+------------------
 
-  - Changed file.php not to start *Zikula engine* in any case.
-      - With global $ZConfig, files folder is known in every case.
-      - Removed also Controller-User-notPublicFile function, Files_user_notPublicFile.tpl and lang strings
+  1. Like other plugins, admin have to go to *Administration-Scribite-EditorConfig-Xinha* and check *Files* plugin
+  2. Then, you will see a *paper clip* button in your xinha editor
 
-  - Added Xinha plugin resource to repo
+Notes
+-----
 
-  - Updated file.php request. Return to Controller-External functions and templates.
-      - Fixed ajax problems in thumbnail functions.
-      - Fixed insert problems
-      - Removed Controller-User request and fix popup creation problems.
+  1. For scribite 5.0.0, the path will be *path_to_Zikula_root/Scribite/plugins/Xinha/vendor/xinha/plugins/Files*
+  2. Using the default configuration (*folderPath = zikulaDataFolder*), admin can manage other modules files.
 
-  - Fixed problems win zip/unzip functions
-     - No zip *.htaccess*, *.locked* and *.tbn* folders.
-     - Updated PclZib lib to 2.8.2 and add callback function to skip these files
+Using Files
+===========
+For users
+---------
+  - Go to *Your Account* -> *File Manager*
+  - You can manage folders (create, rename and delete) and files (upload, download, rename and delete and also unzip/view for zip files)
+  - You can check one/more/all elements (files and folders) to move, zip or delete them.
+  - You can set public/private all your folders (except your root folder, private by default)
 
-  - Changes in extenal templates 
-      - New option to insert pictures (not only thumbnails). Only in public folders, add option to thumbnail img, insert img and inset thumbnails.
-      - Updated file links: url for public folders and *title* message for no-public.
-      - Added new functions to editor.response: *insertImg*, *insertLink*, *copyURL* and *gotoURL*.
-      - Added jquery_toogle menu with the new editor.responses.
-      - Added alert message to no-public files links.
-      - Updated warnings and template messages.
-      - Added *select all* feature (also in user template).
-      - Added core.css style to external template, and also *referential* jquery lib loading.
+  (Xinha plugin)
+  - Use the *paper clip* button in your editor.
+  - In the modal dialog, you have all the *File Manager* functions
+  - In your public folders, you simply click to insert links or images, copy or goto URLs
+  - You can make a thumbnail from your pictures, change their size and insert directly
 
-  - Agora implementation. If  *$ZConfig['agora']* is *true*, module use *Àgora* functions (actually use *getDiskInfo* function and *$ZConfig["centre"]["nomPropi"]* var.
+  Note: Like other xinha plugins, take care to use it when cursor (no only window focus) is in the text area.
 
-  - Update module: version number (1.0.1), installer and upgrade function.
+For admins
+----------
+  - Your *File Manager*  manage the entire Files folder (all users folders and the main one).
+  - In module administration you have multiple control options: allowed extensions, hidden files... and optional quotas for groups
 
-  - Remake catalan translation.
-
-Pending
-=======
-
-  - Note: Problems with editor plugin, when focus is in the editor but cursor is not in the textarea. Really is a Xinha plugin issue.
-
-  - Add documentation
+--------
+Check version [changes](docs/changes.md)
