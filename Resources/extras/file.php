@@ -12,9 +12,6 @@
  * @subpackage Files
  */
 
-// init zikula engine
-include 'lib/bootstrap.php';
-$core->init();
 // this file gets the files from the public directories of the users.
 $fileNameGet = (isset($_GET['file'])) ? $_GET['file'] : null;
 // security check to avoid the access to not allowed directories
@@ -23,19 +20,24 @@ if (strpos($fileNameGet, "..") !== false || $fileNameGet == null) {
 }
 
 $pos = strrpos($fileNameGet, '/');
-if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
-    $folderPath = $GLOBALS['ZConfig']['Multisites']['filesRealPath'] . '/' . $GLOBALS['ZConfig']['Multisites']['siteFilesFolder'] . '/';
+include_once ('config/config.php');
+global $ZConfig;
+// get folderPath
+if (isset($ZConfig['Multisites']['multi']) && $ZConfig['Multisites']['multi'] == 1) {
+    $folderPath = $ZConfig['Multisites']['filesRealPath'] . '/' . $ZConfig['Multisites']['siteFilesFolder'];
+} elseif (isset($ZConfig['FilesModule']['folderPath'])) {
+    $folderPath = $ZConfig['FilesModule']['folderPath'];
 } else {
-    $folderPath = ModUtil::getVar('Files', 'folderPath') . '/';
+    $folderPath = $ZConfig['System']['datadir'];
 }
 
-$fileName = $folderPath . $fileNameGet;
+$fileName = $folderPath . '/' . $fileNameGet;
 $filePath = substr($fileNameGet, 0, $pos);
-$accessFile = $folderPath . $filePath . '/.locked';
+$accessFile = $folderPath . '/' . $filePath . '/.locked';
 // check if the file .locked and the requested file exist.
 // if the requested file do not exist or the .locked file exists the function returns false.
 if (!file_exists($fileName) || file_exists($accessFile)) {
-    System::redirect(ModUtil::url('Files', 'user', 'notPublicFile',array('fileName' => $_GET['file'])));
+    echo "Not found";
     return false;
 }
 // get file extension
@@ -63,9 +65,6 @@ while (!feof($handle)) {
     }
 }
 $status = fclose($handle);
-if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1) {
-    System::shutdown();
-}
 
 /**
  * get the list of information about file types based on extensions.

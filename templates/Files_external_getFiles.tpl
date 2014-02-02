@@ -1,7 +1,26 @@
 {include file="Files_external_header.tpl"}
+<style>
+    .menuTriggered {
+        display:none;
+        background-color: #FEEFB3;
+        //background-image: url("contextMenuBackground.gif");
+        //background-position: left center;
+        //background-repeat: repeat-y;
+        border: 1px solid #777777;
+        border: 1px solid rgba(0, 0, 0, 0);
+        cursor: pointer;
+        padding: 1px;
+        //vertical-align: middle;
+    }
+    li.separator {
+        border-top: 1px solid #000000;
+        height: 1px;
+        line-height: 0;
+        margin: 0;
+        padding: 0;
+    }
+</style>
 
-<script src="modules/scribite/pnincludes/xinha/popups/popup.js" type="text/javascript"></script>
-<script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
 
 <div class="files_container">
     <div class="z-clearfix">
@@ -40,10 +59,14 @@
     </div>
 
     {if $publicFolder}
-    <p class="z-informationmsg">
-        {gt text="The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL:"}
-        <strong>{$baseurl}file.php?file={$folderPath}{if $folderPath|substr:-1 neq '/'}/{/if}{gt text="file_name"}</strong>
-    </p>
+        <p class="z-warningmsg">
+        {gt text="The files in this directory are accessible directly from the navigator. Anybody can access to them with the URL"} 
+    {elseif $folderName neq '' }
+            <p class="z-informationmsg">
+            {gt text="The files in this directory no are accessible directly. Set directory as Public."} 
+    {else}
+            <p class="z-informationmsg">
+            {gt text="The files in root directory aren't accessible directly."} 
     {/if}
 
     <form class="z-form" method="post" action="{modurl modname='Files' type='user' func='actionSelect' folder=$folderName|replace:'/':'|' hook=$hook}"  id="form1">
@@ -52,18 +75,18 @@
             <table class="z-datatable" summary="table files">
                 <thead>
                     <tr>
-                        <th align="center"></th>
-                        <th>{gt text="Name"}</th>
-                        <th>{gt text="Size"}</th>
-                        <th>{gt text="Modified"}</th>
-                        <th>{gt text="Action"}</th>
+                        <th align="center"><input type="checkbox" onclick="selectAll(this);" id="selectall" value="Select all" title="{gt text="Select all"}"/></th>
+                        <th align="left">{gt text="Name"}</th>
+                        <th align="right">{gt text="Size"}</th>
+                        <th align="right">{gt text="Modified"}</th>
+                        <th align="right">{gt text="Action"}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {if $folderName neq ""}
                     <tr class="{cycle values="z-odd,z-even"}">
                         <td>&nbsp;</td>
-                         <td>
+                         <td align="left">
                              <a class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' hook=$hook folder=''}">
                                  .
                              </a>
@@ -74,7 +97,7 @@
                      </tr>
                      <tr class="{cycle values="z-odd,z-even"}">
                          <td>&nbsp;</td>
-                         <td>
+                         <td align="left">
                              <a class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' hook=$hook folder=$folderPrev}">
                                  ..
                              </a>
@@ -89,7 +112,7 @@
                      {if $file.name neq '.tbn'}
                      <tr class="{cycle values="z-odd,z-even"}">
                          <td align="center">
-                             <input type="checkbox" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)" />
+                             <input type="checkbox" class="cbList" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)" />
                          </td>
                          <td align="left">
                              {if $folderName eq ''}
@@ -120,22 +143,26 @@
                      {if $file.name|substr:0:1 neq '.'}
                      <tr class="{cycle values="z-odd,z-even"}">
                          <td align="center">
-                             <input type="checkbox" name="list_{$file.name|replace:'.':'$$$$$'}" onclick="stateCheckAll(this.checked)" />
+                             <input type="checkbox" class="cbList" name="list_{$file.name|replace:'.':'$$$$$'}"/>
                          </td>
                          <td align="left">
                              {if $publicFolder}
-                             {if $hook eq 1}
-                             <a class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="{modurl modname='Files' type='user' func='downloadFile' folder=$folderName|replace:'/':'|' fileName=$file.name hook=$hook}">
-                                 {$file.name}
-                             </a>
+                                 {if $hook eq 1}
+                                     <a class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
+                                         {$file.name}
+                                     </a>
+                                  {else}
+                                      <a id="t_{$file.name}" onclick="menuOptions('{$file.name}')" class="fi_image menuTrigger" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;" href="javascript:void(0)">
+                                          {$file.name}
+                                      </a>
+                                     
+                                  {/if}
                              {else}
-                             <a class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
-                                 {$file.name}
-                             </a>
+                                 <a href="" onclick="javascript:alert('{gt text="Move the file to a public directory to get an access URL"}')" title="{gt text="Move the file to a public directory to get an access URL"}" class="fi_image" style="background: url({$baseurl}modules/Files/images/fileIcons/{$file.fileIcon}) no-repeat 0 50%;">
+                                     {$file.name}
+                                 </a>
                              {/if}
-                             {else}
-                             {$file.name}
-                             {/if}
+ 
                          </td>
                          <td align="right">
                              {$file.size} {gt text="Bytes"}
@@ -145,32 +172,80 @@
                          </td>
                          <td align="right">
                              {foreach item=option from=$file.options}
-                             <a href="{$option.url|safetext}">
-                                 {img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}
-                             </a>
+                                 {if !($option.needpublic && !$publicFolder)}
+                                     <a href="{$option.url|safetext}">
+                                        {img modname=core set=icons/extrasmall src=$option.image title=$option.title alt=$option.title}
+                                     </a>
+                                 {/if}
                              {/foreach}
                          </td>
-                     </tr>
+                      </tr>
+                     
+                         <tr style="height:0px;padding:0px;margin:0px;">
+                             <td colspan="5" style="height:0px;padding:0px;margin:0px;">
+                                 <div id="menu_{$file.name}" class="menuTriggered">
+                                     {if $file.img}
+                                         <a href="" onclick="javascript:returnEditor('insertImg',false)" title="Insert image" >
+                                             {img modname='Files' set="fileIcons" src='ed_image.gif' __title="Insert image" __alt="Insert image"}
+                                             {gt text="Insert image"}
+                                         </a>
+                                         <span style="margin:0px 5px;">-</span>
+                                     {/if}
+                                     <a href="" onclick="javascript:returnEditor('insertLink',false)" title="Insert link" >
+                                         {img modname='Files' set="fileIcons" src='ed_link.gif' __title="Insert link" __alt="Insert link"}
+                                         {gt text="Insert link"}
+                                     </a>
+                                     <span style="margin:0px 10px;">--</span>
+                                     <a href="" onclick="javascript:returnEditor('copyURL',false)" title="Copy URL" >
+                                         {img modname='Files' set="fileIcons" src='text.gif' __title="Copy URL" __alt="Copy URL"}
+                                         {gt text="Copy URL"}
+                                     </a>
+                                     <span style="margin:0px 5px;">-</span>
+                                     <a href="" onclick="javascript:returnEditor('gotoURL',false)" title="Go to URL" >
+                                         {img modname='Files' set="fileIcons" src='web.gif' __title="Go to URL" __alt="Go to URL"}
+                                         {gt text="Go to URL"}
+                                     </a>
+                                 </div>
+                             </td>
+                         </tr>
+                     
+
                      {/if}
                      {/foreach}
                     </tbody>
                 </table>
 
-                <fieldset>
                     <select id="menuaction" name="menuaction" onchange="javascript:getElementById('form1').submit()">
                         <option value="">{gt text="-- Selected files --"}</option>
                         <option value="move">{gt text="Move them to another folder"}</option>
                         <option value="delete">{gt text="Delete them"}</option>
                         <option value="zip">{gt text="Create a zip file with them"}</option>
                     </select>
-                </fieldset>
             </div>
         </form>
 
-        {if $publicFolder AND  $imagesArray|count gt 0}
-        {foreach item=file from=$imagesArray}
-        {include file="Files_external_getFilesImgContent.tpl"}
-        {/foreach}
+        {if $publicFolder AND  $imagesArray|@count gt 0}
+            <div class="z-form">
+               <fieldset class="z-fieldset">
+                   <legend>{gt text="Thumbnails"}</legend>
+                   <table class="z-datatable">
+                       <thead>
+                           <tr>
+                               <th align="center"></th>
+                               <th>{gt text="Size(factor)"}</th>
+                               <th>{gt text="Actions"}</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                   {foreach item=file from=$imagesArray}
+                      {* <tr class="{cycle values="z-odd,z-even"}">*}
+                           {include file="Files_external_getFilesImgContent.tpl"}
+                      {* </tr> *}
+                   {/foreach}
+                       </tbody>
+                   </table>
+               </fieldset>
+            </div>
         <div style="clear: both;"></div>
         <div class="z-informationmsg">
             {gt text="The values displayed in each image are its real size \"width x height\" and the factor of the modification of its size (value). The value 1 means that the image is in its natural size. A value upper than 1 means that the image has been reduced and a value lower than 1 means that the image has been increased."}
@@ -179,3 +254,27 @@
     </div>
 
     {include file="Files_external_footer.tpl"}
+    <script>
+        function returnEditor(opt,thumb) {
+            if (thumb == true) {
+                var val=new Array(opt,'file.php?file={{$folderPath}}{{if $folderPath|substr:-1 neq '/'}}/{{/if}}/.tbn/{{$file.name}}');
+            }else {
+                var val=new Array(opt,'file.php?file={{$folderPath}}{{if $folderPath|substr:-1 neq '/'}}/{{/if}}{{$file.name}}');
+            }
+            __dlg_close(val,'tt');
+        }
+        function menuOptions(file) {
+            file = file.split('.');
+            file = file.join('\\.');
+            var index = "#menu_"+file;
+            var newTarget = jQuery(index);
+            jQuery('.menuTriggered').not(newTarget).slideUp('fast');
+            newTarget.slideToggle('fast');
+            
+          
+        }
+        function selectAll(obj){
+            jQuery('.cbList').attr('checked', obj.checked);
+        }
+    </script>
+    

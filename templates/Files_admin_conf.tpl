@@ -3,43 +3,41 @@
     <div class="z-adminpageicon">{img modname='core' src='configure.png' set='icons/large'}</div>
     <h2>{gt text="Modify configuration"}</h2>
     {if $fileFileInModule OR $fileFileNotInRoot}
-    <div id="z-securityanalyzer">
         {if $fileFileNotInRoot}
-        <div>
-            {gt text="You should move the file file.php from modules/Files/Resources/extras to the zikula root directory"}
-        </div>
+            <p class="z-warningmsg">{gt text="You should move the file file.php from modules/Files/Resources/extras to the zikula root directory"}</p>
         {else}
-        {if $fileFileInModule}
-        <div>
-            {gt text="You should remove the file file.php from modules/Files/Resources/extras"}
-        </div>
+            {if $fileFileInModule}
+                <p class="z-warningmsg">{gt text="You should remove the file file.php from modules/Files/Resources/extras"}</p>
+            {/if}
         {/if}
-        {/if}
-    </div>
     {/if}
     <form class="z-form" enctype="application/x-www-form-urlencoded" method="post" id="conf" action="{modurl modname='Files' type='admin' func='updateconfig'}">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Settings"}</legend>
-                {if !$multisites}
+                <fieldset>
                 <div class="z-formrow">
-                    <label for="folderPath">{gt text="Files system physical path"}</label>
-                    <input type="text" id="folderPath" name="folderPath" size="30" value="{$folderPath}" />
-                    {if $folderPathProblem}
-                    <p class="z-formnote z-errormsg">{gt text="The folder does not exist or it is not writable"}</p>
+                    {if $check.config eq multisites}
+                        <p class="z-formnote">{gt text="Files system physical path"}: {gt text="Defined in multisites configuration"}{if $agora}{gt text=" and implemends agora functions"}{/if}.</p>
+                    {else}
+                        <p class="z-formnote">{gt text="Files system physical path"}: <b>{$check.folderPath}</b>.
+                        {if $check.config eq config_site}
+                            {gt text="Defined in config file."}</p>
+                        {else}
+                            {gt text="Default configuration."}</p>
+                        {/if}
                     {/if}
                 </div>
-                {else}
-                    <input type="hidden" id="folderPath" name="folderPath" value="{$folderPath}" />
+                </fieldset>
+                <div class="z-formrow">
+                    <label for="usersFolder">{gt text="Users folder"}</label>
+                <input type="text" id="usersFolder" name="usersFolder" size="30" value="{$moduleVars.usersFolder}" />
+                {if $usersFolderProblem}
+                    <p class="z-formnote z-errormsg">{gt text="The folder does not exist or it is not writable"}</p>
                 {/if}
-                <div class="z-formrow">
-                    <label for="usersFolder">{gt text="Users' folder"}</label>
-                    <input type="text" id="usersFolder" name="usersFolder" size="30" value="{$moduleVars.usersFolder}" />
-                    {if $usersFolderProblem}
-                    <p class="z-formnote z-errormsg">{gt text="The folder does not exist or it is not writable"}</p>
-                    {/if}
                 </div>
+            
                 <div class="z-formrow">
                     <label for="showHideFiles">{gt text="Show hidden files"}</label>
                     <select id="showHideFiles" name="showHideFiles">
@@ -81,7 +79,7 @@
                     <label for="defaultQuota">{gt text="Default disk quota"}</label>
                     <span>
                         <input type="text" id="defaultQuota" name="defaultQuota" size="10" value="{$moduleVars.defaultQuota}" />
-                        {gt text="Mb"}
+                        {gt text="MB"}
                     </span>
                 </div>
             </fieldset>
@@ -90,7 +88,10 @@
             </div>
         </div>
     </form>
+    <div class="z-form">
+        <fieldset>
+            <legend>{gt text="Disk quotas for groups"}</legend>
+            <div id="quotaTable">{$quotasTable}</div>
+        </fieldset>
+    </div>
 </div>
-
-<h3>{gt text="Disk quotas for groups"}</h3>
-<div id="quotaTable">{$quotasTable}</div>
