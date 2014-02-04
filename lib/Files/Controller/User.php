@@ -40,7 +40,11 @@ class Files_Controller_User extends Zikula_AbstractController {
         $minimal = FormUtil::getPassedValue('minimal', isset($args['minimal']) ? $args['minimal'] : null, 'REQUEST');
         
         // get arguments
+        $root = FormUtil::getPassedValue('root', isset($args['root']) ? $args['root'] : null, 'REQUEST');
+        $lastFolder = isset($_SESSION['filesModuleLastFolder']) ? $_SESSION['filesModuleLastFolder'] : null;
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
+        $folder = (is_null($folder) && !is_null($lastFolder) && is_null($root)) ? $lastFolder : $folder;
+        $_SESSION['filesModuleLastFolder'] = $folder;
         $folder = str_replace("|", "/", $folder);
         
         // security check

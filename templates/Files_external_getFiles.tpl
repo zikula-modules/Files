@@ -27,7 +27,7 @@
         <div class="userpageicon">
             {img modname='core' src='lists.png' set='icons/large'}
         </div>
-        <h2>{gt text="List of files in folder"} <strong>{$folderName}</strong></h2>
+        <h2>{gt text="List of files in folder"}: <strong>{if $folderName neq ''}{$folderName}{else}{gt text="Main"}{/if}</strong></h2>
     </div>
 
     {insert name="getstatusmsg"}
@@ -87,7 +87,7 @@
                     <tr class="{cycle values="z-odd,z-even"}">
                         <td>&nbsp;</td>
                          <td align="left">
-                             <a class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' hook=$hook folder=''}">
+                             <a title="{gt text='Go to main'}" class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' folder='' root=1}">
                                  .
                              </a>
                          </td>
@@ -98,7 +98,11 @@
                      <tr class="{cycle values="z-odd,z-even"}">
                          <td>&nbsp;</td>
                          <td align="left">
-                             <a class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' hook=$hook folder=$folderPrev}">
+                             {if $folderPrev eq ''}
+                                 <a title="{gt text='Go to upper folder'}" class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' folder='' root=1}">    
+                             {else}
+                                 <a title="{gt text='Go to upper folder'}" class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' folder=$folderPrev|replace:'/':'|'}">
+                             {/if}
                                  ..
                              </a>
                          </td>

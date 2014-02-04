@@ -16,7 +16,11 @@ class Files_Controller_External extends Zikula_AbstractController
         $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : 0, 'GET');
         PageUtil::AddVar('javascript', 'modules/Files/javascript/getFiles.js');
         // get arguments
+        $root = FormUtil::getPassedValue('root', isset($args['root']) ? $args['root'] : null, 'REQUEST');
+        $lastFolder = isset($_SESSION['filesModuleLastFolder']) ? $_SESSION['filesModuleLastFolder'] : null;
         $folder = FormUtil::getPassedValue('folder', isset($args['folder']) ? $args['folder'] : null, 'REQUEST');
+        $folder = (is_null($folder) && !is_null($lastFolder) && is_null($root)) ? $lastFolder : $folder; 
+        $_SESSION['filesModuleLastFolder'] = $folder;
         $folder = str_replace("|", "/", $folder);
         // security check
         if (!SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADD) || !UserUtil::isLoggedIn()) {
