@@ -82,6 +82,12 @@
                         {gt text="MB"}
                     </span>
                 </div>
+                <div class="z-formrow">
+                	<label for="defaultPublic">{gt text="New folders are publicly accessible by default"}</label>
+                	<span>
+                        <input type="checkbox" id="defaultPublic" name="defaultPublic" value="1" {if $moduleVars.defaultPublic}checked="checked"{/if} />
+                    </span>
+        		</div>
             </fieldset>
             <div class="z-formbuttons">
                 {button src='button_ok.png' set='icons/small' __alt="Save the changes" __title="Save the changes"}

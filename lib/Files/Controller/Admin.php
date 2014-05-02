@@ -44,7 +44,8 @@ class Files_Controller_Admin extends Zikula_AbstractController {
             'maxWidth' => ModUtil::getVar('Files', 'maxWidth'),
             'maxHeight' => ModUtil::getVar('Files', 'maxHeight'),
             'showHideFiles' => ModUtil::getVar('Files', 'showHideFiles'),
-            'editableExtensions' => ModUtil::getVar('Files', 'editableExtensions'));
+            'editableExtensions' => ModUtil::getVar('Files', 'editableExtensions'),
+        	'defaultPublic' => ModUtil::getVar('Files', 'defaultPublic'));
         // check if file file.php exists in folder modules/Files
         $fileFileInModule = (file_exists('modules/Files/Resources/extras/file.php')) ? true : false;
         // check if file file.php exists in folder modules/Files
@@ -88,6 +89,7 @@ class Files_Controller_Admin extends Zikula_AbstractController {
         $maxWidth = FormUtil::getPassedValue('maxWidth', isset($args['maxWidth']) ? $args['maxWidth'] : null, 'POST');
         $maxHeight = FormUtil::getPassedValue('maxHeight', isset($args['maxHeight']) ? $args['maxHeight'] : null, 'POST');
         $editableExtensions = FormUtil::getPassedValue('editableExtensions', isset($args['editableExtensions']) ? $args['editableExtensions'] : null, 'POST');
+        $defaultPublic = FormUtil::getPassedValue('defaultPublic', $args['defaultPublic']==1 ? $args['defaultPublic'] : 0, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -101,7 +103,8 @@ class Files_Controller_Admin extends Zikula_AbstractController {
             'filesMaxSize' => $filesMaxSize,
             'maxWidth' => $maxWidth,
             'maxHeight' => $maxHeight,
-            'editableExtensions' => $editableExtensions);
+            'editableExtensions' => $editableExtensions,
+        	'defaultPublic' => $defaultPublic);
         if ($usersFolder == '' || $usersFolder == null) {
             LogUtil::registerError($this->__("Users folder can't be empty"));
             return System::redirect(ModUtil::url('Files', 'admin', 'main'));

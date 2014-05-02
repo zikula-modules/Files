@@ -123,6 +123,8 @@ class Files_Controller_External extends Zikula_AbstractController
                 }
             }
         }
+        $defaultPublic = ModUtil::getVar('Files', 'defaultPublic');
+        $this->view->assign('defaultPublic', $defaultPublic);
         $this->view->assign('folderPath', DataUtil::formatForDisplay($folderPath));
         $this->view->assign('folderName', DataUtil::formatForDisplay($folderName));
         $this->view->assign('fileList', $fileList);

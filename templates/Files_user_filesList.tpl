@@ -23,7 +23,7 @@
         <a class="fi_image fi_public" href="{modurl modname='Files' type='user' func='setAsPublic' folder=$folderName|replace:'/':'|' not=1}">
             {gt text="Set as not public folder"}
         </a>
-        {elseif $folderName neq ''}
+        {elseif $folderName neq '' OR $defaultPublic eq '1'}
         <a class="fi_image fi_notpublic" href="{modurl modname='Files' type='user' func='setAsPublic' folder=$folderName|replace:'/':'|'}">
             {gt text="Set as a public folder"}
         </a>

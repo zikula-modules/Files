@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="modules/Files/javascript/files.js"></script>
         <script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
         <script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>
+        <script type="text/javascript" src="modules/Scribite/includes/tinymce/tiny_mce_popup.js"></script>
         {if $jquery}
             <script type="text/javascript" src="{$jquery}"></script>
             <script type="text/javascript" src="javascript/jquery/noconflict.js"></script>

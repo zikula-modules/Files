@@ -41,7 +41,7 @@
         <a class="fi_image fi_uploadfile" href="javascript: uploadFile('{$folderName}',1,{$hook})">{gt text="Upload file"}</a>
         {if $publicFolder}
         <a class="fi_image fi_public" href="{modurl modname='Files' type='user' func='setAsPublic' external='1' folder=$folderName|replace:'/':'|' hook=$hook not=1}">{gt text="Set as not public folder"}</a>
-        {elseif $folderName neq ''}
+        {elseif $folderName neq '' OR $defaultPublic eq '1'}
         <a class="fi_image fi_notpublic" href="{modurl modname='Files' type='user' func='setAsPublic' external='1' folder=$folderName|replace:'/':'|' hook=$hook}">{gt text="Set as a public folder"}</a>
         {/if}
     </div>
@@ -265,7 +265,24 @@
             }else {
                 var val=new Array(opt,'file.php?file={{$folderPath}}{{if $folderPath|substr:-1 neq '/'}}/{{/if}}{{$file.name}}');
             }
-            __dlg_close(val,'tt');
+            if (tinyMCE){ 
+            	var ed = tinyMCEPopup.editor, dom = ed.dom;
+            	if(val[0] == 'insertImg'){
+            	tinyMCEPopup.execCommand('mceInsertContent', false, dom.createHTML('img', {
+            	src : val[1],
+            	border : 0
+            	}));
+            	} else if(val[0] == 'copyURL'){
+            		tinyMCEPopup.execCommand('mceInsertContent', false, Zikula.Config.baseURL+val[1]);
+            	}else if (val[0] == 'gotoURL') {
+                    window.open(Zikula.Config.baseURL+val[1],'_blank');
+            	} else {
+            		tinyMCEPopup.execCommand('mceInsertLink', false, val[1]);
+            	}
+            	tinyMCEPopup.close(); 
+				} else {
+            	__dlg_close(val,'tt');
+				}
         }
         function menuOptions(file) {
             file = file.split('.');
