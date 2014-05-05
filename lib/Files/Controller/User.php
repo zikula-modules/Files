@@ -110,6 +110,8 @@ class Files_Controller_User extends Zikula_AbstractController {
         // check if it is a public directori
         $is_public = (!file_exists($folder . '/.locked')) ? true : false;
         $folderPath = (SecurityUtil::checkPermission( 'Files::', '::', ACCESS_ADMIN)) ? $folderName : ModUtil::getVar('Files', 'usersFolder') . '/' . strtolower(substr(UserUtil::getVar('uname'), 0 , 1)) . '/' . UserUtil::getVar('uname') . '/' .$folderName;
+        $defaultPublic = ModUtil::getVar('Files', 'defaultPublic');
+        $this->view->assign('defaultPublic', $defaultPublic);
         $this->view->assign('publicFolder', $is_public);
         $this->view->assign('folderPrev', DataUtil::formatForDisplay(substr($folderName, 0, strrpos($folderName, '/'))));
         $this->view->assign('folderPath', $folderPath);
@@ -1083,6 +1085,8 @@ class Files_Controller_User extends Zikula_AbstractController {
         }
         // confirm authorisation code
         $this->checkCsrfToken();
+        
+        $defaultPublic = ModUtil::getVar('Files', 'defaultPublic');
 
         $returnType = ($external == 1) ? 'external' : 'user';
         $returnFunc = ($external == 1) ? 'getFiles' : 'main';
@@ -1109,6 +1113,10 @@ class Files_Controller_User extends Zikula_AbstractController {
         LogUtil::registerStatus($this->__('Directory created'));
         $inFolder = ($folder == '') ? $newFolder : $folder . "/" . $newFolder;
         ModUtil::func('Files', 'user', 'createaccessfile', array('folderNew' => $inFolder));
+        if ($defaultPublic == '1'){
+        	// make folder public after createaccessfile initially sets it as private
+        	ModUtil::func('Files', 'user', 'setaspublic', array('folder' => $inFolder));
+        }
         // update the number of bytes used by user
         ModUtil::apiFunc('Files', 'user', 'updateUsedSpace');
         $folder = str_replace("/", "|", $folder);
@@ -2096,6 +2104,7 @@ class Files_Controller_User extends Zikula_AbstractController {
                     }
                 }
                 $initFolderPath .= '/' . UserUtil::getVar('uname');
+                $defaultPublic = ModUtil::getVar('Files', 'defaultPublic');
                 if (!file_exists($initFolderPath)) {
                     if (!FileUtil::mkdirs($initFolderPath, 0777, true)) {
                         LogUtil::registerError($this->__('Directory creation error') . ': ' . $initFolderPath);
@@ -2103,7 +2112,9 @@ class Files_Controller_User extends Zikula_AbstractController {
                     } else {
                         // create .htaccess and .locked files
                         FileUtil::writeFile($initFolderPath . '/.htaccess', $this->_HTACCESSCONTENT, true);
-                        FileUtil::writeFile($initFolderPath . '/.locked', $this->_LOCKEDCONTENT, true);
+                        if ($defaultPublic != '1'){
+                        	FileUtil::writeFile($initFolderPath . '/.locked', $this->_LOCKEDCONTENT, true);
+                        }
                     }
                     // create user record in database
                     if (!ModUtil::apiFunc('Files', 'user', 'createUserFilesInfo')) {
