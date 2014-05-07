@@ -20,11 +20,11 @@
             Zikula.Config = {"entrypoint":"index.php","baseURL":"{{$baseurl}}","baseURI":"{{getbaseuri}}","ajaxtimeout":"5000","lang":"en"}
         </script>
         <script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
-	<script type="text/javascript" src="javascript/helpers/Zikula.js"></script>
-	<script type="text/javascript" src="modules/Files/javascript/files.js"></script>
+		<script type="text/javascript" src="javascript/helpers/Zikula.js"></script>
+		<script type="text/javascript" src="modules/Files/javascript/files.js"></script>
         <script src="modules/Files/javascript/getFiles.js" type="text/javascript"></script>
-        <script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>
-        <script type="text/javascript" src="modules/Scribite/includes/tinymce/tiny_mce_popup.js"></script>
+        {if $editor eq 'Xinha'}<script src="modules/Scribite/includes/xinha/popups/popup.js" type="text/javascript"></script>{/if}
+        {if $editor eq 'TinyMCE'}<script type="text/javascript" src="modules/Scribite/includes/tinymce/tiny_mce_popup.js"></script>{/if}
         {if $jquery}
             <script type="text/javascript" src="{$jquery}"></script>
             <script type="text/javascript" src="javascript/jquery/noconflict.js"></script>

@@ -13,7 +13,7 @@
                 {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete thumbnail" __title="Delete thumbnail"}
             </a>
             {if $hook neq 1}
-            <a href="" onclick="javascript:returnEditor('insertImg',true)" title="Insert" >
+            <a href="" onclick="javascript:returnEditor('insertImg',true,'{$file.name}')" title="Insert" >
                 {img modname='core' set='icons/extrasmall' src='inbox.png' __title="Insert" __alt="Insert"}
             </a> 
             {else}

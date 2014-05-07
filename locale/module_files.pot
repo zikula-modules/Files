@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-04 22:55+0000\n"
+"POT-Creation-Date: 2014-05-07 15:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,248 +57,248 @@ msgid "Module configuration"
 msgstr ""
 
 #: lib/Files/Controller/User.php:60 lib/Files/Controller/User.php:77
-#: lib/Files/Controller/User.php:179 lib/Files/Controller/User.php:225
-#: lib/Files/Controller/User.php:237 lib/Files/Controller/User.php:394
-#: lib/Files/Controller/User.php:447 lib/Files/Controller/User.php:513
-#: lib/Files/Controller/User.php:697 lib/Files/Controller/User.php:807
-#: lib/Files/Controller/User.php:897 lib/Files/Controller/User.php:937
-#: lib/Files/Controller/User.php:989 lib/Files/Controller/User.php:1097
-#: lib/Files/Controller/User.php:1136 lib/Files/Controller/User.php:1169
-#: lib/Files/Controller/User.php:1278 lib/Files/Controller/User.php:1312
-#: lib/Files/Controller/User.php:1384 lib/Files/Controller/User.php:1436
-#: lib/Files/Controller/User.php:1538 lib/Files/Controller/User.php:1591
-#: lib/Files/Controller/User.php:1683 lib/Files/Controller/User.php:1807
-#: lib/Files/Controller/User.php:1868 lib/Files/Controller/External.php:52
-#: lib/Files/Controller/External.php:70
+#: lib/Files/Controller/User.php:181 lib/Files/Controller/User.php:227
+#: lib/Files/Controller/User.php:239 lib/Files/Controller/User.php:396
+#: lib/Files/Controller/User.php:449 lib/Files/Controller/User.php:515
+#: lib/Files/Controller/User.php:699 lib/Files/Controller/User.php:809
+#: lib/Files/Controller/User.php:899 lib/Files/Controller/User.php:939
+#: lib/Files/Controller/User.php:991 lib/Files/Controller/User.php:1101
+#: lib/Files/Controller/User.php:1144 lib/Files/Controller/User.php:1177
+#: lib/Files/Controller/User.php:1286 lib/Files/Controller/User.php:1320
+#: lib/Files/Controller/User.php:1392 lib/Files/Controller/User.php:1444
+#: lib/Files/Controller/User.php:1546 lib/Files/Controller/User.php:1599
+#: lib/Files/Controller/User.php:1691 lib/Files/Controller/User.php:1815
+#: lib/Files/Controller/User.php:1876 lib/Files/Controller/External.php:53
+#: lib/Files/Controller/External.php:71
 msgid "Invalid folder"
 msgstr ""
 
-#: lib/Files/Controller/User.php:70 lib/Files/Controller/External.php:63
+#: lib/Files/Controller/User.php:70 lib/Files/Controller/External.php:64
 msgid "It is not possible to browse this folder"
 msgstr ""
 
-#: lib/Files/Controller/User.php:141
-msgid "More than 200 MB"
-msgstr ""
-
 #: lib/Files/Controller/User.php:143
-#, php-format
-msgid "%s MB"
+msgid "More than 200 MB"
 msgstr ""
 
 #: lib/Files/Controller/User.php:145
 #, php-format
-msgid "%s KB"
+msgid "%s MB"
 msgstr ""
 
 #: lib/Files/Controller/User.php:147
 #, php-format
+msgid "%s KB"
+msgstr ""
+
+#: lib/Files/Controller/User.php:149
+#, php-format
 msgid "%s Bytes"
 msgstr ""
 
-#: lib/Files/Controller/User.php:287
+#: lib/Files/Controller/User.php:289
 msgid "Unzip file"
 msgstr ""
 
-#: lib/Files/Controller/User.php:294
+#: lib/Files/Controller/User.php:296
 msgid "List of the file content"
 msgstr ""
 
-#: lib/Files/Controller/User.php:304 templates/Files_user_editFile.tpl:8
+#: lib/Files/Controller/User.php:306 templates/Files_user_editFile.tpl:8
 msgid "Edit file"
 msgstr ""
 
-#: lib/Files/Controller/User.php:314
+#: lib/Files/Controller/User.php:316
 msgid "Create Thumbnail"
 msgstr ""
 
-#: lib/Files/Controller/User.php:322
+#: lib/Files/Controller/User.php:324
 msgid "Download file"
 msgstr ""
 
-#: lib/Files/Controller/User.php:331 templates/Files_user_renameFile.tpl:10
+#: lib/Files/Controller/User.php:333 templates/Files_user_renameFile.tpl:10
 #: templates/Files_user_renameFile.tpl:22
 #: templates/Files_user_filesList.tpl:124
 #: templates/Files_external_getFiles.tpl:136
 msgid "Rename file"
 msgstr ""
 
-#: lib/Files/Controller/User.php:339 templates/Files_user_filesList.tpl:127
+#: lib/Files/Controller/User.php:341 templates/Files_user_filesList.tpl:127
 #: templates/Files_user_deleteListFile.tpl:8
 msgid "Delete File"
 msgstr ""
 
-#: lib/Files/Controller/User.php:382 lib/Files/Controller/User.php:443
-#: lib/Files/Controller/User.php:502 lib/Files/Controller/User.php:686
-#: lib/Files/Controller/User.php:786 lib/Files/Controller/User.php:887
-#: lib/Files/Controller/User.php:927 lib/Files/Controller/User.php:979
-#: lib/Files/Controller/User.php:1082 lib/Files/Controller/User.php:1131
-#: lib/Files/Controller/User.php:1165 lib/Files/Controller/User.php:1274
-#: lib/Files/Controller/User.php:1308 lib/Files/Controller/User.php:1373
-#: lib/Files/Controller/User.php:1426 lib/Files/Controller/User.php:1526
-#: lib/Files/Controller/User.php:1581 lib/Files/Controller/User.php:1671
-#: lib/Files/Controller/User.php:1756 lib/Files/Controller/User.php:1803
-#: lib/Files/Controller/User.php:1858
+#: lib/Files/Controller/User.php:384 lib/Files/Controller/User.php:445
+#: lib/Files/Controller/User.php:504 lib/Files/Controller/User.php:688
+#: lib/Files/Controller/User.php:788 lib/Files/Controller/User.php:889
+#: lib/Files/Controller/User.php:929 lib/Files/Controller/User.php:981
+#: lib/Files/Controller/User.php:1084 lib/Files/Controller/User.php:1139
+#: lib/Files/Controller/User.php:1173 lib/Files/Controller/User.php:1282
+#: lib/Files/Controller/User.php:1316 lib/Files/Controller/User.php:1381
+#: lib/Files/Controller/User.php:1434 lib/Files/Controller/User.php:1534
+#: lib/Files/Controller/User.php:1589 lib/Files/Controller/User.php:1679
+#: lib/Files/Controller/User.php:1764 lib/Files/Controller/User.php:1811
+#: lib/Files/Controller/User.php:1866
 msgid "Error! You are not authorized to access this module."
 msgstr ""
 
-#: lib/Files/Controller/User.php:400 lib/Files/Controller/User.php:997
+#: lib/Files/Controller/User.php:402 lib/Files/Controller/User.php:999
 msgid "File not found"
 msgstr ""
 
-#: lib/Files/Controller/User.php:522
+#: lib/Files/Controller/User.php:524
 msgid "It is not possible to create a thumbnail from this file."
 msgstr ""
 
-#: lib/Files/Controller/User.php:536
+#: lib/Files/Controller/User.php:538
 msgid "Error! It has been possible to read the file."
 msgstr ""
 
-#: lib/Files/Controller/User.php:566
+#: lib/Files/Controller/User.php:568
 msgid "Error! Saving the image in memory."
 msgstr ""
 
-#: lib/Files/Controller/User.php:578 lib/Files/Controller/User.php:596
-#: lib/Files/Controller/User.php:602 lib/Files/Controller/User.php:610
-#: lib/Files/Controller/User.php:616 lib/Files/Controller/User.php:622
-#: lib/Files/Controller/User.php:630 lib/Files/Controller/User.php:645
-#: lib/Files/Controller/User.php:651
+#: lib/Files/Controller/User.php:580 lib/Files/Controller/User.php:598
+#: lib/Files/Controller/User.php:604 lib/Files/Controller/User.php:612
+#: lib/Files/Controller/User.php:618 lib/Files/Controller/User.php:624
+#: lib/Files/Controller/User.php:632 lib/Files/Controller/User.php:647
+#: lib/Files/Controller/User.php:653
 msgid "Error! Creating the thumbnail of the image."
 msgstr ""
 
-#: lib/Files/Controller/User.php:662
+#: lib/Files/Controller/User.php:664
 msgid "Thumbnail created."
 msgstr ""
 
-#: lib/Files/Controller/User.php:708
+#: lib/Files/Controller/User.php:710
 #, php-format
 msgid "Sorry! The file %s is not editable."
 msgstr ""
 
-#: lib/Files/Controller/User.php:716
+#: lib/Files/Controller/User.php:718
 #, php-format
 msgid "Sorry! The file %s has not been found."
 msgstr ""
 
-#: lib/Files/Controller/User.php:726
+#: lib/Files/Controller/User.php:728
 #, php-format
 msgid "Error! It has not been possible to read the content of the file %s."
 msgstr ""
 
-#: lib/Files/Controller/User.php:753
+#: lib/Files/Controller/User.php:755
 #, php-format
 msgid "Error! It has not been possible to write the content to the file %s."
 msgstr ""
 
-#: lib/Files/Controller/User.php:760
+#: lib/Files/Controller/User.php:762
 msgid "File successfully edited"
 msgstr ""
 
-#: lib/Files/Controller/User.php:799
+#: lib/Files/Controller/User.php:801
 msgid "You can not delete the users folder!"
 msgstr ""
 
-#: lib/Files/Controller/User.php:853
+#: lib/Files/Controller/User.php:855
 msgid "Failed to deleted"
 msgstr ""
 
-#: lib/Files/Controller/User.php:860
+#: lib/Files/Controller/User.php:862
 msgid "Error deleting file"
 msgstr ""
 
-#: lib/Files/Controller/User.php:871
+#: lib/Files/Controller/User.php:873
 msgid "Files successfully removed"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1034
+#: lib/Files/Controller/User.php:1036
 #, php-format
 msgid ""
 "The extension <strong>%s</strong> is not allowed.  The allowed extensions "
 "are: <strong>%s</strong>."
 msgstr ""
 
-#: lib/Files/Controller/User.php:1043
+#: lib/Files/Controller/User.php:1045
 msgid "Failed to rename"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1060
+#: lib/Files/Controller/User.php:1062
 msgid "Changed filename successfully"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1104
+#: lib/Files/Controller/User.php:1108
 msgid "Directory Create Error"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1109
+#: lib/Files/Controller/User.php:1113
 msgid "Directory created"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1190
+#: lib/Files/Controller/User.php:1198
 #, php-format
 msgid "The directory <strong>%s</strong> does not exist"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1200
+#: lib/Files/Controller/User.php:1208
 #, php-format
 msgid ""
 "The extension <strong>%s</strong> is not allowed. The allowed extensions "
 "are: <strong>%s</strong>."
 msgstr ""
 
-#: lib/Files/Controller/User.php:1211
+#: lib/Files/Controller/User.php:1219
 #, php-format
 msgid "The file is to big. The maximum size allowed is \"%s\" bytes."
 msgstr ""
 
-#: lib/Files/Controller/User.php:1217
+#: lib/Files/Controller/User.php:1225
 msgid "Some problem has ocurred when uploading the file to the server."
 msgstr ""
 
-#: lib/Files/Controller/User.php:1229
+#: lib/Files/Controller/User.php:1237
 msgid "You have not enough disk space to upload the file."
 msgstr ""
 
-#: lib/Files/Controller/User.php:1248
+#: lib/Files/Controller/User.php:1256
 msgid "Failed to upload"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1253
+#: lib/Files/Controller/User.php:1261
 msgid "Uploaded file success"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1328
+#: lib/Files/Controller/User.php:1336
 msgid "No selected action"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1333
+#: lib/Files/Controller/User.php:1341
 msgid "No selected file or directory"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1473
+#: lib/Files/Controller/User.php:1481
 msgid "No file name given"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1499
+#: lib/Files/Controller/User.php:1507
 msgid "Error creating ZIP file"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1504
+#: lib/Files/Controller/User.php:1512
 msgid "Successfully zipped"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1546 lib/Files/Controller/User.php:1691
+#: lib/Files/Controller/User.php:1554 lib/Files/Controller/User.php:1699
 msgid "Failed to list content zip file."
 msgstr ""
 
-#: lib/Files/Controller/User.php:1632 lib/Files/Controller/User.php:1642
+#: lib/Files/Controller/User.php:1640 lib/Files/Controller/User.php:1650
 msgid "Error moving"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1651
+#: lib/Files/Controller/User.php:1659
 msgid "Successfully moved"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1707
+#: lib/Files/Controller/User.php:1715
 #, php-format
 msgid ""
 "The zip file contains at least one file with the extension <strong>%s</"
@@ -306,47 +306,47 @@ msgid ""
 "strong>."
 msgstr ""
 
-#: lib/Files/Controller/User.php:1724
+#: lib/Files/Controller/User.php:1732
 #, php-format
 msgid ""
 "You have not enough disk space to unzip the file. You need %s extra bytes."
 msgstr ""
 
-#: lib/Files/Controller/User.php:1730
+#: lib/Files/Controller/User.php:1738
 msgid "Failed to unzip"
 msgstr ""
 
-#: lib/Files/Controller/User.php:1739
+#: lib/Files/Controller/User.php:1747
 msgid "Successfully unzipped"
 msgstr ""
 
-#: lib/Files/Controller/User.php:2080 lib/Files/Controller/User.php:2090
-#: lib/Files/Controller/User.php:2101
+#: lib/Files/Controller/User.php:2088 lib/Files/Controller/User.php:2098
+#: lib/Files/Controller/User.php:2110
 msgid "Directory creation error"
 msgstr ""
 
-#: lib/Files/Controller/User.php:2110
+#: lib/Files/Controller/User.php:2121
 msgid "User data creation error"
 msgstr ""
 
-#: lib/Files/Controller/User.php:2117
+#: lib/Files/Controller/User.php:2128
 #, php-format
 msgid "The \"%s\" directory does not exist or is not writable."
 msgstr ""
 
-#: lib/Files/Controller/Admin.php:106
+#: lib/Files/Controller/Admin.php:109
 msgid "Users folder can't be empty"
 msgstr ""
 
-#: lib/Files/Controller/Admin.php:113
+#: lib/Files/Controller/Admin.php:116
 msgid "The configuration has been updated"
 msgstr ""
 
-#: lib/Files/Controller/External.php:27
+#: lib/Files/Controller/External.php:28
 msgid "Sorry! You have not been granted access to this page."
 msgstr ""
 
-#: lib/Files/Controller/External.php:44
+#: lib/Files/Controller/External.php:45
 msgid ""
 "The server directory does not exist. Contact with the website administrator "
 "to solve this problem."
@@ -534,11 +534,15 @@ msgstr ""
 msgid "MB"
 msgstr ""
 
-#: templates/Files_admin_conf.tpl:87 templates/Files_admin_newQuotaForm.tpl:12
+#: templates/Files_admin_conf.tpl:86
+msgid "New folders public by default"
+msgstr ""
+
+#: templates/Files_admin_conf.tpl:93 templates/Files_admin_newQuotaForm.tpl:12
 msgid "Save the changes"
 msgstr ""
 
-#: templates/Files_admin_conf.tpl:93
+#: templates/Files_admin_conf.tpl:99
 msgid "Disk quotas for groups"
 msgstr ""
 

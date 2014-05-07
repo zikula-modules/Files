@@ -16,7 +16,7 @@ function Files(editor) {
         image    : _editor_url+"plugins/Files/img/files.gif",
         textMode : false,
         action   : function(editor) {
-                    url = Zikula.Config.baseURL + Zikula.Config.entrypoint + "?module=Files&type=external&func=getFiles";
+                    url = Zikula.Config.baseURL + Zikula.Config.entrypoint + "?module=Files&type=external&func=getFiles&editor=Xinha";
                     FilesFindItemXinha(editor, url);
         }
     })

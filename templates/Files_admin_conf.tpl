@@ -83,7 +83,7 @@
                     </span>
                 </div>
                 <div class="z-formrow">
-                	<label for="defaultPublic">{gt text="New folders are publicly accessible by default"}</label>
+                	<label for="defaultPublic">{gt text="New folders public by default"}</label>
                 	<span>
                         <input type="checkbox" id="defaultPublic" name="defaultPublic" value="1" {if $moduleVars.defaultPublic}checked="checked"{/if} />
                     </span>
