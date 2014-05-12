@@ -22,7 +22,7 @@ Files 1.0.1 - Changes from 1.0.0
       - With global $ZConfig, files folder is known in every case.
       - Removed also Controller-User-notPublicFile function, Files_user_notPublicFile.tpl and lang strings
 
-  - Added Xinha plugin resource to repo
+  - Added Xinha and TinyMCE plugins resources to repo
 
   - Updated file.php request. Return to Controller-External functions and templates.
       - Fixed ajax problems in thumbnail functions.
@@ -54,4 +54,4 @@ Files 1.0.1 - Changes from 1.0.0
 Note
 ----
 
-  - Problems with editor plugin, when focus is in the editor but cursor is not in the textarea. Really is a Xinha plugin issue.
+  - Problems with xinha plugin, when focus is in the editor but cursor is not in the textarea. Really is a Xinha plugin issue.
