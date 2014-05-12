@@ -6,7 +6,7 @@ Files module 1.0.1 **for Zikula 1.3.x**
   - Administrators can set different **quotas** for different groups of users.
   - The module needs a folder where to store the users' files. In preference this folder must be located out of the public HTML. This folder (may be the same zkdata folder). Files folder contains the users folders and other content (if it is zkdata, all the files of other modules).
   - **Administrators also can manage the entire Files folder**.
-  - Module has a **xinha plugin** to easily **insert links and images** from the public folders.
+  - Module has a **xinha and tinymce plugins** to easily **insert links and images** from the public folders.
 
 Installing Files
 ================
@@ -17,10 +17,8 @@ Copying files
   1. Download the repo form [github](https://github.com/zikula-modules/Files/archive/master.zip).
   2. Extract files and copy them to *path_to_Zikula_root/modules/Files*
   3. Copy *path_to_Zikula_root/modules/Files/Resources/extras/file.php* to *path_to_Zikula_root/file.php*
-  4. If you use Scribite and you want the xinha plugin, copy *path_to_Zikula_root/modules/Files/Resources/xinhaPlugin/Files* to  *path_to_Zikula_root/modules/Scribite/includes/xinha/plugins/Files*
+  4. If you use Scribite, you can use xinha and tinymce plugins. Copy *path_to_Zikula_root/modules/Files/Resources/xinhaPlugin/Files* to  *path_to_Zikula_root/modules/Scribite/includes/xinha/plugins/Files* and *path_to_Zikula_root/modules/Files/Resources/tinyMCEplugin/files* to  *path_to_Zikula_root/modules/Scribite/includes/tinymce/plugins/files*.
   5. Delete *path_to_Zikula_root/modules/Files/Resources* folder
-
-Note: (1) For scribite 5.0.0, it will be *path_to_Zikula_root/Scribite/plugins/Xinha/vendor/xinha/plugins/Files*
 
 Module configuration
 --------------------
@@ -33,16 +31,16 @@ Module configuration
       - For multisites (*$ZConfig['Multisites']['multi']* = 1) you need a more complex configuration. Then you must define two more vars. The path will be *$ZConfig['Multisites']['filesRealPath'] . '/' . $ZConfig['Multisites']['siteFilesFolder']*
   5. If you use [Àgora project](https://github.com/projectestac/agora), you must define *$ZConfig['iwmodules']['agora'] = true* to use agora functions
 
-Xinha Files plugin
+Scribite plugins
 ------------------
 
-  1. Like other plugins, admin have to go to *Administration-Scribite-EditorConfig-Xinha* and check *Files* plugin
-  2. Then, you will see a *paper clip* button in your xinha editor
+  1. Like other plugins, admin have to go to *Administration-Scribite-EditorConfig-Xinha/TinyMCE* and check *Files* plugin
+  2. Then, you will see a *paper clip* button in your editor
 
 Notes
 -----
 
-  1. For scribite 5.0.0, the path will be *path_to_Zikula_root/Scribite/plugins/Xinha/vendor/xinha/plugins/Files*
+  1. Editor plugins are for Scribite 4.3.
   2. Using the default configuration (*folderPath = zikulaDataFolder*), admin can manage other modules files.
 
 Using Files
@@ -60,7 +58,8 @@ For users
   - In your public folders, you simply click to insert links or images, copy or goto URLs
   - You can make a thumbnail from your pictures, change their size and insert directly
 
-  Note: Like other xinha plugins, take care to use it when cursor (no only window focus) is in the text area.
+  Note 1: In xinha editor, take care to use it when cursor (no only window focus) is in the text area.
+  Note 2: In xinha editor, *insert link* option writes a link with the file name. In tinymce editor, you must select text before and then, *insert link* option makes a lind to this selected text.
 
 For admins
 ----------
