@@ -189,23 +189,23 @@
                              <td colspan="5" style="height:0px;padding:0px;margin:0px;">
                                  <div id="menu_{$file.name}" class="menuTriggered">
                                      {if $file.img}
-                                         <a href="" onclick="javascript:returnEditor('insertImg',false)" title="Insert image" >
+                                         <a href="" onclick="javascript:returnEditor('insertImg',false,'{$file.name}')" title="Insert image" >
                                              {img modname='Files' set="fileIcons" src='ed_image.gif' __title="Insert image" __alt="Insert image"}
                                              {gt text="Insert image"}
                                          </a>
                                          <span style="margin:0px 5px;">-</span>
                                      {/if}
-                                     <a href="" onclick="javascript:returnEditor('insertLink',false)" title="Insert link" >
+                                     <a href="" onclick="javascript:returnEditor('insertLink',false,'{$file.name}')" title="Insert link" >
                                          {img modname='Files' set="fileIcons" src='ed_link.gif' __title="Insert link" __alt="Insert link"}
                                          {gt text="Insert link"}
                                      </a>
                                      <span style="margin:0px 10px;">--</span>
-                                     <a href="" onclick="javascript:returnEditor('copyURL',false)" title="Copy URL" >
+                                     <a href="" onclick="javascript:returnEditor('copyURL',false,'{$file.name}')" title="Copy URL" >
                                          {img modname='Files' set="fileIcons" src='text.gif' __title="Copy URL" __alt="Copy URL"}
                                          {gt text="Copy URL"}
                                      </a>
                                      <span style="margin:0px 5px;">-</span>
-                                     <a href="" onclick="javascript:returnEditor('gotoURL',false)" title="Go to URL" >
+                                     <a href="" onclick="javascript:returnEditor('gotoURL',false,'{$file.name}')" title="Go to URL" >
                                          {img modname='Files' set="fileIcons" src='web.gif' __title="Go to URL" __alt="Go to URL"}
                                          {gt text="Go to URL"}
                                      </a>
@@ -259,11 +259,11 @@
 
     {include file="Files_external_footer.tpl"}
     <script>
-        function returnEditor(opt,thumb) {
+        function returnEditor(opt,thumb,filename) {
             if (thumb == true) {
-                var val=new Array(opt,'file.php?file={{$folderPath}}{{if $folderPath|substr:-1 neq '/'}}/{{/if}}/.tbn/{{$file.name}}');
+                var val=new Array(opt,'file.php?file={{$folderPath}}{{if $folderPath|substr:-1 neq '/'}}/{{/if}}/.tbn/' + filename);
             }else {
-                var val=new Array(opt,'file.php?file={{$folderPath}}{{if $folderPath|substr:-1 neq '/'}}/{{/if}}{{$file.name}}');
+                var val=new Array(opt,'file.php?file={{$folderPath}}{{if $folderPath|substr:-1 neq '/'}}/{{/if}}' + filename);
             }
             __dlg_close(val,'tt');
         }
