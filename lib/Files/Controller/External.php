@@ -110,7 +110,7 @@ class Files_Controller_External extends Zikula_AbstractController
                                       'external' => 1));
             foreach($images['file'] as $file) {
                 $fileExtension = FileUtil::getExtension($file['name']);
-                if(in_array(strtolower($fileExtension), array('gif','png','jpg'))) {
+                if(in_array(strtolower($fileExtension), array('gif','png','jpg','jpeg'))) {
                     list($width, $height) = getimagesize($folder . '/' . $file['name']);
                     list($newWidth, $newHeight) = getimagesize($folder . '/.tbn/' . $file['name']);
                     $factor = round($width/$newWidth,2);
