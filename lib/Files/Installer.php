@@ -29,7 +29,7 @@ class Files_Installer extends Zikula_AbstractInstaller
         DBUtil::createIndex($c['userId'], 'Files', 'userId');
         //Create module vars
         ModUtil::setVar('Files', 'showHideFiles', '0');
-        ModUtil::setVar('Files', 'allowedExtensions', 'gif,png,jpg,odt,doc,pdf,zip');
+        ModUtil::setVar('Files', 'allowedExtensions', 'gif,png,jpg,jpeg,odt,doc,pdf,zip');
         ModUtil::setVar('Files', 'defaultQuota', 1);
         ModUtil::setVar('Files', 'groupsQuota', '');
         ModUtil::setVar('Files', 'filesMaxSize', '1000000');
