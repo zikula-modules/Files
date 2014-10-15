@@ -130,12 +130,14 @@ class Files_Controller_Ajax extends Zikula_AbstractController {
     public function uploadFile($args) {
         $folder = $this->request->getPost()->get('folder', '');
         $external = $this->request->getPost()->get('external', '');
+        $editor = $this->request->getPost()->get('editor', '');
 
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
             throw new Zikula_Exception_Fatal($this->__('Sorry! No authorization to access this module.'));
         }
         $content = ModUtil::func('Files', 'user', 'uploadFileForm', array('folder' => $folder,
-                    'external' => $external));
+                    'external' => $external,
+                    'editor' => $editor));
         return new Zikula_Response_Ajax(array('content' => $content,
                 ));
     }
@@ -149,7 +151,7 @@ class Files_Controller_Ajax extends Zikula_AbstractController {
         if (!$factor) {
             throw new Zikula_Exception_Fatal($this->__('no size factor defined'));
         }
-        
+        $editor = $this->request->getPost()->get('editor', '');
         $image = $this->request->getPost()->get('image', '');
         if (!$image) {
             throw new Zikula_Exception_Fatal($this->__('no image found'));
@@ -201,6 +203,7 @@ class Files_Controller_Ajax extends Zikula_AbstractController {
         $this->view->assign('folderPath', $folderPath);
         $this->view->assign('folderName', $folderName);
         $this->view->assign('hook', 0);
+        $this->view->assign('editor',$editor);
         $content = $this->view->fetch('Files_external_getFilesImgContent.tpl');
         return new Zikula_Response_Ajax(array('image' => $image,
                     'content' => $content,

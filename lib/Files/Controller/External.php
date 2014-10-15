@@ -14,7 +14,7 @@ class Files_Controller_External extends Zikula_AbstractController
     public function getFiles($args)
     {
         $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : 0, 'GET');
-		$editor = FormUtil::getPassedValue('editor', isset($args['editor']) ? $args['editor'] : false, 'GET');
+	$editor = FormUtil::getPassedValue('editor', isset($args['editor']) ? $args['editor'] : false, 'GET');
         PageUtil::AddVar('javascript', 'modules/Files/javascript/getFiles.js');
         // get arguments
         $root = FormUtil::getPassedValue('root', isset($args['root']) ? $args['root'] : null, 'REQUEST');
@@ -94,7 +94,8 @@ class Files_Controller_External extends Zikula_AbstractController
         $fileList = ModUtil::func('Files', 'user', 'dir_list',
                                    array('folder' => $folder,
                                          'external' => 1,
-                                         'hook' => $hook));
+                                         'hook' => $hook,
+                                         'editor' => $editor));
         sort($fileList['dir']);
         sort($fileList['file']);
         $notwriteable = (!is_writable($folder)) ? true : false;
@@ -126,7 +127,7 @@ class Files_Controller_External extends Zikula_AbstractController
         }
         $defaultPublic = ModUtil::getVar('Files', 'defaultPublic');
         $this->view->assign('defaultPublic', $defaultPublic);
-		$this->view->assign('editor', $editor);
+	$this->view->assign('editor', $editor);
         $this->view->assign('folderPath', DataUtil::formatForDisplay($folderPath));
         $this->view->assign('folderName', DataUtil::formatForDisplay($folderName));
         $this->view->assign('fileList', $fileList);

@@ -14,7 +14,7 @@
                 <a href="javascript:submitCreateDir();">
                     {img modname='core' src='button_ok.png' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}
                 </a>
-                <a href="{modurl modname='Files' type=$type func=$func folder=$folder|replace:'/':'|' hook=$hook}">
+                <a href="{modurl modname='Files' type=$type func=$func folder=$folder|replace:'/':'|' hook=$hook editor=$editor}">
                     {img modname='core' src='button_cancel.png' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}
                 </a>
             </div>

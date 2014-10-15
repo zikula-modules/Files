@@ -15,7 +15,7 @@
         {/foreach}
     </dl>
 
-    <form class="z-form" action="{modurl modname='Files' type='user' func='deleteListFile' hook=$hook}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname='Files' type='user' func='deleteListFile' hook=$hook editor=$editor}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="folder" value="{$folder}" />
@@ -31,7 +31,7 @@
                 <div class="z-formbuttons">
                     {button src='button_ok.png' set='icons/small' altml='true' titleml='true' __alt="Accept" __title="Accept"}
                     {if $external eq 1}
-                    <a href="{modurl fqurl='true' modname='Files' type='external' func='getFiles' folder=$folder hook=$hook|replace:'/':'|'}">
+                    <a href="{modurl fqurl='true' modname='Files' type='external' func='getFiles' folder=$folder hook=$hook|replace:'/':'|' editor=$editor}">
                         {img modname='core' src='button_cancel.png' set='icons/small' altml='true' titleml='true' __alt="Cancel" __title="Cancel"}
                     </a>
                     {else}

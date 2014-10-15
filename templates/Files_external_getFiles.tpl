@@ -37,8 +37,8 @@
     {/if}
 
     <div class="actionIcons z-menuitem-title">
-        <a class="fi_image fi_createdir" href="javascript: createDir('{$folderName}',1,{$hook})">{gt text="Create directory"}</a>
-        <a class="fi_image fi_uploadfile" href="javascript: uploadFile('{$folderName}',1,{$hook})">{gt text="Upload file"}</a>
+        <a class="fi_image fi_createdir" href="javascript: createDir('{$folderName}',1,{$hook},'{$editor}')">{gt text="Create directory"}</a>
+        <a class="fi_image fi_uploadfile" href="javascript: uploadFile('{$folderName}',1,{$hook},'{$editor}')">{gt text="Upload file"}</a>
         {if $publicFolder}
         <a class="fi_image fi_public" href="{modurl modname='Files' type='user' func='setAsPublic' external='1' folder=$folderName|replace:'/':'|' hook=$hook not=1}">{gt text="Set as not public folder"}</a>
         {elseif $folderName neq '' OR $defaultPublic eq '1'}
@@ -87,7 +87,7 @@
                     <tr class="{cycle values="z-odd,z-even"}">
                         <td>&nbsp;</td>
                          <td align="left">
-                             <a title="{gt text='Go to main'}" class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' folder='' root=1}">
+                             <a title="{gt text='Go to main'}" class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' folder='' root=1 editor=$editor}">
                                  .
                              </a>
                          </td>
@@ -99,9 +99,9 @@
                          <td>&nbsp;</td>
                          <td align="left">
                              {if $folderPrev eq ''}
-                                 <a title="{gt text='Go to upper folder'}" class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' folder='' root=1}">    
+                                 <a title="{gt text='Go to upper folder'}" class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' folder='' root=1 editor=$editor}">    
                              {else}
-                                 <a title="{gt text='Go to upper folder'}" class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' folder=$folderPrev|replace:'/':'|'}">
+                                 <a title="{gt text='Go to upper folder'}" class="fi_image fi_folder" href="{modurl modname='Files' type='external' func='getFiles' folder=$folderPrev|replace:'/':'|' editor=$editor}">
                              {/if}
                                  ..
                              </a>
@@ -120,11 +120,11 @@
                          </td>
                          <td align="left">
                              {if $folderName eq ''}
-                             <a class="fi_image fi_folder" href="{modurl modname='Files' type='user' func='getFiles' type='external' hook=$hook folder=$file.name}">
+                             <a class="fi_image fi_folder" href="{modurl modname='Files' func='getFiles' type='external' hook=$hook folder=$file.name editor=$editor}">
                                  {$file.name}
                              </a>
                              {else}
-                             <a class="fi_image fi_folder" href="{modurl modname='Files' type='user' func='getFiles' type='external' hook=$hook folder=$folderName|cat:'/'|cat:$file.name}">
+                             <a class="fi_image fi_folder" href="{modurl modname='Files' func='getFiles' type='external' hook=$hook folder=$folderName|cat:'/'|cat:$file.name editor=$editor}">
                                  {$file.name}
                              </a>
                              {/if}
@@ -132,10 +132,10 @@
                          <td>&nbsp;</td>
                          <td align="right">{$file.time|dateformat:'datetimebrief'}</td>
                          <td align="right">
-                             <a href="{modurl modname='Files' type='user' external='1' func='action' do='rename' fileName=$file.name folder=$folderName|replace:'/':'|' hook=$hook}">
+                             <a href="{modurl modname='Files' type='user' external='1' func='action' do='rename' fileName=$file.name folder=$folderName|replace:'/':'|' hook=$hook editor=$editor}">
                                  {img modname='core' src='edit.png' set='icons/extrasmall' __alt="Rename file" __title="Rename folder"}
                              </a>
-                             <a href="{modurl modname='Files' type='user' external='1' func='action' do='delete' fileName=$file.name folder=$folderName|replace:'/':'|' hook=$hook}">
+                             <a href="{modurl modname='Files' type='user' external='1' func='action' do='delete' fileName=$file.name folder=$folderName|replace:'/':'|' hook=$hook editor=$editor}">
                                  {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete folder" __title="Delete folder"}
                              </a>
                          </td>

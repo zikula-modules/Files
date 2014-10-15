@@ -23,13 +23,14 @@ function getFileName (value) {
     return filename;
 }
 
-function modifySize(folder,image,factor,action)
+function modifySize(folder,image,factor,action,editor)
 {
     var pars = {
         folder: folder,
         image: image,
         factor: factor,
-        action: action
+        action: action,
+        editor: editor
     };
     Element.update('image_' + image, '<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
     //$('image_' + image).update('<img src="images/ajax/circle-ball-dark-antialiased.gif" />');
