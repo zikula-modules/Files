@@ -251,7 +251,7 @@ class Files_Controller_User extends Zikula_AbstractController {
         }
         // set editable and thumbnailable extensions
         $editableExtensions = ModUtil::getVar('Files', 'editableExtensions');
-        $thumbnailExtensions = array('gif', 'jpg', 'png');
+        $thumbnailExtensions = array('gif','jpg','jpeg','png');
         $dir_handle = opendir($folder);
         $dir_objects = array();
         $dir_objects['dir'] = array();
@@ -541,7 +541,7 @@ class Files_Controller_User extends Zikula_AbstractController {
 
         // create thumbnail image
         $fileExtension = FileUtil::getExtension($fileName);
-        $thumbnailExtensions = array('gif', 'jpg', 'png');
+        $thumbnailExtensions = array('gif','jpg','jpeg','png');
         if (!in_array($fileExtension, $thumbnailExtensions)) {
             LogUtil::registerError($this->__('It is not possible to create a thumbnail from this file.'));
             $folder = str_replace("/", "|", $folder);
@@ -563,7 +563,7 @@ class Files_Controller_User extends Zikula_AbstractController {
                         'hook' => $hook,'editor'=>$editor)));
         }
         $format = '';
-        if (strtolower($fileExtension) == 'jpg') {
+        if (strtolower($fileExtension) == 'jpg' || strtolower($fileExtension) == 'jpeg') {
             $format = 'image/jpeg';
         } elseif (strtolower($fileExtension) == 'gif') {
             $format = 'image/gif';
@@ -1680,7 +1680,7 @@ class Files_Controller_User extends Zikula_AbstractController {
                             'hook' => $hook)));
             }
             //check if the file is an image and move its thumbnail
-            if ((FileUtil::getExtension($file) == ('jpg' || 'gif' || 'png')) && file_exists($url_old . '.tbn/' . $file)) {
+            if ((FileUtil::getExtension($file) == ('jpg' || 'jpeg' || 'gif' || 'png')) && file_exists($url_old . '.tbn/' . $file)) {
                 if (!file_exists($url_new . '.tbn'))
                     mkdir($url_new . '.tbn');
                 if (!rename($url_old . '.tbn/' . $file, $url_new . '.tbn/' . $file)) {
