@@ -40,9 +40,9 @@
         <a class="fi_image fi_createdir" href="javascript: createDir('{$folderName}',1,{$hook},'{$editor}')">{gt text="Create directory"}</a>
         <a class="fi_image fi_uploadfile" href="javascript: uploadFile('{$folderName}',1,{$hook},'{$editor}')">{gt text="Upload file"}</a>
         {if $publicFolder}
-        <a class="fi_image fi_public" href="{modurl modname='Files' type='user' func='setAsPublic' external='1' folder=$folderName|replace:'/':'|' hook=$hook not=1}">{gt text="Set as not public folder"}</a>
+        <a class="fi_image fi_public" href="{modurl modname='Files' type='user' func='setAsPublic' external='1' folder=$folderName|replace:'/':'|' hook=$hook not=1 editor=$editor}">{gt text="Set as not public folder"}</a>
         {elseif $folderName neq '' OR $defaultPublic eq '1'}
-        <a class="fi_image fi_notpublic" href="{modurl modname='Files' type='user' func='setAsPublic' external='1' folder=$folderName|replace:'/':'|' hook=$hook}">{gt text="Set as a public folder"}</a>
+        <a class="fi_image fi_notpublic" href="{modurl modname='Files' type='user' func='setAsPublic' external='1' folder=$folderName|replace:'/':'|' hook=$hook editor=$editor}">{gt text="Set as a public folder"}</a>
         {/if}
     </div>
 

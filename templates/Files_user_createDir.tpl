@@ -1,4 +1,4 @@
-<form class="z-form" id="createDir" action="{modurl modname='Files' type='user' func='createDir'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" id="createDir" action="{modurl modname='Files' type='user' func='createDir' editor=$editor}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="folder" value="{$folder}" />

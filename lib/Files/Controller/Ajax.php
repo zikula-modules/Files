@@ -111,12 +111,13 @@ class Files_Controller_Ajax extends Zikula_AbstractController {
     public function createDir($args) {
         $folder = $this->request->getPost()->get('folder', '');
         $external = $this->request->getPost()->get('external', '');
-
+        $editor = $this->request->getPost()->get('editor', '');
         if (!SecurityUtil::checkPermission('Files::', '::', ACCESS_ADD)) {
             throw new Zikula_Exception_Fatal($this->__('Sorry! No authorization to access this module.'));
         }
         $content = ModUtil::func('Files', 'user', 'createDirForm', array('folder' => $folder,
-                    'external' => $external));
+                    'external' => $external,
+                    'editor' => $editor));
         return new Zikula_Response_Ajax(array('content' => $content,
                 ));
     }

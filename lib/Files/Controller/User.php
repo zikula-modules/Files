@@ -1844,6 +1844,7 @@ class Files_Controller_User extends Zikula_AbstractController {
         $not = FormUtil::getPassedValue('not', isset($args['not']) ? $args['not'] : null, 'GET');
         $external = FormUtil::getPassedValue('external', isset($args['external']) ? $args['external'] : null, 'GET');
         $hook = FormUtil::getPassedValue('hook', isset($args['hook']) ? $args['hook'] : null, 'GET');
+        $editor = FormUtil::getPassedValue('editor', isset($args['editor']) ? $args['editor'] : null, 'GET');
         // security check
         if (!SecurityUtil::checkPermission('Files::', "::", ACCESS_ADD)) {
             return LogUtil::registerError($this->__('Error! You are not authorized to access this module.'), 403);
@@ -1888,7 +1889,8 @@ class Files_Controller_User extends Zikula_AbstractController {
         }
         $folder = str_replace("/", "|", $folder);
         return System::redirect(ModUtil::url('Files', $returnType, $returnFunc, array('folder' => $folder,
-                    'hook' => $hook)));
+                    'hook' => $hook,
+                    'editor' => $editor)));
     }
 
     /**
