@@ -6,7 +6,7 @@ Files module 1.0.1 **for Zikula 1.3.x**
   - Administrators can set different **quotas** for different groups of users.
   - The module needs a folder where to store the users' files. In preference this folder must be located out of the public HTML. This folder (may be the same zkdata folder). Files folder contains the users folders and other content (if it is zkdata, all the files of other modules).
   - **Administrators also can manage the entire Files folder**.
-  - Module has a **xinha and tinymce plugins** to easily **insert links and images** from the public folders.
+  - Module has a **xinha and tinymce plugins** for **Scribite 4.3** to easily **insert links and images** from the public folders.
 
 Installing Files
 ================
