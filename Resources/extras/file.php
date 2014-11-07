@@ -48,6 +48,18 @@ $ctypeArray = getMimetype($fileExtension);
 $ctype = $ctypeArray['type'];
 //use the switch-generated Content-Type
 header("Content-Type: $ctype");
+//write other headers file
+header("Pragma: public");
+header("Expires: 0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Cache-Control: public");
+header("Content-Description: File Transfer");
+$header = "Content-Disposition: filename=" . basename($fileName) . ";";
+header($header);
+header("Content-Transfer-Encoding: binary");
+$fileSize = filesize($fileName);
+header("Content-Length: " . $fileSize);
+//
 $chunksize = 1 * (1024 * 1024);
 $buffer = '';
 $cnt = 0;
