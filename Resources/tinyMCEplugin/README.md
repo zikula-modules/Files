@@ -1,13 +1,12 @@
 TinyMCE plugin for Files module
-=============================
+===============================
 
 Add a shortcut to Files manager in TinyMCE editor.
 
 Install
 -------
+We provide files plugin and some customizing files (paperclip icon, some translations, skin and theme configurations...)
 
-Copy **files** folder to **tinymce/plugins/**
+  - Copy all the files to your *Zikula_root*/modules/Scribite/ (add and replace)
+  - Choose the right version (Scribite 4.3.0 or Scribite 5.0.0 were tested).
 
-Notes:
-  - In Scribite 4.3.0, it's Scribite/includes/tinymce/plugins/files
-  - In Scribite 5.0.0, it will be Scribite/plugins/TinyMce/vendor/tinymce/plugins/files 

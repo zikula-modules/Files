@@ -6,8 +6,10 @@ Add a shortcut to Files manager in Xinha editor.
 Install
 -------
 
-Copy **Files** folder to **xinha/plugins/**
+Install
+-------
+We provide files plugin and some customizing files (paperclip icon, some translations, skin and theme configurations...)
 
-Notes:
-  - In Scribite 4.3.0, it's Scribite/includes/xinha/plugins/Files
-  - In Scribite 5.0.0, it will be Scribite/plugins/Xinha/vendor/xinha/plugins/Files 
+  - Copy all the files to your *Zikula_root*/modules/Scribite/ (add and replace)
+  - Choose the right version (Scribite 4.3.0 or Scribite 5.0.0 were tested).
+

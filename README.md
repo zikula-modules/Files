@@ -17,7 +17,7 @@ Copying files
   1. Download the repo form [github](https://github.com/zikula-modules/Files/archive/master.zip).
   2. Extract files and copy them to *path_to_Zikula_root/modules/Files*
   3. Copy *path_to_Zikula_root/modules/Files/Resources/extras/file.php* to *path_to_Zikula_root/file.php*
-  4. If you use Scribite, you can use xinha and tinymce plugins. Be sure your Scribite version has Files plugin files. You have the resources in *path_to_Zikula_root/modules/Files/Resources*. Use the right scribite version (v4 or v5).
+  4. If you use Scribite, you can use xinha and tinymce plugins. You must copy files from *path_to_Zikula_root/modules/Files/Resources/namePlugin*. Read README.md file and use the right scribite version (v4 or v5).
   5. Delete *path_to_Zikula_root/modules/Files/Resources* folder
 
 Module configuration
@@ -41,9 +41,7 @@ Scribite plugins
 Notes
 -----
 
-  1. This plugin is only for Xinha and TinyMCE editors.
-  2. Using the default configuration (*folderPath = zikulaDataFolder*), admin can manage other modules files.
-  3. For TinyMCE in Scribite 5, you can find further configuration (buttons, *paperclip* image...) in https://github.com/intraweb-modules13/S5cribite
+  - Using the default configuration (*folderPath = zikulaDataFolder*), admin can manage other modules files.
 
 Using Files
 ===========
@@ -60,8 +58,7 @@ For users
   - In your public folders, you simply click to insert links or images, copy or goto URLs
   - You can make a thumbnail from your pictures, change their size and insert directly
 
-  Note 1: In xinha editor, take care to use it when cursor (no only window focus) is in the text area.
-  Note 2: In xinha editor, *insert link* option writes a link with the file name. In tinymce editor, you must select text before and then, *insert link* option makes a lind to this selected text.
+  Note: In xinha editor, take care to use it when cursor (no only window focus) is in the text area.
 
 For admins
 ----------
