@@ -1,3 +1,7 @@
+# Deprecated
+
+This module has been deprecated as part of [Zikula 4 slimming diet](https://github.com/zikula/core/blob/main/ZIKULA-4.0.md).
+
 Files module
 ============
 Files module 1.0.3 **for Zikula 1.3.x**
